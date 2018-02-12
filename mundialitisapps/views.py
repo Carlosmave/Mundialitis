@@ -12,7 +12,7 @@ from django.contrib import messages
 
 def index(request):
     if (request.method == 'POST' and 'register' in request.POST):
-        form=RegisterForm(request.POST)
+        form=RegisterForm(request.POST) ##AQUI TAMBIEN LO DE PROBAR LA TABLA
         if form.is_valid():
 
             regusername=request.POST.get('regusername', '')
@@ -22,7 +22,7 @@ def index(request):
             if regpassword==regpassword2:
                 exts = users.objects.filter(username=regusername).exists()
                 if exts == False:
-                    user_obj = users(username=regusername, password=regpassword)
+                    user_obj = users(username=regusername, password=regpassword)  ##AQUI PROBAR USAR LA TABLA DEFAULT DE DJANGO
                     user_obj.save()
                     #return HttpResponseRedirect(reverse('jobs:cost'))
                     return render(request, 'mundialitisapps/index.html')
@@ -49,6 +49,11 @@ def index(request):
                 if(usrp==logpassword):
                     #return render(request, 'mundialitisapps/main.html')
                     #return HttpResponseRedirect('mundialitisapps/main/')
+                    #check later if additional commas are needed
+                    request.session['username'] = logusername
+                    request.session['userid'] = usr.id
+                    request.session['is_logged'] = 'true'
+                    request.session.set_expiry(0)
                     return HttpResponseRedirect('/main/')
                 else:
                     messages.info(request, 'Los datos no coinciden')
@@ -66,7 +71,13 @@ def index(request):
 
 
 def main(request):
-    return render(request, 'mundialitisapps/main.html')
+    is_logged=request.session.get('is_logged') ##esto se tendra que hacer a varias paginas
+    if is_logged == 'true': ##setear a false para cerrar sesion, de modo que no se pueda volver a entrar
+        return render(request, 'mundialitisapps/main.html')
+    else:
+        return HttpResponseRedirect('/')
+        #return render(request, 'mundialitisapps/index.html')
+
 
 def trivia(request):
     return render(request, 'mundialitisapps/indextrivia.html')
