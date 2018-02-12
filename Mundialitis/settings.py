@@ -95,8 +95,17 @@ WSGI_APPLICATION = 'Mundialitis.wsgi.application'
 #    }
 #}
 #Heroku
+
+
 DATABASES = {
-    'default': dj_database_url.config()
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mundialitis',
+        'USER': 'kupo',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 
