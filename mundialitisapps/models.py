@@ -28,3 +28,16 @@ class answers(models.Model):
         return self.answer
     class Meta:
         verbose_name_plural = "Answers"
+
+class Partido(models.Model):
+    equipo_a = models.TextField()
+    equipo_b = models.TextField()
+
+class Polla(models.Model):
+    id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
+    ganador = models.TextField()
+    
+class PollaApuesta(models.Model):
+    id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
+    id_user = models.ForeignKey(users, on_delete=models.CASCADE)
+    apuesta = models.TextField()

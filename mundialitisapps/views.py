@@ -4,6 +4,8 @@ from .models import users, questions, answers
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+
+import random
 #from .models import questions, answers
 # Create your views here.
 #def index(request):
@@ -136,3 +138,31 @@ def processing(request, option, id, ttlscore):
         'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
+
+
+def polla(request):
+    # seleccionar partido
+    partidos = Partidos.objects.all()
+    pk_partido = random.randint(len(partidos))
+    partido = Partidos.objects.get(pk=pk_partido)
+    # crear row polla con partido seleccionado
+    
+    resultado = ''
+    # calcular goles
+    for i in range(2):
+        rng = random.random()
+        if rng < 0.33:
+            resultado = partido.equipo_a
+        elif rng < 0.67:
+            resultado = partido.equipo_b
+        else:
+            resultado = 'Empate'
+    polla = Polla.objects.create(id_partido=partido.id, ganador=resultado)
+
+    # determinar apuesta
+
+    context = {
+
+    }
+
+    return render(request, 'mundialitisapps/polla.html', context)
