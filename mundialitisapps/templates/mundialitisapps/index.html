@@ -14,6 +14,7 @@
   <!-- CSS dependencies -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
   <!-- Script: Make my navbar transparent when the document is scrolled to top -->
   <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
   <script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>
@@ -21,7 +22,7 @@
   <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-md navbar-dark bg-secondary fixed-top">
     <div class="container">
@@ -44,9 +45,37 @@
             <a class="nav-link" href="#speakers"><b>INTEGRANTES</b></a>
           </li>
         </ul>
-        <input class="form-control" type="text" placeholder="Nombre de usuario" required>
-        <input type="password" class="form-control" placeholder="Contraseña" required>
-        <a class="btn navbar-btn mx-2 btn-danger" type="submit"><b>LOGIN</b></a>
+        <!--<input class="form-control" type="text" placeholder="Nombre de usuario" required>
+        <input type="password" class="form-control" placeholder="Contraseña" required>-->
+        <!--<a class="btn navbar-btn mx-2 btn-danger" type="submit"><b>LOGIN</b></a>-->
+
+        <!--<a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a>-->
+
+
+
+        <a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">LOGIN</a>
+        <div id="id01" class="modal">
+          <form class="modal-content animate" method="post"> {% csrf_token %}
+
+            <div class="imgcontainer">
+              <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+              <img src="{% static 'mundialitisapps/assets/index/user-male-circle-filled.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
+            </div>
+            <div class="container">
+              <label for="logusername"><b>Nombre de usuario</b></label>
+              <input name="logusername" id="logusername" class="form-control" type="text" placeholder="Ingrese su nombre de usuario" required>
+              <label for="logpassword"><b>Contraseña</b></label>
+              <input name="logpassword" id="logpassword" class="form-control" type="password" placeholder="Ingrese su contraseña" required>
+              <button name="login" type="submit" class="btn mt-4 btn-block p-2 btn-success">Login</button>
+            </div>
+            <div style="margin-top:-25px" class="container">
+              <button style="margin-bottom:5%" type="button" onclick="document.getElementById('id01').style.display='none'" class="btn mt-4 btn-block p-2 btn-danger">Cancelar</button>
+              <!--<button type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>-->
+            </div>
+          </form>
+        </div>
+
+
       </div>
     </div>
   </nav>
@@ -55,6 +84,8 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-7 align-self-center text-lg-left text-center">
+          <!--<h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
+          <!--<h1 style="font-size: 3.5vw;"class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
           <h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>
           <p class="mb-5">Tu página sobre el Mundial de la FIFA Rusia 2018</p>
         </div>
@@ -79,8 +110,8 @@
               <input name="regpassword" id="rpassword" type="password" class="form-control" required> </div>
             <br>
             <div class="form-group"> <label>Vuelva a ingresar su contraseña</label>
-              <input name="regpassword2"id="rpassword2" type="password" class="form-control" required> </div>
-            <button type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>
+              <input name="regpassword2" id="rpassword2" type="password" class="form-control" required> </div>
+            <button name="register" type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>
           </form>
         </div>
       </div>
@@ -511,6 +542,7 @@
   <!-- Script: Smooth scrolling between anchors in the same page -->
   <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
   <!--<script>alert('{{ message }}');</script>-->
+  <script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
 </body>
 
 </html>

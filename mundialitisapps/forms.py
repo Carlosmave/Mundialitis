@@ -6,6 +6,12 @@ class RegisterForm(forms.Form):
     regusername = forms.CharField()
     regpassword = forms.CharField()
     regpassword2 = forms.CharField()
+
+class LoginForm(forms.Form):
+    logusername = forms.CharField()
+    logpassword = forms.CharField()
+
+
     #class Meta:
     #    model=Post
     #    fields = ('post',)
