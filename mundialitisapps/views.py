@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+<<<<<<< HEAD
 from .models import users, questions, answers, Partido, Polla
 from .forms import RegisterForm, LoginForm, PollaForm
+=======
+from .models import users, questions, answers, lobbies
+from .forms import RegisterForm, LoginForm, LobbyForm
+>>>>>>> 06d0afcc691588639511583cd98163374526b61c
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -55,7 +60,7 @@ def index(request):
                     request.session['username'] = logusername
                     request.session['userid'] = usr.id
                     request.session['is_logged'] = 'true'
-                    request.session.set_expiry(0)
+                    request.session.set_expiry(0)  #esto significa que la sesion expira al cerrar el navegador
                     return HttpResponseRedirect('/main/')
                 else:
                     messages.info(request, 'Los datos no coinciden')
@@ -78,7 +83,20 @@ def main(request):
         return render(request, 'mundialitisapps/main.html')
     else:
         return HttpResponseRedirect('/')
-        #return render(request, 'mundialitisapps/index.html')
+
+        #return render(request, 'mundialitisapps/index.html') Esto estaba mal por ejemplo porque dejaba el main ingresado manualmente arriba, lo que significaba
+        #que en localhost:8000/main se renderizaba index.html lo que causaba problemas al loguearse o registrarse correctamente, con responseredirect te envia
+        #a localhost:8000/ que es lo correcto
+        #Explorar como utilizar el responseredirect para armar links mas complejos y luego utilizarlos con urls, y también
+        #utilizar el render simultaneamente, response redirect arma links de 0 tener esto en cuenta (por ejemplo el return /main/ de arriba en la funcion indexx
+        #podria ser un url mas complejo como /main/userlogged/ y en urls en vez de main/ poner main/userlogged/)(este ejemplo ultimo se puede utilizar con los
+        #que defrente tengan responseredirect para hacer links mas complejos sin embargo si primero es un href y luego pasa a urls y luego a views, para utilizar
+        #el responseredirect tendria que en el views poner el responseredirect para que te envie de nuevo a urls y de vuelta a views, por lo que seria trabajo
+        #extra por las puras, por ello con los de href no conviene, solo conviene con los que tienen responseredirect defrente que son los que usan post,
+        #igual hacer los links lo mas simple posible. Href y responseredirect construyen links y te mandan a urls, para luego ir a views; mientras que render
+        #SOLO RENDERIZA LA PAGINA NADA MAS en el link indicado, donde esta indicado, no ejecuta funciones, por lo que si debo ejecutar funciones debo usar requestredirect)
+        #RECORDAR QUE LAS FUNCIONES SE EJECUTAN DE ACUERDO/DEPENDIENDO AL URL EN EL QUE TE ENCUENTRES
+
 
 
 def trivia(request):
@@ -92,6 +110,93 @@ def index2(request):
 
 def index3(request):
     return render(request, 'mundialitisapps/conference.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def lobbytriviaindex(request):
+    if (request.method == 'POST' and 'createlobby' in request.POST):
+        form3=LobbyForm(request.POST)
+        form3.fields['lobbypassword'].required = False
+        if form3.is_valid():  #si esto no se cumple se ira defrente a lo de fuera del if else, sin pasar por el else, ya que llego a entrar al if, pero dentro ya no continuo porque no habia un else mas. Esto estaria mal
+            lobbyname=request.POST.get('lobbyname', '')
+            lobbypassword=request.POST.get('lobbypassword', '')
+            exts2=lobbies.objects.filter(name=lobbyname).exists()
+            if exts2 == False:
+                if lobbypassword == '':
+                    lobby_obj = lobbies(name=lobbyname, players=request.session.get('username'), status="Público", game="Trivia")
+                    lobby_obj.save()
+                    #return render(request, 'mundialitisapps/lobbytriviaindex.html')
+                    return HttpResponseRedirect('/trivialobbies/')
+                    #Esto verlo despues a donde redirigira por ahora a la pagina principal de trivia
+                else:
+                    lobby_obj = lobbies(name=lobbyname, players=request.session.get('username'), lobpass=lobbypassword, status="Privado", game="Trivia")
+                    lobby_obj.save()
+                    #return render(request, 'mundialitisapps/lobbytriviaindex.html')
+                    return HttpResponseRedirect('/trivialobbies/')
+            else:
+                messages.info(request, 'Ya hay un lobby con ese nombre') #para lo de mensajes use render, pero si uso render aca no se mostraran los lobbys existentes, ver si se puede hacer mensaje con returnredirect
+                return render(request, 'mundialitisapps/lobbytriviaindex.html')
+    else:
+        form3=LobbyForm()
+        tlobbies=lobbies.objects.all().filter(game='Trivia')
+        context = {
+            'title':'Trivia Lobbies',
+            'tlobbies':tlobbies
+        }
+        return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
+    return render(request, 'mundialitisapps/lobbytriviaindex.html', {
+    'form3':form3,
+    })
+
+
+
+#mi logica devolverla
+#    tlobbies=lobbies.objects.all().filter(game='Trivia')
+#    context = {
+#        'title':'Trivia Lobbies',
+#        'tlobbies':tlobbies
+#    }
+#    return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def lobbytriviadetails(request, id):
+    tlobbies = lobbies.objects.get(id=id)
+    context = {
+    'tlobbies':tlobbies
+    }
+    return render(request, 'mundialitisapps/lobbytriviadetails.html', context)
+
 
 
 def details(request, id, ttlscore):

@@ -11,6 +11,10 @@ class LoginForm(forms.Form):
     logusername = forms.CharField()
     logpassword = forms.CharField()
 
+class LobbyForm(forms.Form):
+    lobbyname = forms.CharField()
+    lobbypassword = forms.CharField()
+
 
     #class Meta:
     #    model=Post

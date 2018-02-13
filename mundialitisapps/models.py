@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class users(models.Model):
@@ -29,6 +30,7 @@ class answers(models.Model):
     class Meta:
         verbose_name_plural = "Answers"
 
+<<<<<<< HEAD
 class Partido(models.Model):
     equipo_a = models.TextField()
     equipo_b = models.TextField()
@@ -41,3 +43,16 @@ class PollaApuesta(models.Model):
     id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
     id_user = models.ForeignKey(users, on_delete=models.CASCADE)
     apuesta = models.TextField()
+=======
+class lobbies(models.Model):
+    name = models.CharField(max_length=200)
+    players = models.CharField(max_length=200)
+    lobpass = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
+    game = models.CharField(max_length=200)
+    created_at = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name_plural = "Trivia Lobbies"
+>>>>>>> 06d0afcc691588639511583cd98163374526b61c

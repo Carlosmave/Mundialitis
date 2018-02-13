@@ -1,0 +1,16 @@
+{% extends 'mundialitisapps/lobbytrivialayout.html' %}
+{% block content %}
+<h3 class="center-align red lighten-3">{{tlobbies.name}}</h3>
+<div class="card">
+  <div class="card-content">
+    {{tlobbies.players}}
+  </div>
+  <div class="card-content">
+    {{tlobbies.status}}
+  </div>
+  <div class="card-action">
+    {{tlobbies.created_at}}
+  </div>
+</div>
+<a href="/posts" class"btn">Go Back</a>
+{% endblock %}
