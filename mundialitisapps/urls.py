@@ -5,6 +5,14 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^main/', views.main, name='main'),
     url(r'^trivia/', views.trivia, name='trivia'),
+    url(r'^trivialobbies/', views.lobbytriviaindex, name='lobbytriviaindex'),
+
+
+
+    url(r'^lobbytriviaindex/trivialobbiesdetails/(?P<id>\d+)/$', views.lobbytriviadetails, name='lobbytriviadetails'),
+
+
+
     #url(r'^trivia/details/', views.trivia, name='trivia'),
     #url(r'^$', views.Register, name='register'),
     #url(r'^$', views.index, name='index'),

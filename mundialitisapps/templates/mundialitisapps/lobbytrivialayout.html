@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content"width=device-width, initial-scale=1.0">
+  {% load staticfiles %}
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">-->
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
+  <title>Trivia Title</title>
+</head>
+<body>
+  <header class="container center-align">
+    <h1>Trivia H1</h1>
+  </header>
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+    <br>
+    <a style="display:block" class="center-align" href="/admin">Admin Login</a>
+<script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
+</body>
+</html>

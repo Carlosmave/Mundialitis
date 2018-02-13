@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class users(models.Model):
@@ -28,3 +29,15 @@ class answers(models.Model):
         return self.answer
     class Meta:
         verbose_name_plural = "Answers"
+
+class lobbies(models.Model):
+    name = models.CharField(max_length=200)
+    players = models.CharField(max_length=200)
+    lobpass = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
+    game = models.CharField(max_length=200)
+    created_at = models.DateTimeField(default=datetime.now, blank=True)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name_plural = "Trivia Lobbies"
