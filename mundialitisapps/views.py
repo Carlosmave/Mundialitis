@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import users, questions, answers, Partido
-from .forms import RegisterForm, LoginForm
+from .models import users, questions, answers, Partido, Polla
+from .forms import RegisterForm, LoginForm, PollaForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -139,15 +139,23 @@ def processing(request, option, id, ttlscore):
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
 
+def pollaindex(request):
+    #get id_usuario
+    usuario = request.userid
+    #get pollas asociadas a usuario
+    pollas = PollaApuesta.objects.filter(id_usuario=usuario)
+
+    return render(request, 'mundialitisapps/pollaindex.html')
+
 
 def polla(request):
     # seleccionar partido
     partidos = Partido.objects.all()
-    pk_partido = random.randint(0, len(partidos) - 1)
+    pk_partido = random.randint(1, len(partidos) - 1)
     partido = Partido.objects.get(pk=pk_partido)
     # crear row polla con partido seleccionado
     
-    resultado = ''
+    
     # calcular goles
     for i in range(2):
         rng = random.random()
@@ -157,12 +165,24 @@ def polla(request):
             resultado = partido.equipo_b
         else:
             resultado = 'Empate'
-    #polla = Polla.objects.create(id_partido=partido.id, ganador=resultado)
-
+    #polla = Polla.objects.create(id_partido=partido, ganador=resultado)
+    
     # determinar apuesta
-
+    if request.method == 'POST':
+        form = PollaForm(request.POST)
+        if form.is_valid():
+            ap = form.cleaned_data['apuesta']
+            print(ap)
+            if ap == resultado:
+                return HttpResponse("GANASTE")
+            else:
+                return HttpResponse("PERDISTE")
+    else:
+        form = PollaForm()
+        
     context = {
-        'partido': partido
+        'form': form,
+        'partido': partido,
     }
 
     return render(request, 'mundialitisapps/polla.html', context)

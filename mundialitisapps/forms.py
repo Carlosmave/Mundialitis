@@ -15,3 +15,6 @@ class LoginForm(forms.Form):
     #class Meta:
     #    model=Post
     #    fields = ('post',)
+
+class PollaForm(forms.Form):
+    apuesta = forms.CharField()
