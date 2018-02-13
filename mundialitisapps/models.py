@@ -30,7 +30,6 @@ class answers(models.Model):
     class Meta:
         verbose_name_plural = "Answers"
 
-<<<<<<< HEAD
 class Partido(models.Model):
     equipo_a = models.TextField()
     equipo_b = models.TextField()
@@ -43,7 +42,7 @@ class PollaApuesta(models.Model):
     id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
     id_user = models.ForeignKey(users, on_delete=models.CASCADE)
     apuesta = models.TextField()
-=======
+    
 class lobbies(models.Model):
     name = models.CharField(max_length=200)
     players = models.CharField(max_length=200)
@@ -55,4 +54,3 @@ class lobbies(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
->>>>>>> 06d0afcc691588639511583cd98163374526b61c
