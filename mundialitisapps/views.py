@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import users, questions, answers
+from .models import users, questions, answers, Partido
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -142,9 +142,9 @@ def processing(request, option, id, ttlscore):
 
 def polla(request):
     # seleccionar partido
-    partidos = Partidos.objects.all()
-    pk_partido = random.randint(len(partidos))
-    partido = Partidos.objects.get(pk=pk_partido)
+    partidos = Partido.objects.all()
+    pk_partido = random.randint(0, len(partidos) - 1)
+    partido = Partido.objects.get(pk=pk_partido)
     # crear row polla con partido seleccionado
     
     resultado = ''
@@ -157,12 +157,12 @@ def polla(request):
             resultado = partido.equipo_b
         else:
             resultado = 'Empate'
-    polla = Polla.objects.create(id_partido=partido.id, ganador=resultado)
+    #polla = Polla.objects.create(id_partido=partido.id, ganador=resultado)
 
     # determinar apuesta
 
     context = {
-
+        'partido': partido
     }
 
     return render(request, 'mundialitisapps/polla.html', context)

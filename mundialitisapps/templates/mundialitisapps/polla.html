@@ -1,8 +1,21 @@
-{% extends 'mundialitisapp/layout.html' %}
+{% extends 'mundialitisapps/layout.html' %}
 {% block content %}
 <div class="container">
     <h1 class="col s12">Polla</h1>
-    <table></table>
+    <table>
+        <tr>
+            <th> Partido: {{ partido.id }}</th>
+            <th> {{ partido.equipo_a }} </th>
+            <th> {{ partido.equipo_b }} </th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Apuesta: </td>
+            <td> {{ partido.equipo_a }} </td>
+            <td> {{ partido.equipo_b }} </td>
+            <td> Empate </td>
+        </tr>
+    </table>
 </div>
 
 {% endblock %}
