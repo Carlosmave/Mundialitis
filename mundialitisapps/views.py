@@ -165,21 +165,21 @@ def polla(request):
             resultado = partido.equipo_b
         else:
             resultado = 'Empate'
-    #polla = Polla.objects.create(id_partido=partido, ganador=resultado)
+    polla = Polla.objects.create(id_partido=partido, ganador=resultado)
     
     # determinar apuesta
     if request.method == 'POST':
         form = PollaForm(request.POST)
         if form.is_valid():
             ap = form.cleaned_data['apuesta']
-            print(ap)
-            if ap == resultado:
+            # print(ap)
+            if ap == polla.ganador:
                 return HttpResponse("GANASTE")
             else:
                 return HttpResponse("PERDISTE")
     else:
         form = PollaForm()
-        
+
     context = {
         'form': form,
         'partido': partido,
