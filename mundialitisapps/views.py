@@ -1,12 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-<<<<<<< HEAD
-from .models import users, questions, answers, Partido, Polla
-from .forms import RegisterForm, LoginForm, PollaForm
-=======
-from .models import users, questions, answers, lobbies
-from .forms import RegisterForm, LoginForm, LobbyForm
->>>>>>> 06d0afcc691588639511583cd98163374526b61c
+from .models import users, questions, answers, lobbies, Partido, Polla
+from .forms import RegisterForm, LoginForm, PollaForm, LobbyForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
