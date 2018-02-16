@@ -1,9 +1,12 @@
 from django.conf.urls import url
+from . import ajax
 from . import views
 
 urlpatterns = [
+    url(r'^ajax/get_players', ajax.get_players, name='ajax_get_players'),
     url(r'^$', views.index, name='index'),
     url(r'^main/', views.main, name='main'),
+    url(r'^teams/', views.TeamsView.as_view(), name='teams'),
     url(r'^trivia/', views.trivia, name='trivia'),
     url(r'^trivialobbies/', views.lobbytriviaindex, name='lobbytriviaindex'),
 
