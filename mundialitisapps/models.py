@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
-class users(models.Model):
+class User(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
     def __str__(self):
@@ -10,9 +10,8 @@ class users(models.Model):
     class Meta:
         verbose_name_plural = "Users"
 
-class questions(models.Model):
+class Question(models.Model):
     question = models.CharField(max_length=250)
-    #body = models.TextField()
     option1 = models.CharField(max_length=100)
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
@@ -22,7 +21,7 @@ class questions(models.Model):
     class Meta:
         verbose_name_plural = "Questions"
 
-class answers(models.Model):
+class Answer(models.Model):
     answer = models.CharField(max_length=200)
     score = models.CharField(max_length=200)
     def __str__(self):
@@ -30,13 +29,16 @@ class answers(models.Model):
     class Meta:
         verbose_name_plural = "Answers"
 
-class lobbies(models.Model):
+class Lobby(models.Model):
     name = models.CharField(max_length=200)
-    players = models.CharField(max_length=200)
+    players = models.TextField()
     lobpass = models.CharField(max_length=200)
     status = models.CharField(max_length=200)
     game = models.CharField(max_length=200)
+    administrator = models.CharField(max_length=200)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
+    def players_as_list(self):
+        return self.players.split(',')
     def __str__(self):
         return self.name
     class Meta:

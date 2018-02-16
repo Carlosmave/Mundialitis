@@ -9,8 +9,11 @@ urlpatterns = [
 
 
 
-    url(r'^lobbytriviaindex/trivialobbiesdetails/(?P<id>\d+)/$', views.lobbytriviadetails, name='lobbytriviadetails'),
+    url(r'^trivialobbiesdetails/public/(?P<id>\d+)/$', views.lobbytriviadetails, name='lobbytriviadetails'),
+    url(r'^trivialobbiesdetails/private/(?P<id>\d+)/$', views.lobbytriviadetails, name='lobbytriviadetails'),
 
+    url(r'^deletelobby/(?P<id>\d+)/$', views.deletelobby, name='deletelobby'),
+    url(r'^joinlobby/(?P<id>\d+)/(?P<player>[-\w]+)/$', views.joinlobby, name='joinlobby'),
 
 
     #url(r'^trivia/details/', views.trivia, name='trivia'),

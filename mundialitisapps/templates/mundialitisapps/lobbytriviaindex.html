@@ -41,7 +41,12 @@
 
               <ul class="list-group list-group-flush">
                 {% for tlobby in tlobbies %}
-                  <li class="list-group-item"><a href="/lobbytriviaindex/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                  {% if tlobby.status|stringformat:"s" == "Privado" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/public/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/trivia/secondtry.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                    <!--<li class="list-group-item"><a href="/trivialobbiesdetails/public/{{tlobby.id}}">{{tlobby.name}} - {{tlobby.status}}</a></li>-->
+                  {% elif tlobby.status|stringformat:"s" == "Público" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/private/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                  {% endif %}
                 {% endfor %}
                 <!--<li class="list-group-item">Cras justo odio</li>-->
                 <!--<li class="list-group-item">Dapibus ac facilisis in</li>
@@ -121,7 +126,7 @@
   <!-- Script: Smooth scrolling between anchors in the same page -->
   <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
   <!--<script>alert('{{ message }}');</script>-->
-  <script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
+  <script>var modal = document.getElementById('id01');var modal2 = document.getElementById('id02'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}else if (event.target == modal2){modal2.style.display = "none";}}</script>
 </body>
 
 </html>
