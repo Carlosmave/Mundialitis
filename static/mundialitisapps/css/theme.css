@@ -6339,3 +6339,17 @@ body > * {
     height: 100%;
     content: ' ';
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9) 0%, rgba(21, 0, 255, 0.9) 50%, rgba(255, 0, 0, 0.9) 100%); }
+
+.field-img {
+  background: url('../assets/teams/3.png') no-repeat center;
+}
+
+.field-position {
+  font-size: 16px;
+  color: #000080 !important;
+  font-weight: bold;
+}
+
+.field-table th, .field-table td {
+  border-top: 0px !important;
+}

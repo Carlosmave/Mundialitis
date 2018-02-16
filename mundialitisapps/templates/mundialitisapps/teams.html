@@ -1,0 +1,400 @@
+{% extends "mundialitisapps/teamslayout.html" %}
+
+{% block content %}
+  <div class="py-2 text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="display-1 text-white">Equipo Ideal</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-12">
+            <h1 class="text-center text-white">Jugando en sala de Usuario</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if resultado %}
+    <div class="py-12">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 bg-light text-dark text-center">
+            <table class="table">
+              <thead>
+                <tr></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>EQUIPO</td>
+                  <td>PUNTAJE</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                  <td>USUARIO</td>
+                  <td>{{resultado}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <a class="btn btn-primary" href="{% url 'equipo' %}">SALIR</a>
+                  </td>
+                  <td> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <form method="post">
+      {% csrf_token %}
+      {{form.arquero}}
+      {{form.defensa1}}
+      {{form.defensa2}}
+      {{form.defensa3}}
+      {{form.defensa4}}
+      {{form.centro1}}
+      {{form.centro2}}
+      {{form.centro3}}
+      {{form.delantero1}}
+      {{form.delantero2}}
+      {{form.delantero3}}
+      <div class="py-2">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 field-img">
+              <div class="offset-1 col-md-10">
+                <table class="table field-table">
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.1.data.attrs.id}}"
+                               class="{{form.posiciones.1.data.attrs.class}}"
+                               type="{{form.posiciones.1.data.type}}"
+                               name="{{form.posiciones.1.data.name}}"
+                               value="{{form.posiciones.1.data.value}}">
+                        <label for="{{form.posiciones.1.data.attrs.id}}">
+                          {{form.posiciones.1.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.5.data.attrs.id}}"
+                               class="{{form.posiciones.5.data.attrs.class}}"
+                               type="{{form.posiciones.5.data.type}}"
+                               name="{{form.posiciones.5.data.name}}"
+                               value="{{form.posiciones.5.data.value}}">
+                        <label for="{{form.posiciones.5.data.attrs.id}}">
+                          {{form.posiciones.5.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.9.data.attrs.id}}"
+                               class="{{form.posiciones.9.data.attrs.class}}"
+                               type="{{form.posiciones.9.data.type}}"
+                               name="{{form.posiciones.9.data.name}}"
+                               value="{{form.posiciones.9.data.value}}">
+                        <label for="{{form.posiciones.9.data.attrs.id}}">
+                          {{form.posiciones.9.data.label}}
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.2.data.attrs.id}}"
+                               class="{{form.posiciones.2.data.attrs.class}}"
+                               type="{{form.posiciones.2.data.type}}"
+                               name="{{form.posiciones.2.data.name}}"
+                               value="{{form.posiciones.2.data.value}}">
+                        <label for="{{form.posiciones.2.data.attrs.id}}">
+                          {{form.posiciones.2.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td> </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.0.data.attrs.id}}"
+                               class="{{form.posiciones.0.data.attrs.class}}"
+                               type="{{form.posiciones.0.data.type}}"
+                               name="{{form.posiciones.0.data.name}}"
+                               value="{{form.posiciones.0.data.value}}">
+                        <label for="{{form.posiciones.0.data.attrs.id}}">
+                          {{form.posiciones.0.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.6.data.attrs.id}}"
+                               class="{{form.posiciones.6.data.attrs.class}}"
+                               type="{{form.posiciones.6.data.type}}"
+                               name="{{form.posiciones.6.data.name}}"
+                               value="{{form.posiciones.6.data.value}}">
+                        <label for="{{form.posiciones.6.data.attrs.id}}">
+                          {{form.posiciones.6.data.label}}
+                        </label>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.8.data.attrs.id}}"
+                               class="{{form.posiciones.8.data.attrs.class}}"
+                               type="{{form.posiciones.8.data.type}}"
+                               name="{{form.posiciones.8.data.name}}"
+                               value="{{form.posiciones.8.data.value}}">
+                        <label for="{{form.posiciones.8.data.attrs.id}}">
+                          {{form.posiciones.8.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td> </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.3.data.attrs.id}}"
+                               class="{{form.posiciones.3.data.attrs.class}}"
+                               type="{{form.posiciones.3.data.type}}"
+                               name="{{form.posiciones.3.data.name}}"
+                               value="{{form.posiciones.3.data.value}}">
+                        <label for="{{form.posiciones.3.data.attrs.id}}">
+                          {{form.posiciones.3.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.10.data.attrs.id}}"
+                               class="{{form.posiciones.10.data.attrs.class}}"
+                               type="{{form.posiciones.10.data.type}}"
+                               name="{{form.posiciones.10.data.name}}"
+                               value="{{form.posiciones.10.data.value}}">
+                        <label for="{{form.posiciones.10.data.attrs.id}}">
+                          {{form.posiciones.10.data.label}}
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.7.data.attrs.id}}"
+                               class="{{form.posiciones.7.data.attrs.class}}"
+                               type="{{form.posiciones.7.data.type}}"
+                               name="{{form.posiciones.7.data.name}}"
+                               value="{{form.posiciones.7.data.value}}">
+                        <label for="{{form.posiciones.7.data.attrs.id}}">
+                          {{form.posiciones.7.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="field-position">
+                        <input id="{{form.posiciones.4.data.attrs.id}}"
+                               class="{{form.posiciones.4.data.attrs.class}}"
+                               type="{{form.posiciones.4.data.type}}"
+                               name="{{form.posiciones.4.data.name}}"
+                               value="{{form.posiciones.4.data.value}}">
+                        <label for="{{form.posiciones.4.data.attrs.id}}">
+                          {{form.posiciones.4.data.label}}
+                        </label>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="py-2">
+        <div class="container">
+          <div class="row">
+            <div class="offset-1 col-md-10 bg-light field-position">
+              <div class="form-group mt-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{form.selecciones.label|upper}}
+                    {{form.selecciones}}
+                  </div>
+                  <div class="col-md-6">
+                    {{form.jugadores.label|upper}}
+                    {{form.jugadores}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mt-3 mb-3">
+                <button id="btn-cambiar" class="btn btn-default" type="button">CAMBIAR</button>
+                <button class="btn btn-primary" type="submit">CONFIRMAR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("form").on("submit", validar_juego);
+      $("#btn-cambiar").on("click", cambiar_jugador);
+      $(".position").on("change", clear);
+      $("#id_selecciones").on("change", obtener_jugadores);
+      obtener_jugadores();
+    });
+
+    function clear() {
+      $("#id_selecciones").val("").trigger("change");
+    }
+
+    function validar_juego(event) {
+      // Estos son los hidden inputs que van a contener el ID de los jugadores
+      // para cada posición
+      var valid = true;
+      $(".jugador").each(function(pos, elem) {
+        var id = $(elem).val();
+        if (!id) {
+          valid = false;
+        }
+      });
+      if (!valid) {
+        alert("Debe escoger todos los jugadores");
+        event.preventDefault();
+      }
+    }
+
+    function cambiar_jugador() {
+      // Validaciones
+      var posicion = $(".position:checked").val();
+      var jugador = $("#id_jugadores").val();
+
+      if (!posicion) {
+        alert("Debe seleccionar una posición");
+      } else if (!jugador) {
+        alert("Debe seleccionar un jugador");
+      } else {
+        var posicionId = $(".position:checked").attr("id");
+        var nombreJugador = $("#id_jugadores option:selected").text()
+        // Cambiar nombre al label
+        $("[for=" + posicionId + "]").text(nombreJugador);
+        // Setear ID del jugador
+        $("#id_" + posicion).val(jugador);
+      }
+    }
+
+    function obtener_jugadores() {
+      var paisId = $("#id_selecciones").val();
+      var request = $.ajax({
+        type: "GET",
+        url: "{% url 'ajax_get_players' %}",
+        data: {
+            "pais_id": paisId
+        }
+      });
+      request.done(function(response) {
+          $("#id_jugadores").html(response.jugadores);
+      });
+    }
+  </script>
+{% endblock %}
