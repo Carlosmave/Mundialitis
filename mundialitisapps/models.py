@@ -41,3 +41,14 @@ class lobbies(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
+
+# invitar
+class Invitacion(models.Model):
+    invitado = models.CharField(max_length=10)
+    owner = models.CharField(max_length=30)
+    grupo=models.CharField(max_length=30)
+    estado=models.CharField(max_length=11,default='pendiente')
+    #grupo = models.ManyToManyField(grupo)
+    #estados rechazado y aceptado
+    def __str__(self):
+        return (invitado)

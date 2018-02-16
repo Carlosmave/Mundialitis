@@ -29,7 +29,7 @@ DEBUG = True
 #Local
 #ALLOWED_HOSTS = []
 #Heroku
-ALLOWED_HOSTS = ['mundialitis.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','notificacionesapp.herokuapp.com']
 
 
 # Application definition
@@ -95,10 +95,28 @@ WSGI_APPLICATION = 'Mundialitis.wsgi.application'
 #    }
 #}
 #Heroku
-DATABASES = {
-    'default': dj_database_url.config()
-}
 
+#DATABASES = {
+#    'default': dj_database_url.config()
+#}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST':"ec2-174-129-221-240.compute-1.amazonaws.com",
+        'NAME': 'd7skfvf3560a45',
+        'USER': 'fxfeipjbftcduf',
+        'PASSWORD': 'e98c1f92c95116f7b4c5ac6d9a8116a89e099001b91c62b3cf8d2e2a5e042428',
+
+        'PORT': 5432
+
+
+    }
+
+}
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

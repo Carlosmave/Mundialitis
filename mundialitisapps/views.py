@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import users, questions, answers, lobbies
+from .models import users, questions, answers, lobbies,Invitacion
 from .forms import RegisterForm, LoginForm, LobbyForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+
 #from .models import questions, answers
 # Create your views here.
 #def index(request):
@@ -54,7 +55,12 @@ def index(request):
                     request.session['userid'] = usr.id
                     request.session['is_logged'] = 'true'
                     request.session.set_expiry(0)  #esto significa que la sesion expira al cerrar el navegador
+                    #este es el original:
+
                     return HttpResponseRedirect('/main/')
+                    #hacer esto para llamar datos de tabla users:
+
+
                 else:
                     messages.info(request, 'Los datos no coinciden')
                     return render(request, 'mundialitisapps/index.html')
@@ -73,7 +79,13 @@ def index(request):
 def main(request):
     is_logged=request.session.get('is_logged') ##esto se tendra que hacer a varias paginas
     if is_logged == 'true': ##setear a false para cerrar sesion, de modo que no se pueda volver a entrar
-        return render(request, 'mundialitisapps/main.html')
+        userss = request.session.get('username')
+        #context ={
+        #'users' : userss
+        #}
+        #antes era 'mundialitisapps/main.html'
+        #return render(request, '/perfil1/', context)
+        return HttpResponseRedirect('/perfil1/')
     else:
         return HttpResponseRedirect('/')
 
@@ -236,3 +248,170 @@ def processing(request, option, id, ttlscore):
         'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
+
+# Mannejo de invitaciones:
+
+def invitar(request):
+    return render(request, 'mundialitisapps/invitar.html')
+#listo
+def invitarusuario(request):
+    info = request.POST
+    invi=info.get('invitado','')
+    grp=info.get('grupo','')
+    username = request.session.get('username')
+    invitadoexiste= users.objects.filter(username=invi).count()
+    obj= 0
+    obj = Invitacion.objects.filter(grupo=grp,invitado=invi).count()
+    print ('asdaskdnojas')
+    print (obj)
+    if obj>=1:
+        return HttpResponse("<script>alert('invitacion ya existe');document.location.href='/perfil';</script>")
+    elif admingrupos(username,grp)==True and invitadoexiste==1:
+        invit=Invitacion(invitado=invi,grupo=grp)
+        invit.save()
+        return HttpResponse("<script>alert('Se envio invitacion');document.location.href='/perfil';</script>")
+    else:
+        return HttpResponse("<script>alert('Usuario o grupo no existe');document.location.href='/perfil';</script>")
+
+def agregargrupo(request):
+    username = request.user.username
+    info = request.POST
+    gr=info.get('nombregrupo','')
+    lista = grupo.objects.filter(nombre=gr).count()
+    if lista ==1:
+        #messages.info(request, 'Grupo ya existe')
+        #return views.perfil(request)
+        return HttpResponse("<script>alert('Grupo ya existe');document.location.href='/perfil';</script>")
+
+    else:
+        db_registro = grupo(nombre=gr,owner=username);
+        db_registro.save()
+        inv= Invitacion(invitado=username,owner=username,estado='aceptado',grupo=gr)
+        inv.save()
+        #return views.perfil(request)
+        return HttpResponse("<script>alert('Grupo creado');document.location.href='/perfil';</script>")
+
+
+def grupousuarios(grp):
+
+    return None
+
+""" Funcionaes de apoyo"""
+
+#lista de usuarios de un grupo
+def listausuarios(rgrupo):
+    nombre='aceptado'
+    lista = Invitacion.objects.filter(group=rgrupo,invitado=nombre)
+    #gp = grupo.objects.filter(nombre=rgrup).count()
+    usuarios=[]
+    pass
+    #return HttpResponse()
+
+#si el nombre es administrador de grupo retorna true
+#listo
+def admingrupos(nombre,rgrupo):
+    lista= lobbies.objects.filter(players=nombre,name=rgrupo).count()
+    if lista==1:
+        return (True)
+    else:
+        return False
+
+#retorna invitaciones pendientes
+#listo
+def invitaciones(ruser):
+    p=Invitacion.objects.filter(invitado=ruser,estado='pendiente')
+    datos=[]
+    for i in p:
+        datos.append(i.grupo)
+    return datos
+#aceptar o rechazar invitacion
+#listo
+def responderinvitacion(request):
+    info = request.POST
+    rgrupo=info.get('grupo')
+    ruser=request.session.get('username')
+    rpta=info.get('rpta')
+    obj = Invitacion.objects.get(grupo=rgrupo,invitado=ruser)
+    obj.estado=rpta
+    obj.save()
+    if rpta=='aceptado':
+        return HttpResponse("<script>alert('Grupo aceptado');document.location.href='/perfil1';</script>")
+    else:
+        return HttpResponse("<script>alert('Grupo rechazado');document.location.href='/perfil1';</script>")
+#retorna los grupos donde el usaurio es admin
+#listo
+def useradmingroup(ruser):
+    rpta=[]
+    lista= lobbies.objects.filter(players=ruser)
+    for i in lista:
+        rpta.append(i.name)
+    return rpta
+
+#retorna una lista de los grupos a los que pertenece un usuario
+def misgrupos(ruser):
+    rpta=[]
+    lista= Invitacion.objects.filter(invitado=ruser,estado='aceptado')
+    for i in lista:
+        if i.estado=='aceptado':
+
+            rpta.append(i.grupo)
+    return rpta
+#retorna usuarios de un grupo
+def usuariosgrupo(rgrupo):
+    rpta=[]
+    lista = Invitacion.objects.filter(grupo=rgrupo)
+    for i in lista:
+        if i.estado=='aceptado':
+            rpta.append(i.invitado)
+    return rpta
+
+#otro mas, para que jale los datos al entrar al main
+#listo
+def perfil(request):
+
+    usern = request.session.get('username')
+    if request.method=='POST':
+
+        print (request)
+        context = { #'Invitaciones': invitaciones(usern),
+        'users' : usern,
+        'grupos': useradmingroup(usern),
+        #'misgrupos': misgrupos(usern),
+        #'listausuarios':views.usuariosgrupo(request.POST.get('sometext'),)
+        }
+        return render(request,'mundialitisapps/invitar.html',context)
+    else:
+
+        context = { #'Invitaciones': invitaciones(usern),
+        'users' : usern,
+        'grupos': useradmingroup(usern),
+        #'misgrupos': misgrupos(usern)
+        }
+        return render(request,'mundialitisapps/invitar.html',context)
+
+#probando
+def perfil1(request):
+
+    usern = request.session.get('username')
+    p=Invitacion.objects.filter(invitado=usern,estado='pendiente').count
+    
+    if request.method=='POST':
+
+        print (request)
+        context = { 'Invitaciones': invitaciones(usern),
+        'grupos': useradmingroup(usern),
+        'users' : usern,
+        'con' : p,
+        #'misgrupos': misgrupos(usern),
+        #'listausuarios':views.usuariosgrupo(request.POST.get('sometext'),)
+        }
+        return render(request,'mundialitisapps/main.html',context)
+    else:
+
+        context = { 'Invitaciones': invitaciones(usern),
+        'grupos': useradmingroup(usern),
+        'users' : usern,
+        'con' : p,
+        #'misgrupos': misgrupos(usern)
+        }
+        return render(request,'mundialitisapps/main.html',context)
