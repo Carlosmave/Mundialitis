@@ -41,3 +41,27 @@ class lobbies(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
+
+
+class teams(models.Model):
+    pais = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.pais
+
+    class Meta:
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
+
+
+class players(models.Model):
+    nombre = models.CharField(max_length=200)
+    pais = models.ForeignKey('teams', on_delete=models.CASCADE)
+    puntaje = models.IntegerField()
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = "Player"
+        verbose_name_plural = "Players"
