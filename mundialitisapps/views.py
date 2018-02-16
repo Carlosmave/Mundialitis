@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import users, questions, answers, lobbies
-from .forms import RegisterForm, LoginForm, LobbyForm
+from django.views.generic.base import TemplateView
+from .models import users, questions, answers, lobbies, players
+from .forms import RegisterForm, LoginForm, LobbyForm, TeamForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 #from .models import questions, answers
@@ -236,3 +237,29 @@ def processing(request, option, id, ttlscore):
         'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
+
+
+
+##########
+# Equipo #
+##########
+
+class TeamsView(TemplateView):
+    template_name = 'mundialitisapps/teams.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TeamsView, self).get_context_data(*args, **kwargs)
+        context['form'] = TeamForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        form = TeamForm(request.POST)
+        resultado = 0
+        if form.is_valid():
+            ids = [v for k, v in form.cleaned_data.items() if k not in ['jugadores', 'selecciones', 'posiciones']]
+            jugadores = players.objects.filter(id__in=ids)
+            for jugador in jugadores:
+                resultado += jugador.puntaje
+        context['resultado'] = resultado
+        return self.render_to_response(context=context)
