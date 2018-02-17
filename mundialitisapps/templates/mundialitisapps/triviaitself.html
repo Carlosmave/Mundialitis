@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <!-- PAGE settings -->
+  <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
+  <title>Trivia - Lobbies</title>
+  <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+  <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
+
+  <!-- CSS dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
+  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
+  <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
+  <!--<script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>-->
+  <!-- Script: Animated entrance -->
+  <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
+</head>
+
+<body style="overflow-x: hidden;">
+
+
+
+
+
+
+  <!-- Cover -->
+  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
+    <div class="container">
+
+
+
+      <div class="row">
+
+        <!--<div class="col-lg-7 align-self-center text-lg-left text-center">
+          <h1 class="mb-0 mt-5 display-4"><b>TRIVIA</b></h1>
+          <p class="mb-5">Jugar la trivia</p>
+        </div>-->
+
+        <div class="col-lg-5 p-3">
+            <h4 class="mb-4 text-center">Escoja lobby</h4>
+
+            {% if messages %}
+            <ul style="color:red; font-weight:bold;" class="messages">
+            {% for message in messages %}
+            <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+              {% endfor %}
+              </ul>
+                {% endif %}
+
+
+
+            <div class="card" style="width: auto;">
+              <div class="card-header">Lobbies</div>
+              <ul class="list-group list-group-flush">
+                {% for tlobby in tlobbies %}
+                  {% if tlobby.status|stringformat:"s" == "Privado" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                  {% elif tlobby.status|stringformat:"s" == "Público" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+            <button class="btn mt-4 btn-block p-2 btn-danger" onclick="document.getElementById('id01').style.display='block'">CREAR LOBBY</button>
+        </div>
+
+      </div>
+
+
+
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="text-md-left text-center p-4 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="my-3 col-lg-4 col-md-4">
+          <h3>MUNDIALITIS</h3>
+          <p class="text-light">Proyecto de Ingeniería de Software II</p>
+          <p class="my-3">Ciclo 2018-0</p>
+        </div>
+        <div class="my-3 col-lg-4 col-md-4"></div>
+        <div class="my-3 col-lg-4">
+          <h3>REPOSITORIO</h3>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img src="{% static 'mundialitisapps/assets/index/GitHub-Mark-Light-120px-plus.png' %}"> </a>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img style="height:50px;width:150px" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted text-center">© Copyright 2018 Mundialitis - All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- JavaScript dependencies -->
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- Script: Smooth scrolling between anchors in the same page -->
+  <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
+  <!--<script>alert('{{ message }}');</script>-->
+  <script>var modal = document.getElementById('id01');var modal2 = document.getElementById('id02'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}else if (event.target == modal2){modal2.style.display = "none";}}</script>
+</body>
+
+</html>

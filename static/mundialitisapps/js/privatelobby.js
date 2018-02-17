@@ -27,3 +27,7 @@ function joinlobby(){
 function goback(){
   location.href="/trivialobbies/";
 }
+
+function begingame(){
+  location.href="/begin/"
+}

@@ -204,3 +204,41 @@ def processing(request, option, id, ttlscore):
         'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def begin(request):
+    return render(request, 'mundialitisapps/trivia.html')
