@@ -139,13 +139,21 @@ def lobbytriviaindex(request):
                     #return render(request, 'mundialitisapps/lobbytriviaindex.html')
                     return HttpResponseRedirect('/trivialobbies/')
             else:
-                messages.info(request, 'Ya hay un lobby con ese nombre') #para lo de mensajes use render, pero si uso render aca no se mostraran los lobbys existentes, ver si se puede hacer mensaje con returnredirect
-                return render(request, 'mundialitisapps/lobbytriviaindex.html')
+                #messages.info(request, 'Ya hay un lobby con ese nombre') #para lo de mensajes use render, pero si uso render aca no se mostraran los lobbys existentes, ver si se puede hacer mensaje con returnredirect
+                #return render(request, 'mundialitisapps/lobbytriviaindex.html')
+                #return HttpResponseRedirect(request, '/trivialobbies/')
+                #request.session['lobbymessage'] = 'Ya hay un lobby con ese nombre'
+                #return HttpResponseRedirect('/trivialobbies/')
+                messages.info(request, 'Ya hay un lobby con ese nombre')
+                tlobbies=Lobby.objects.all().filter(game='Trivia')
+                context = {
+                    'tlobbies':tlobbies
+                }
+                return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
     else:
         form3=LobbyForm()
         tlobbies=Lobby.objects.all().filter(game='Trivia')
         context = {
-            'title':'Trivia Lobbies',
             'tlobbies':tlobbies
         }
         return render(request, 'mundialitisapps/lobbytriviaindex.html', context)

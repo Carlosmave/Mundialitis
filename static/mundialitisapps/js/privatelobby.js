@@ -7,7 +7,7 @@ if(pepa===lobbypass){
     modal.style.display = "none";
 }*/
 
-if (document.getElementById('lobbypassword').value === document.getElementById('createlobby').value){
+if (document.getElementById('lobbypassword').value === document.getElementById('accesslobby').value){
   modal = document.getElementById('id01');
   modal.style.display = "none"
 }else{
@@ -22,4 +22,8 @@ function deletelobby(){
 
 function joinlobby(){
   location.href = "/joinlobby/" + document.getElementById('joinlobby').value;
+}
+
+function goback(){
+  location.href="/trivialobbies/";
 }

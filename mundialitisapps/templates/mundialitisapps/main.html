@@ -6,10 +6,13 @@
 -->
 <html>
 	<head>
-		<title>Multiverse by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% load staticfiles %}
+		<link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
+		<title>Main - Bienvenido {{request.session.username}}</title>
+		<meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+		<meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="{% static 'mundialitisapps/css/main.css' %}" type="text/css">
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
@@ -23,7 +26,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<style>
 		html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
-		</style>
+	</style>
 	</head>
 
 	<body style="padding-top: 35px;">
@@ -100,15 +103,15 @@
 			        <div class="my-3 col-lg-4 col-md-4"></div>
 			        <div class="my-3 col-lg-4">
 			          <h3>Repositorio</h3>
-			          <a href="https://www.facebook.com" target="blank">
+			          <a href="https://github.com/Carlosmave/Mundialitis" style="color:transparent;text-decoration:none;" target="blank">
 			            <img src="{% static 'mundialitisapps/assets/index/GitHub-Mark-Light-120px-plus.png' %}"> </a>
-			          <a href="https://www.instagram.com" target="blank">
-			            <img style="height:50px;width:150px" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
+			          <a href="https://github.com/Carlosmave/Mundialitis" style="color:transparent;;text-decoration:none;" target="blank">
+			            <img style="height:50px;width:150px;" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
 			        </div>
 			      </div>
 			      <div class="row">
 			        <div class="col-md-12">
-			          <p class="text-muted text-center">© Copyright 2018 Pingendo - All rights reserved. </p>
+			          <p class="text-muted text-center">© Copyright 2018 Mundialitis - All rights reserved.</p>
 			        </div>
 			      </div>
 			    </div>
