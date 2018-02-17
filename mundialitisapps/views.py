@@ -2,12 +2,9 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import User, Question, Answer, Lobby
 from .forms import RegisterForm, LoginForm, LobbyForm
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-#from .models import questions, answers
 # Create your views here.
-#def index(request):
-#    return render(request, 'mundialitisapps/index.html')
 
 
 def index(request):
@@ -59,7 +56,6 @@ def index(request):
                     messages.info(request, 'Los datos no coinciden')
                     return render(request, 'mundialitisapps/index.html')
 
-                #lllllllllllllllllllllllllllllll
 
     else:
         form=RegisterForm()
@@ -91,31 +87,8 @@ def main(request):
         #RECORDAR QUE LAS FUNCIONES SE EJECUTAN DE ACUERDO/DEPENDIENDO AL URL EN EL QUE TE ENCUENTRES
 
 
-
 def trivia(request):
     return render(request, 'mundialitisapps/indextrivia.html')
-
-
-
-
-def index2(request):
-    return render(request, 'mundialitisapps/app.html')
-
-def index3(request):
-    return render(request, 'mundialitisapps/conference.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def lobbytriviaindex(request):
@@ -163,42 +136,12 @@ def lobbytriviaindex(request):
 
 
 
-#mi logica devolverla
-#    tlobbies=lobbies.objects.all().filter(game='Trivia')
-#    context = {
-#        'title':'Trivia Lobbies',
-#        'tlobbies':tlobbies
-#    }
-#    return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def lobbytriviadetails(request, id):
     tlobby = Lobby.objects.get(id=id)
     context = {
     'tlobby':tlobby,
     }
-    #return render(request, 'mundialitisapps/lobbytriviadetails.html', context)
     return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
-
 
 
 def deletelobby(request, id):
@@ -215,13 +158,6 @@ def joinlobby(request, id, player):
         obj.players = newplayers
         obj.save()
         return HttpResponseRedirect('/trivialobbiesdetails/public/'+id)
-
-
-
-
-
-
-
 
 
 def details(request, id, ttlscore):
