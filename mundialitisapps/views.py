@@ -87,11 +87,13 @@ def main(request):
         #RECORDAR QUE LAS FUNCIONES SE EJECUTAN DE ACUERDO/DEPENDIENDO AL URL EN EL QUE TE ENCUENTRES
 
 
-def trivia(request):
-    return render(request, 'mundialitisapps/indextrivia.html')
+#def trivia(request):
+#    return render(request, 'mundialitisapps/indextrivia.html')
 
 
 def lobbytriviaindex(request):
+
+
     if (request.method == 'POST' and 'createlobby' in request.POST):
         form3=LobbyForm(request.POST)
         form3.fields['lobbypassword'].required = False
@@ -152,29 +154,29 @@ def joinlobby(request, id, player):
     obj=Lobby.objects.get(id=id)
     actualplayers=obj.players
     if player in actualplayers:
-        return HttpResponseRedirect('/trivialobbiesdetails/public/'+id)
+        return HttpResponseRedirect('/trivialobbiesdetails/'+id)
     else:
         newplayers=actualplayers + ',' + player
         obj.players = newplayers
         obj.save()
-        return HttpResponseRedirect('/trivialobbiesdetails/public/'+id)
+        return HttpResponseRedirect('/trivialobbiesdetails/'+id)
 
 
-def details(request, id, ttlscore):
-    if int(id)<31:
-        triv = Question.objects.get(id=id)
-        newid=int(id)+1
-        context={
-        'triv':triv,
-        'id': newid,
-        'ttlscore':ttlscore
-        }
-        return render(request, 'mundialitisapps/details.html', context)
-    else:
-        context={
-        'ttlscore':ttlscore
-        }
-        return render(request, 'mundialitisapps/scorescreen.html', context)
+#def details(request, id, ttlscore):
+#    if int(id)<31:
+#        triv = Question.objects.get(id=id)
+#        newid=int(id)+1
+#        context={
+#        'triv':triv,
+#        'id': newid,
+#        'ttlscore':ttlscore
+#        }
+#        return render(request, 'mundialitisapps/details.html', context)
+#    else:
+#        context={
+#        'ttlscore':ttlscore
+#        }
+#        return render(request, 'mundialitisapps/scorescreen.html', context)
 
 
 def processing(request, option, id, ttlscore):
@@ -207,12 +209,193 @@ def processing(request, option, id, ttlscore):
 
 
 
+#def trivia(request, id, ttlscore):
+#
+#
+#    if int(id)<31:
+#        triv = Question.objects.get(id=id)
+#        newid=int(id)+1
+#        context={
+#        'triv':triv,
+#        'id': newid,
+#        'ttlscore':ttlscore
+#        }
+#        return render(request, 'mundialitisapps/triviaitself.html', context)
+#    else:
+#        context={
+#        'ttlscore':ttlscore
+#        }
+#        return render(request, 'mundialitisapps/scorescreen.html', context)
+
+
+
+def triviastart(request):
+    request.session['question'] = None
+    request.session['ttlscore'] = None
+    request.session['processed'] = 'false'
+    return HttpResponseRedirect('/trivia/')
+
+
+def trivia(request):
+    actualid=request.session.get('question')
+    actualttlscore=request.session.get('ttlscore')
+    if actualid == None and actualttlscore == None:
+        id=1
+        ttlscore=0
+        request.session['question'] = id
+        request.session['ttlscore'] = ttlscore
+        triv = Question.objects.get(id=id)
+        context={
+        'triv':triv,
+        }
+        return render(request, 'mundialitisapps/triviaitself.html', context) #aqui podria poner returnredirect a la misma funcion y el else haria el trabajo
+
+
+    else:
+        triv = Question.objects.get(id=actualid)
+        context={
+        'triv':triv,
+        }
+        return render(request, 'mundialitisapps/triviaitself.html', context)
+
+
+            #elif actualid < 30:
+            #        if request.session.get('norld') == 'activated':
+            #            request.session['norld'] = "dectivated"
+            #            request.session['processed'] = 'false'
+
+        #        newid=int(actualid)+1
+        #        newttlscore=int(actualttlscore)+10
+        #        request.session['question'] = newid
+        #        request.session['ttlscore'] = newttlscore
+        #        triv = Question.objects.get(id=newid)
+        #        #answ = Answer.objects.get(id=newid)
+        #        context={
+        #        'triv':triv,
+        #        'ttlscore':newttlscore,
+        #        #'answ':answ
+        #        }
+        #        return render(request, 'mundialitisapps/triviaitself.html', context)
 
 
 
 
 
 
+def triviaprocessing(request, option):
+        #request.session['norld'] = "activated"
+        request.session['processed'] = 'true'
+        playeranswer=option
+        objanswer = Answer.objects.get(id=request.session.get('question'))
+        preanswer = objanswer.answer.replace(" ", "")
+        correctanswer = preanswer.replace(",", "")
+        questionscore = objanswer.score
+
+
+        if correctanswer == playeranswer:
+            request.session['triviamessage'] = 'Respuesta Correcta'
+            request.session['questionscore'] = questionscore
+            request.session['ttlscore'] = int(request.session.get('ttlscore'))+int(questionscore)
+
+        else:
+            request.session['triviamessage'] = 'Respuesta Incorrecta'
+            request.session['questionscore'] = 0
+
+
+        request.session['playeranswer'] = option
+        return HttpResponseRedirect('/trivia/')
+
+
+
+def trivianextquestion(request):
+    #request.session['norld'] = "dectivated"
+    actualid=request.session.get('question')
+    if actualid < 30:
+        request.session['processed'] = 'false'
+        newid=int(actualid)+1
+        request.session['question'] = newid
+        return HttpResponseRedirect('/trivia/')
+    else:
+        context={
+        'actualttlscore':actualttlscore
+        }
+        return render(request, 'mundialitisapps/scorescreen.html', context)
+
+
+
+
+#        newid=int(actualid)+1
+#        newttlscore=int(actualttlscore)+10
+#        request.session['question'] = newid
+#        request.session['ttlscore'] = newttlscore
+#        triv = Question.objects.get(id=newid)
+#        #answ = Answer.objects.get(id=newid)
+#        context={
+#        'triv':triv,
+#        'ttlscore':newttlscore
+#        }
+#        return render(request, 'mundialitisapps/triviaitself.html', context)
+
+
+
+#def triviaprocessing(request):
+#        newid=int(actualid)+1
+#        newttlscore=int(actualttlscore)+10
+#        request.session['question'] = newid
+#        request.session['ttlscore'] = newttlscore
+#        triv = Question.objects.get(id=newid)
+#        #answ = Answer.objects.get(id=newid)
+#        context={
+#        'triv':triv,
+#        'ttlscore':newttlscore
+#        }
+#        return render(request, 'mundialitisapps/triviaitself.html', context)
+
+
+#def trivia(request):
+#    actualid=request.session.get('question')
+#    actualttlscore=request.session.get('ttlscore')
+#    if actualid == None and actualttlscore == None:
+#        id=1
+#        ttlscore=0
+#        request.session['question'] = id
+#        request.session['ttlscore'] = ttlscore
+#        triv = Question.objects.get(id=id)
+#        #answ = Answer.objects.get(id=id)
+#        context={
+#        'triv':triv,
+#        'ttlscore':ttlscore,
+#        #'answ':answ
+#        }
+#        return render(request, 'mundialitisapps/triviaitself.html', context)
+#    else:
+#        newid=int(actualid)+1
+#        newttlscore=int(actualttlscore)+10
+#        request.session['question'] = newid
+#        request.session['ttlscore'] = newttlscore
+#        triv = Question.objects.get(id=newid)
+#        #answ = Answer.objects.get(id=newid)
+#        context={
+#        'triv':triv,
+#        'ttlscore':newttlscore,
+#        #'answ':answ
+#        }
+#        return render(request, 'mundialitisapps/triviaitself.html', context)
+
+    #if int(id)<31:
+    #    triv = Question.objects.get(id=id)
+    #    newid=int(id)+1
+    #    context={
+    #    'triv':triv,
+    #    'id': newid,
+    #    'ttlscore':ttlscore
+    #    }
+    #    return render(request, 'mundialitisapps/triviaitself.html', context)
+    #else:
+    #    context={
+    #    'ttlscore':ttlscore
+    #    }
+    #    return render(request, 'mundialitisapps/scorescreen.html', context)
 
 
 
@@ -241,4 +424,4 @@ def processing(request, option, id, ttlscore):
 
 
 def begin(request):
-    return render(request, 'mundialitisapps/trivia.html')
+    return render(request, 'mundialitisapps/triviaitself.html')

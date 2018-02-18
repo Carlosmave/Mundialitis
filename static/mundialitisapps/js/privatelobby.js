@@ -28,6 +28,10 @@ function goback(){
   location.href="/trivialobbies/";
 }
 
+/*function begingame(){
+  location.href="/trivia/1-0/"
+}*/
+
 function begingame(){
-  location.href="/begin/"
+  location.href="/triviastart/"
 }
