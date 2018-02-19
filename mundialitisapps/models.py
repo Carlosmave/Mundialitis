@@ -53,6 +53,7 @@ class Team(models.Model):
         return self.pais
 
     class Meta:
+        db_table = 'mundialitisapps_teams'
         verbose_name = "Team"
         verbose_name_plural = "Teams"
 
@@ -66,5 +67,6 @@ class Player(models.Model):
         return self.nombre
 
     class Meta:
+        db_table = 'mundialitisapps_players'
         verbose_name = "Player"
         verbose_name_plural = "Players"
