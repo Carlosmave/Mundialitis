@@ -33,9 +33,10 @@ class Lobby(models.Model):
     name = models.CharField(max_length=200)
     players = models.TextField()
     lobpass = models.CharField(max_length=200)
-    status = models.CharField(max_length=200)
+    ltype = models.CharField(max_length=200)
     game = models.CharField(max_length=200)
     administrator = models.CharField(max_length=200)
+    gamemode = models.CharField(max_length=200)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     def players_as_list(self):
         return self.players.split(',')

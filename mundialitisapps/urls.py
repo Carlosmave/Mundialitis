@@ -12,6 +12,7 @@ urlpatterns = [
 
     #url(r'^trivia/(?P<id>\d+)-(?P<ttlscore>\d+)/$', views.trivia, name='trivia'),
     url(r'^triviastart/', views.triviastart, name='triviastart'),
+    #url(r'^triviagamemode/', views.triviagamemode, name='triviagamemode'),
     url(r'^trivia/', views.trivia, name='trivia'),
     #url(r'^triviaprocessing/(?P<option>[-\w]+)-(?P<id>\d+)-(?P<ttlscore>\d+)/$', views.triviaprocessing, name='triviaprocessing'),
     url(r'^triviaprocessing/(?P<option>[-\w]+)/$', views.triviaprocessing, name='triviaprocessing'),

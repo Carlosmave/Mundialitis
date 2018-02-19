@@ -32,6 +32,10 @@ function goback(){
   location.href="/trivia/1-0/"
 }*/
 
+/*function choosegamemode(){
+  location.href="/triviagamemode/"
+}*/
+
 function begingame(){
   location.href="/triviastart/"
 }

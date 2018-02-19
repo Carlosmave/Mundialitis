@@ -24,7 +24,7 @@
 
 <body style="overflow-x: hidden;">
 
-{% if tlobby.status|stringformat:"s" == "Privado" %}
+{% if tlobby.ltype|stringformat:"s" == "Privado" %}
 
 
 
@@ -102,7 +102,7 @@
 
 
 
-{% elif tlobby.status|stringformat:"s" == "Público" %}
+{% elif tlobby.ltype|stringformat:"s" == "Público" %}
 
 <!-- Cover -->
 <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">

@@ -103,13 +103,13 @@ def lobbytriviaindex(request):
             exts2=Lobby.objects.filter(name=lobbyname).exists()
             if exts2 == False:
                 if lobbypassword == '':
-                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), status="Público", game="Trivia", administrator=request.session.get('username'))
+                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), ltype="Público", game="Trivia", administrator=request.session.get('username'))
                     lobby_obj.save()
                     #return render(request, 'mundialitisapps/lobbytriviaindex.html')
                     return HttpResponseRedirect('/trivialobbies/')
                     #Esto verlo despues a donde redirigira por ahora a la pagina principal de trivia
                 else:
-                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), lobpass=lobbypassword, status="Privado", game="Trivia", administrator=request.session.get('username'))
+                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), lobpass=lobbypassword, ltype="Privado", game="Trivia", administrator=request.session.get('username'))
                     lobby_obj.save()
                     #return render(request, 'mundialitisapps/lobbytriviaindex.html')
                     return HttpResponseRedirect('/trivialobbies/')
@@ -227,6 +227,7 @@ def processing(request, option, id, ttlscore):
 #        }
 #        return render(request, 'mundialitisapps/scorescreen.html', context)
 
+#def triviagamemode(request):
 
 
 def triviastart(request):
