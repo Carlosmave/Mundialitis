@@ -28,14 +28,9 @@
   <!-- Cover -->
   <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
     <div class="container">
-      {% block content %}{% endblock %}
+      {% block content %}{% endblock content %}
     </div>
   </div>
-
-
-
-
-
 
   <!-- Footer -->
   <footer class="text-md-left text-center p-4 bg-dark text-light">
@@ -70,6 +65,8 @@
   <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
   <!--<script>alert('{{ message }}');</script>-->
   <script>var modal = document.getElementById('id01');var modal2 = document.getElementById('id02'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}else if (event.target == modal2){modal2.style.display = "none";}}</script>
+  {% block script %}
+  {% endblock script %}
 </body>
 
 </html>
