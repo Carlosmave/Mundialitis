@@ -240,15 +240,17 @@ def trivia(request):
     actualid=request.session.get('question')
     actualttlscore=request.session.get('ttlscore')
     if actualid == None and actualttlscore == None:
-        id=1
-        ttlscore=0
-        request.session['question'] = id
-        request.session['ttlscore'] = ttlscore
-        triv = Question.objects.get(id=id)
-        context={
-        'triv':triv,
-        }
-        return render(request, 'mundialitisapps/triviaitself.html', context) #aqui podria poner returnredirect a la misma funcion y el else haria el trabajo
+        #id=1
+        #ttlscore=0
+        request.session['question'] = 1
+        request.session['ttlscore'] = 0
+        return HttpResponseRedirect('/trivia/')
+        #triv = Question.objects.get(id=id)
+        #context={
+        #'triv':triv,
+        #}
+        #return render(request, 'mundialitisapps/triviaitself.html', context)
+        #aqui podria poner returnredirect a la misma funcion y el else haria el trabajo
 
 
     else:
@@ -316,10 +318,12 @@ def trivianextquestion(request):
         request.session['question'] = newid
         return HttpResponseRedirect('/trivia/')
     else:
-        context={
-        'actualttlscore':actualttlscore
-        }
-        return render(request, 'mundialitisapps/scorescreen.html', context)
+        request.session['processed'] = 'finished'
+        return HttpResponseRedirect('/trivia/')
+        #context={
+        #'actualttlscore':request.session.get('ttlscore')
+        #}
+        #return render(request, 'mundialitisapps/scorescreen.html', context)
 
 
 
