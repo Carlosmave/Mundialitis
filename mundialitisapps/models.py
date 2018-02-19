@@ -66,6 +66,9 @@ class Player(models.Model):
     def __str__(self):
         return self.nombre
 
+    def puntaje_as_text(self):
+        return '{:,}'.format(self.puntaje)
+
     class Meta:
         db_table = 'mundialitisapps_players'
         verbose_name = "Player"
