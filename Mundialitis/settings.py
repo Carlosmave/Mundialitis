@@ -27,9 +27,9 @@ SECRET_KEY = '*9sy7cb@@y00h!+)2lkdnvd5fo32bozz18@ddde5ne$nupi@nn'
 DEBUG = True
 
 #Local
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 #Heroku
-#ALLOWED_HOSTS = ['mundialitis.herokuapp.com']
+ALLOWED_HOSTS = ['mundialitis.herokuapp.com']
 
 
 # Application definition
@@ -84,20 +84,20 @@ WSGI_APPLICATION = 'Mundialitis.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 #Local
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mundialitis',
-        'USER': 'postgres',
-        'PASSWORD': '123456789',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-#Heroku
 #DATABASES = {
-#    'default': dj_database_url.config()
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'mundialitis',
+#        'USER': 'postgres',
+#        'PASSWORD': '123456789',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
 #}
+#Heroku
+DATABASES = {
+    'default': dj_database_url.config()
+}
 
 
 # Password validation
