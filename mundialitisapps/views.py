@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from .models import User, Question, Answer, Lobby, players
+from .models import User, Question, Answer, Lobby, Player
 from .forms import RegisterForm, LoginForm, LobbyForm, TeamForm
 #from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -227,7 +227,7 @@ class TeamsView(TemplateView):
         resultado = 0
         if form.is_valid():
             ids = [v for k, v in form.cleaned_data.items() if k not in ['jugadores', 'selecciones', 'posiciones']]
-            jugadores = players.objects.filter(id__in=ids)
+            jugadores = Player.objects.filter(id__in=ids)
             for jugador in jugadores:
                 resultado += jugador.puntaje
         context['resultado'] = resultado

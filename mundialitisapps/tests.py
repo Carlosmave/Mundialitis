@@ -2,7 +2,7 @@ from unittest.mock import Mock
 from django.test import Client, TestCase
 
 from .forms import TeamForm
-from .models import teams, players
+from .models import Team, Player
 
 
 class TeamsTestCase(TestCase):
@@ -23,17 +23,17 @@ class TeamsTestCase(TestCase):
         }
 
     def test_teams_exists(self):
-        team1 = teams.objects.filter(pais='Perú')
+        team1 = Team.objects.filter(pais='Perú')
         self.assertTrue(team1.exists())
 
-        team2 = teams.objects.filter(pais='Alemania')
+        team2 = Team.objects.filter(pais='Alemania')
         self.assertTrue(team2.exists())
 
     def test_players_exists(self):
-        player1 = players.objects.filter(nombre='Jefferson FARFAN')
+        player1 = Player.objects.filter(nombre='Jefferson FARFAN')
         self.assertTrue(player1.exists())
 
-        player2 = players.objects.filter(nombre='Luis SUAREZ')
+        player2 = Player.objects.filter(nombre='Luis SUAREZ')
         self.assertTrue(player2.exists())
 
     def test_team_form_data(self):
@@ -41,7 +41,7 @@ class TeamsTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_team_points(self):
-        team_players = players.objects.filter(id__in=self.team_data.values())
+        team_players = Player.objects.filter(id__in=self.team_data.values())
         score = sum([p.puntaje for p in team_players])
         response = self.client.post('/teams/', self.team_data)
         self.assertEqual(response.context.get('resultado'), score)

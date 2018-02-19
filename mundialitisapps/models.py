@@ -46,7 +46,7 @@ class Lobby(models.Model):
         verbose_name_plural = "Trivia Lobbies"
 
 
-class teams(models.Model):
+class Team(models.Model):
     pais = models.CharField(max_length=50)
 
     def __str__(self):
@@ -57,9 +57,9 @@ class teams(models.Model):
         verbose_name_plural = "Teams"
 
 
-class players(models.Model):
+class Player(models.Model):
     nombre = models.CharField(max_length=200)
-    pais = models.ForeignKey('teams', on_delete=models.CASCADE)
+    pais = models.ForeignKey('Team', on_delete=models.CASCADE)
     puntaje = models.IntegerField()
 
     def __str__(self):

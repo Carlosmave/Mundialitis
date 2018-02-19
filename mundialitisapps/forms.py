@@ -1,5 +1,5 @@
 from django import forms
-from .models import teams, players
+from .models import Team, Player
 
 
 #class CostForm(forms.ModelForm):
@@ -49,8 +49,8 @@ class TeamForm(forms.Form):
     delantero1 = forms.IntegerField(widget=forms.HiddenInput(attrs={'class': 'jugador'}))
     delantero2 = forms.IntegerField(widget=forms.HiddenInput(attrs={'class': 'jugador'}))
     delantero3 = forms.IntegerField(widget=forms.HiddenInput(attrs={'class': 'jugador'}))
-    selecciones = forms.ModelChoiceField(queryset=teams.objects.all().order_by('pais'), required=False)
-    jugadores = forms.ModelChoiceField(queryset=players.objects.all().order_by('nombre'), required=False)
+    selecciones = forms.ModelChoiceField(queryset=Team.objects.all().order_by('pais'), required=False)
+    jugadores = forms.ModelChoiceField(queryset=Player.objects.all().order_by('nombre'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(TeamForm, self).__init__(*args, **kwargs)
