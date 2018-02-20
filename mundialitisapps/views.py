@@ -84,16 +84,17 @@ def lobbytriviaindex(request):
         if form3.is_valid():  #si esto no se cumple se ira defrente a lo de fuera del if else, sin pasar por el else, ya que llego a entrar al if, pero dentro ya no continuo porque no habia un else mas. Esto estaria mal
             lobbyname=request.POST.get('lobbyname', '')
             lobbypassword=request.POST.get('lobbypassword', '')
+            lobbymoney=request.POST.get('lobbymoney', '')
             exts2=Lobby.objects.filter(name=lobbyname).exists()
             if exts2 == False:
                 if lobbypassword == '':
-                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), ltype="Público", game="Trivia", administrator=request.session.get('username'))
+                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), ltype="Público", game="Trivia", administrator=request.session.get('username'), moneybet=lobbymoney)
                     lobby_obj.save()
                     #return render(request, 'mundialitisapps/lobbytriviaindex.html')
                     return HttpResponseRedirect('/trivialobbies/')
                     #Esto verlo despues a donde redirigira por ahora a la pagina principal de trivia
                 else:
-                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), lobpass=lobbypassword, ltype="Privado", game="Trivia", administrator=request.session.get('username'))
+                    lobby_obj = Lobby(name=lobbyname, players=request.session.get('username'), lobpass=lobbypassword, ltype="Privado", game="Trivia", administrator=request.session.get('username'), moneybet=lobbymoney)
                     lobby_obj.save()
                     #return render(request, 'mundialitisapps/lobbytriviaindex.html')
                     return HttpResponseRedirect('/trivialobbies/')
@@ -137,34 +138,6 @@ def joinlobby(request, id, player):
         obj.players = newplayers
         obj.save()
         return HttpResponseRedirect('/trivialobbiesdetails/'+id)
-
-def processing(request, option, id, ttlscore):
-    newid=int(id)+1
-    triv = Question.objects.get(id=id)
-    playeranswer=option
-    objanswer = Answer.objects.get(id=id)
-    preanswer = objanswer.answer.replace(" ", "")
-    correctanswer = preanswer.replace(",", "")
-    questionscore = objanswer.score
-
-    if correctanswer == playeranswer:
-        context = {
-            'triv': triv,
-            'message':'Respuesta Correcta',
-            'qscore':questionscore,
-            'ttlscore': int(ttlscore)+int(questionscore),
-            'id':newid
-        }
-        return render(request, 'mundialitisapps/outcome.html', context)
-    else:
-        context2 = {
-            'triv': triv,
-            'message':'Respuesta Incorrecta',
-            'qscore':0,
-            'ttlscore': ttlscore,
-            'id':newid
-        }
-        return render(request, 'mundialitisapps/outcome.html', context2)
 
 def polla(request, id_p):
     # un solo partido
@@ -221,17 +194,44 @@ def polla_resultado(request):
     }
     return render(request, 'mundialitisapps/polla_resultado.html', context)
 
-def triviastart(request):
+def triviasetup(request, id, mode):
     request.session['question'] = None
     request.session['ttlscore'] = None
     request.session['processed'] = 'false'
+    request.session['idtlobbybegin'] = id
+    if mode == "1":
+        return HttpResponseRedirect('/triviamode/')
+    elif mode =="2":
+        return HttpResponseRedirect('/trivia/')
+
+
+def triviamode(request):
+    return render(request, 'mundialitisapps/trivia.html')
+
+def triviabegin(request, option):
+    objlob = Lobby.objects.get(id=request.session.get('idtlobbybegin'))
+    objlob.lstatus = "Iniciado"
+    objlob.gamemode = option
+    objlob.save()
     return HttpResponseRedirect('/trivia/')
+    #return HttpResponseRedirect('/triviastart/')
+
+#def triviastart(request):
+#    request.session['question'] = None
+#    request.session['ttlscore'] = None
+#    request.session['processed'] = 'false'
+#    return HttpResponseRedirect('/trivia/')
+
 
 
 def trivia(request):
     actualid=request.session.get('question')
     actualttlscore=request.session.get('ttlscore')
-    if actualid == None and actualttlscore == None:
+    if actualid == None and actualttlscore == None: #borrarelttlscore  #podria omitir el if si arriba en vez de inicializarlo en none lo inicializo en 1 y 0
+        #id=1
+        #ttlscore=0
+        objlob = Lobby.objects.get(id=request.session.get('idtlobbybegin'))
+        request.session['gamemode'] = objlob.gamemode
         request.session['question'] = 1
         request.session['ttlscore'] = 0
         return HttpResponseRedirect('/trivia/')
@@ -270,14 +270,68 @@ def triviaprocessing(request, option):
 def trivianextquestion(request):
     #request.session['norld'] = "dectivated"
     actualid=request.session.get('question')
-    if actualid < 30:
-        request.session['processed'] = 'false'
-        newid=int(actualid)+1
-        request.session['question'] = newid
-        return HttpResponseRedirect('/trivia/')
-    else:
-        request.session['processed'] = 'finished'
-        return HttpResponseRedirect('/trivia/')
+
+    mode=request.session.get('gamemode')
+
+    if mode == "Fácil":
+        if actualid < 10:
+            request.session['processed'] = 'false'
+            newid=int(actualid)+1
+            request.session['question'] = newid
+            return HttpResponseRedirect('/trivia/')
+        else:
+            request.session['processed'] = 'finished'
+            lobbyid=request.session.get('idtlobbybegin')
+            objlobby=Lobby.objects.get(id=lobbyid)
+            actualplayerscores=objlobby.playerscores
+            objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
+            objlobby.save()
+
+            return HttpResponseRedirect('/lobbytriviaoutcome/')
+    elif mode == "Intermedio":
+        if actualid < 20:
+            request.session['processed'] = 'false'
+            newid=int(actualid)+1
+            request.session['question'] = newid
+            return HttpResponseRedirect('/trivia/')
+        else:
+            request.session['processed'] = 'finished'
+            lobbyid=request.session.get('idtlobbybegin')
+            objlobby=Lobby.objects.get(id=lobbyid)
+            actualplayerscores=objlobby.playerscores
+            objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
+            objlobby.save()
+
+            return HttpResponseRedirect('/lobbytriviaoutcome/')
+    elif mode == "Difícil":
+        if actualid < 30:
+            request.session['processed'] = 'false'
+            newid=int(actualid)+1
+            request.session['question'] = newid
+            return HttpResponseRedirect('/trivia/')
+        else:
+            request.session['processed'] = 'finished'
+            lobbyid=request.session.get('idtlobbybegin')
+            objlobby=Lobby.objects.get(id=lobbyid)
+            actualplayerscores=objlobby.playerscores
+            objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
+            objlobby.save()
+
+            return HttpResponseRedirect('/lobbytriviaoutcome/')
+
+
+
+def lobbytriviaoutcome(request):
+    lobbyid=request.session.get('idtlobbybegin')
+    objlobby=Lobby.objects.get(id=lobbyid)
+    context={
+    'objlobby': objlobby
+    }
+    return render(request, 'mundialitisapps/lobbytriviaoutcome.html', context)
+
+
+
+
         #context={
         #'actualttlscore':request.session.get('ttlscore')
         #}

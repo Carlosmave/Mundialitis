@@ -54,12 +54,21 @@
 
 
             </div>
+
             {% if tlobby.administrator != request.session.username %}
-              <button class="btn mt-4 btn-block p-2 btn-danger" id="joinlobby" value="{{tlobby.id}}/{{request.session.username}}" onclick="joinlobby();">UNIRSE AL LOBBY</button>
-              {% elif tlobby.administrator == request.session.username %}
-                <button class="btn mt-4 btn-block p-2 btn-danger" onclick="begingame()">INICIAR JUEGO</button>
-                <button class="btn mt-4 btn-block p-2 btn-danger" id="deletelobby" value="{{tlobby.id}}" onclick="deletelobby();">ELIMINAR LOBBY</a></button>
+              {% if request.session.username in tlobby.players_as_list %}
+                  {% if tlobby.lstatus|stringformat:"s" == "Iniciado" %}
+                    <button class="btn mt-4 btn-block p-2 btn-danger" id="setup" value="{{tlobby.id}}" onclick="setupgame(2);">CONTINUAR</button>
+                    {% else %}
+                    <button disabled class="btn mt-4 btn-block p-2 btn-danger">CONTINUAR</button>
+                    {% endif %}
+                {% else %}
+                <button class="btn mt-4 btn-block p-2 btn-danger" id="joinlobby" value="{{tlobby.id}}/{{request.session.username}}" onclick="joinlobby();">UNIRSE AL LOBBY</button>
               {% endif %}
+            {% elif tlobby.administrator == request.session.username %}
+              <button class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
+              <button class="btn mt-4 btn-block p-2 btn-danger" id="deletelobby" value="{{tlobby.id}}" onclick="deletelobby();">ELIMINAR LOBBY</a></button>
+            {% endif %}
 
 
 
@@ -129,9 +138,17 @@
 
           </div>
           {% if tlobby.administrator != request.session.username %}
+            {% if request.session.username in tlobby.players_as_list %}
+                {% if tlobby.lstatus|stringformat:"s" == "Iniciado" %}
+                  <button class="btn mt-4 btn-block p-2 btn-danger" id="setup" value="{{tlobby.id}}" onclick="setupgame(2);">CONTINUAR</button>
+                  {% else %}
+                  <button disabled class="btn mt-4 btn-block p-2 btn-danger">CONTINUAR</button>
+                  {% endif %}
+            {% else %}
             <button class="btn mt-4 btn-block p-2 btn-danger" id="joinlobby" value="{{tlobby.id}}/{{request.session.username}}" onclick="joinlobby();">UNIRSE AL LOBBY</button>
+            {% endif %}
             {% elif tlobby.administrator == request.session.username %}
-              <button class="btn mt-4 btn-block p-2 btn-danger" onclick="begingame()">INICIAR JUEGO</button>
+              <button class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
               <button class="btn mt-4 btn-block p-2 btn-danger" id="deletelobby" value="{{tlobby.id}}" onclick="deletelobby();">ELIMINAR LOBBY</a></button>
             {% endif %}
 
