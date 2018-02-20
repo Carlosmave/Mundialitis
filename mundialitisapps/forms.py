@@ -15,10 +15,5 @@ class LobbyForm(forms.Form):
     lobbyname = forms.CharField()
     lobbypassword = forms.CharField()
 
-
-    #class Meta:
-    #    model=Post
-    #    fields = ('post',)
-
 class PollaForm(forms.Form):
     apuesta = forms.CharField()

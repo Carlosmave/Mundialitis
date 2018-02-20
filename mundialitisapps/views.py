@@ -55,9 +55,6 @@ def index(request):
                 else:
                     messages.info(request, 'Los datos no coinciden')
                     return render(request, 'mundialitisapps/index.html')
-
-                #lllllllllllllllllllllllllllllll
-
     else:
         form=RegisterForm()
         form2=LoginForm()
@@ -170,14 +167,18 @@ def processing(request, option, id, ttlscore):
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
 
-def polla(request):
+def polla(request, id_p):
+    # un solo partido
+    partidos = Partido.objects.all()
+    num_partidos = len(partidos)
+    id_p = int(id_p)
+    next_id = id_p+1
+    estado = False
     if request.method == 'POST':
-        partidos = Partido.objects.all()
-        num_partidos = len(partidos)
-        polla = Polla.objects.create()
-        PollaFormset = formset_factory(PollaForm)
-        form = PollaFormset()
-        for partido in partidos:
+        if id_p < num_partidos:
+            partido = Partido.objects.get(id=id_p)
+            polla = Polla.objects.create()
+            form = PollaForm()
             rng = random.random()
             if rng < 0.33:
                 resultado = partido.equipo_a
@@ -186,20 +187,28 @@ def polla(request):
             else:
                 resultado = 'Empate'
             # graba el resultado al partido perteneciente a la polla
-            polla_resultado = PollaPartido.objects.create(id_polla=polla.id,\
-                id_partido=partido.id, ganador=resultado)
-        if form.is_valid():            
+            polla_resultado = PollaPartido.objects.create(id_partido=partido,\
+                ganador=resultado)
+        if form.is_valid():           
+            estado = True
             ap = form.cleaned_data['apuesta']
             # definir apuesta
-            for partido in partidos:
-                apuesta = PollaApuesta.create(id_pollaresultado=polla_resultado.id,\
-                    id_user=request.user.id, apuesta=ap)
+            apuesta = PollaApuesta.create(id_polla_partido=polla_resultado,\
+                id_user=request.user.id, apuesta=ap)
+            
+            context = {
+                'id_p' : next_id,
+                'partido' : partido,
+                'form': form,
+            }
+            return render(request, 'mundialitisapps/polla.html', context)
     else:
-        partidos = Partido.objects.all()
+        partido = Partido.objects.get(id=id_p)
         form = PollaForm()
 
     context = {
-        'partidos' : partidos,
+        'id_p' : next_id,
+        'partido' : partido,
         'form' : form,
     }
 

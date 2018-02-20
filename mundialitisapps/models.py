@@ -38,7 +38,6 @@ class Polla(models.Model):
     estado = models.BooleanField(default=False)
 
 class PollaPartido(models.Model):
-    id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
     id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
     ganador = models.TextField()
     

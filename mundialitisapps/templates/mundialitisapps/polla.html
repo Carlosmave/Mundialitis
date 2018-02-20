@@ -5,33 +5,31 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title center">Polla</span>
-                <form method="POST">
+                <form method='POST'>
                 {% csrf_token %}
                 <table class="striped">
-                    {% for partido in partidos %}
-                        <tr>
-                            <th> Partido: {{ partido.id }}</th>
-                            <th> {{ partido.equipo_a }} </th>
-                            <th> {{ partido.equipo_b }} </th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td> </td>  
-                            <td>
-                                <input class="with-gap" name="apuesta[]" type="radio" id="opt1" value="{{ partido.equipo_a }}"/>
-                                <label for="opt1">{{ partido.equipo_a }}</label>
-                            </td>
-                            <td> 
-                                <input class="with-gap" name="apuesta[]" type="radio" id="opt2" value="{{ partido.equipo_b }}"/>
-                                <label for="opt2">{{ partido.equipo_b }}</label>
-                            </td>
-                            <td> 
-                                <input class="with-gap" name="apuesta[]" type="radio" id="opt3" value="Empate"/>
-                                <label for="opt3">Empate</label>    
-                            </td>
-                            
-                        </tr>
-                    {% endfor %}
+                    <tr>
+                        <th> Partido: {{ partido.id }}</th>
+                        <th> {{ partido.equipo_a }} </th>
+                        <th> {{ partido.equipo_b }} </th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td> </td>  
+                        <td>
+                            <input class="with-gap" name="apuesta[]" type="radio" id="opt1" value="{{ partido.equipo_a }}"/>
+                            <label for="opt1">{{ partido.equipo_a }}</label>
+                        </td>
+                        <td> 
+                            <input class="with-gap" name="apuesta[]" type="radio" id="opt2" value="{{ partido.equipo_b }}"/>
+                            <label for="opt2">{{ partido.equipo_b }}</label>
+                        </td>
+                        <td> 
+                            <input class="with-gap" name="apuesta[]" type="radio" id="opt3" value="Empate"/>
+                            <label for="opt3">Empate</label>    
+                        </td>
+                        
+                    </tr>
                 </table>
                 <div class="card-action center">
                     <button class="btn waves-effect waves-light" type="submit"/>Apostar</button>
