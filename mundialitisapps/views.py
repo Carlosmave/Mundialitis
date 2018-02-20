@@ -1,16 +1,11 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import users, questions, answers, lobbies, Partido, Polla
+from .models import Users, Questions, Answers, Lobbies, Partido, Polla, PollaApuesta, PollaPartido
+from django.forms import formset_factory
 from .forms import RegisterForm, LoginForm, PollaForm, LobbyForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
 import random
-#from .models import questions, answers
-# Create your views here.
-#def index(request):
-#    return render(request, 'mundialitisapps/index.html')
-
 
 def index(request):
     if (request.method == 'POST' and 'register' in request.POST):
@@ -79,46 +74,14 @@ def main(request):
     else:
         return HttpResponseRedirect('/')
 
-        #return render(request, 'mundialitisapps/index.html') Esto estaba mal por ejemplo porque dejaba el main ingresado manualmente arriba, lo que significaba
-        #que en localhost:8000/main se renderizaba index.html lo que causaba problemas al loguearse o registrarse correctamente, con responseredirect te envia
-        #a localhost:8000/ que es lo correcto
-        #Explorar como utilizar el responseredirect para armar links mas complejos y luego utilizarlos con urls, y también
-        #utilizar el render simultaneamente, response redirect arma links de 0 tener esto en cuenta (por ejemplo el return /main/ de arriba en la funcion indexx
-        #podria ser un url mas complejo como /main/userlogged/ y en urls en vez de main/ poner main/userlogged/)(este ejemplo ultimo se puede utilizar con los
-        #que defrente tengan responseredirect para hacer links mas complejos sin embargo si primero es un href y luego pasa a urls y luego a views, para utilizar
-        #el responseredirect tendria que en el views poner el responseredirect para que te envie de nuevo a urls y de vuelta a views, por lo que seria trabajo
-        #extra por las puras, por ello con los de href no conviene, solo conviene con los que tienen responseredirect defrente que son los que usan post,
-        #igual hacer los links lo mas simple posible. Href y responseredirect construyen links y te mandan a urls, para luego ir a views; mientras que render
-        #SOLO RENDERIZA LA PAGINA NADA MAS en el link indicado, donde esta indicado, no ejecuta funciones, por lo que si debo ejecutar funciones debo usar requestredirect)
-        #RECORDAR QUE LAS FUNCIONES SE EJECUTAN DE ACUERDO/DEPENDIENDO AL URL EN EL QUE TE ENCUENTRES
-
-
-
 def trivia(request):
     return render(request, 'mundialitisapps/indextrivia.html')
-
-
-
 
 def index2(request):
     return render(request, 'mundialitisapps/app.html')
 
 def index3(request):
     return render(request, 'mundialitisapps/conference.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def lobbytriviaindex(request):
     if (request.method == 'POST' and 'createlobby' in request.POST):
@@ -152,56 +115,24 @@ def lobbytriviaindex(request):
         }
         return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
     return render(request, 'mundialitisapps/lobbytriviaindex.html', {
-    'form3':form3,
+        'form3':form3,
     })
-
-
-
-#mi logica devolverla
-#    tlobbies=lobbies.objects.all().filter(game='Trivia')
-#    context = {
-#        'title':'Trivia Lobbies',
-#        'tlobbies':tlobbies
-#    }
-#    return render(request, 'mundialitisapps/lobbytriviaindex.html', context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def lobbytriviadetails(request, id):
     tlobbies = lobbies.objects.get(id=id)
     context = {
-    'tlobbies':tlobbies
+        'tlobbies':tlobbies
     }
     return render(request, 'mundialitisapps/lobbytriviadetails.html', context)
-
-
 
 def details(request, id, ttlscore):
     if int(id)<31:
         triv = questions.objects.get(id=id)
         newid=int(id)+1
         context={
-        'triv':triv,
-        'id': newid,
-        'ttlscore':ttlscore
+            'triv':triv,
+            'id': newid,
+            'ttlscore':ttlscore
         }
         return render(request, 'mundialitisapps/details.html', context)
     else:
@@ -221,68 +152,63 @@ def processing(request, option, id, ttlscore):
     questionscore = objanswer.score
 
     if correctanswer == playeranswer:
-        context={
-        'triv': triv,
-        'message':'Respuesta Correcta',
-        'qscore':questionscore,
-        'ttlscore': int(ttlscore)+int(questionscore),
-        'id':newid
+        context = {
+            'triv': triv,
+            'message':'Respuesta Correcta',
+            'qscore':questionscore,
+            'ttlscore': int(ttlscore)+int(questionscore),
+            'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context)
     else:
-        context2={
-        'triv': triv,
-        'message':'Respuesta Incorrecta',
-        'qscore':0,
-        'ttlscore': ttlscore,
-        'id':newid
+        context2 = {
+            'triv': triv,
+            'message':'Respuesta Incorrecta',
+            'qscore':0,
+            'ttlscore': ttlscore,
+            'id':newid
         }
         return render(request, 'mundialitisapps/outcome.html', context2)
 
-def pollaindex(request):
-    #get id_usuario
-    usuario = request.userid
-    #get pollas asociadas a usuario
-    pollas = PollaApuesta.objects.filter(id_usuario=usuario)
-
-    return render(request, 'mundialitisapps/pollaindex.html')
-
-
 def polla(request):
-    # seleccionar partido
-    partidos = Partido.objects.all()
-    pk_partido = random.randint(1, len(partidos) - 1)
-    partido = Partido.objects.get(pk=pk_partido)
-    # crear row polla con partido seleccionado
-    
-    
-    # calcular goles
-    for i in range(2):
-        rng = random.random()
-        if rng < 0.33:
-            resultado = partido.equipo_a
-        elif rng < 0.67:
-            resultado = partido.equipo_b
-        else:
-            resultado = 'Empate'
-    polla = Polla.objects.create(id_partido=partido, ganador=resultado)
-    
-    # determinar apuesta
     if request.method == 'POST':
-        form = PollaForm(request.POST)
-        if form.is_valid():
-            ap = form.cleaned_data['apuesta']
-            # print(ap)
-            if ap == polla.ganador:
-                return HttpResponse("GANASTE")
+        partidos = Partido.objects.all()
+        num_partidos = len(partidos)
+        polla = Polla.objects.create()
+        PollaFormset = formset_factory(PollaForm)
+        form = PollaFormset()
+        for partido in partidos:
+            rng = random.random()
+            if rng < 0.33:
+                resultado = partido.equipo_a
+            elif rng < 0.67:
+                resultado = partido.equipo_b
             else:
-                return HttpResponse("PERDISTE")
+                resultado = 'Empate'
+            # graba el resultado al partido perteneciente a la polla
+            polla_resultado = PollaPartido.objects.create(id_polla=polla.id,\
+                id_partido=partido.id, ganador=resultado)
+        if form.is_valid():            
+            ap = form.cleaned_data['apuesta']
+            # definir apuesta
+            for partido in partidos:
+                apuesta = PollaApuesta.create(id_pollaresultado=polla_resultado.id,\
+                    id_user=request.user.id, apuesta=ap)
     else:
+        partidos = Partido.objects.all()
         form = PollaForm()
 
     context = {
-        'form': form,
-        'partido': partido,
+        'partidos' : partidos,
+        'form' : form,
     }
 
     return render(request, 'mundialitisapps/polla.html', context)
+
+def polla_resultado(request):
+    usuarios = PollaApuesta.objects.all()
+
+    context = {
+        'ganadores' : ganadores,
+    }
+    return render(request, 'mundialitisapps/polla_resultado.html', context)

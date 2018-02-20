@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
-class users(models.Model):
+class Users(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
     def __str__(self):
@@ -10,7 +10,7 @@ class users(models.Model):
     class Meta:
         verbose_name_plural = "Users"
 
-class questions(models.Model):
+class Questions(models.Model):
     question = models.CharField(max_length=250)
     #body = models.TextField()
     option1 = models.CharField(max_length=100)
@@ -22,7 +22,7 @@ class questions(models.Model):
     class Meta:
         verbose_name_plural = "Questions"
 
-class answers(models.Model):
+class Answers(models.Model):
     answer = models.CharField(max_length=200)
     score = models.CharField(max_length=200)
     def __str__(self):
@@ -35,15 +35,23 @@ class Partido(models.Model):
     equipo_b = models.TextField()
 
 class Polla(models.Model):
+    estado = models.BooleanField(default=False)
+
+class PollaPartido(models.Model):
+    id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
     id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
     ganador = models.TextField()
     
 class PollaApuesta(models.Model):
-    id_polla = models.ForeignKey(Polla, on_delete=models.CASCADE)
-    id_user = models.ForeignKey(users, on_delete=models.CASCADE)
+    id_polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
+    id_user = models.ForeignKey(Users, on_delete=models.CASCADE)
     apuesta = models.TextField()
+
+class PollaPuntaje(models.Model):
+    id_pollaapuesta = models.ForeignKey(PollaApuesta, on_delete=models.CASCADE)
+    puntaje = models.IntegerField()
     
-class lobbies(models.Model):
+class Lobbies(models.Model):
     name = models.CharField(max_length=200)
     players = models.CharField(max_length=200)
     lobpass = models.CharField(max_length=200)
