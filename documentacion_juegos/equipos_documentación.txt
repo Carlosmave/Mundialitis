@@ -1,0 +1,46 @@
+Documentacion De Juego Equipos:
+
+Se trabajara con una base de datos postgresql y las tablas llamadas:
+-Selecciones: 
+	Que tendrá los atributos: 
+		pais: que será primary key; de tipo varchar no nulo
+-Jugador: 
+	Que tendrá los atributos: 
+		nombre: que será primary key; de tipo varchar no nulo, 
+		idpais: que será de tipo varchar no nulo y será foreign key del pais de la tabla Selecciones
+		puntaje: que será de tipo entero 
+
+
+Descripcion de manejo de datos:
+- Dentro de la tabla selecciones serán almacenadas las 32 selecciones que participaran en el mundial Rusia 2018. 
+- La tabla Jugador almacenará a todos los jugadores convocados por cada país gracias al atributo idpais
+	Esta tabla es la mas importante, porque permite realizar el juego de armar tu propio equipo, seleccionando al jugador de tu preferencia y ubicandolo 
+	en las diferentes posiciones dentro del campo (arquero, defensa, centro, delantero)
+
+- El atributo puntaje en la tabla Jugador sirve para la calificación de los jugadores, la suma de los puntajes de los jugadores determinan que equipo es el mejor
+
+Proceso:
+Luego de que un usuario se haya logueado en la aplicacion. En la pantalla principal aparecerán los nombres de los juegos y su modalidad. 
+Para el caso del juego de armar tu equipo se cargará en la pantalla una imagen de un campo con las 11 posiciones de cada jugador, 
+Para empezar a armar tu equipo debes elegir primero el país (contiene todos los paises de la tabla Selecciones) 
+y luego elegir el jugador (con todos los jugadores de la tabla Jugador) en cada posición del campo (arquero, defensa, centro, delantero).
+La aplicación cuenta con 2 buttons: con el primero se elige al jugador en la posición de tu preferencia, una vez elegidos todos los jugadores se procede a confirmar 
+tu equipo, cuando confirmas tu equipo aparece una pantalla donde puedes visualizar el puntaje total de tu equipo y salir para volver a armar otro.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

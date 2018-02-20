@@ -1,0 +1,22 @@
+Documentacion De Juego Trivia:
+
+Se trabajara con una base de datos postgresql y las tablas llamadas:
+-Usuario, que tendrá los atributos: id de tipo entero y serial, y el cual será primary key de esta tabla; username, que será de tipo varchar no nulo; password, que tambien será de tipo varchar no nulo; y dinero, que será de tipo float.
+-questions que tendrá los atributos: id de tipo entero y serial, y que será primary; question que será de tipo varchar no nulo; option1 que será de tipo varchar no nulo; option2 que será de tipo varchar no nulo; option3 que será de tipo varchar no nulo; y option4 que será de tipo varchar no nulo. 
+-answers que tendrá los atributos: id de tipo entero y serial, y que será primary; answer que será de tipo varchar no nulo; y score que será de tipo entero.
+-TriviaxUsuario que tendrá los atributos: id de tipo entero y serial, y que será primary; Usuarioid de tipo entero que será foreign key del id de la tabla usuario;y puntaje que será de tipo entero.
+-Grupo que tendrá los atributos: id de tipo entero; nombre de tipo varchar; usuarioid de tipo entero que será foreign key del id de la tabla usuario; y participantes de tipo entero.
+-UsuarioxGrupoxTrivia que tendrá los atributos: grupoid de tipo entero que será foreign key del id de la tabla Grupo; idusuario de tipo entero que será recursivo de Administrador; Administrador de tipo entero; y puntaje de tipo entero. Los dos primeros atributos de esta tabla formarán un primary key compuesta.
+
+Descripcion de manejo de datos:
+-Dentro de la tabla usuario serán almacenados todos los usuarios de la aplicacion. Esta tabla es la mas importante, porque de aqui se gestionaran los datos necesarios para que el usuario pueda jugar en los diversos juegos que ofrece la aplicacion, en este caso la "Trivia".
+-La tabla questions servirá para almacenar las preguntas de trivia con sus respectivas opciones posibles (solo 4 opciones).
+-La tabla answers alamacenará en su interior un puntero hacia cada una de las preguntas de la tabla questions, con su respectiva respuesta correcta y el puntaje que da.
+-TriviaxUsuario guardará todos aquellos datos importantes optenidos cada vez que un usuario juegue la Trivia; estos son el usuario que jugó y el puntaje total optenido.
+-La tabla grupo almacenará todos los grupos creados por los usuarios.
+-La tabla UsuarioxGrupoxTrivia guardará todos aquellos datos importantes optenidos cada vez que un usuario juegue en un grupo, estos son el usuario que creó el grupo, los usuarios pertenecientes a cada grupo y el puntaje de cada usuario del grupo en el juego Trivia.
+
+
+Proceso:
+Luego de que un usuario se haya logueado en la aplicacion. En la pantalla principal aparecerán los nombres de los juegos y su modalidad. Para este caso del juego Trivia, si el usuario elige la opcion "jugar solo", se cargará la pantalla con la primera pregunta de 10 (estas serán elegidas aleatoriamente de la tabla question con sus respectivas respuestas de la tabla answers); una vez que el usuario termina de responder las 10 preguntas, se mostrará una pantalla con el puntaje obtenido (para esto se hace un match entre las respuestas del usuario con las que se encuentrar en la tabla respuestas). Finalmente, estos datos (el usuario y su puntaje) serán almacenados en la tabla TriviaxUsuario. 
+En caso de que el usuario desee jugar en un grupo, el usuario elegira la opcion jugar en grupo; sin embargo, tienen que existir las condiciones siguientes: que un usuario previamente haya creado un grupo (el cual es almacenadao en la tabla grupo, junto con su nombre y la cantidad de participantes), haya invitado al usuario de este ejemplo a jugar y que este haya aceptado la invitación; o; que el usuario del ejemplo, haya creado un grupo (el cual es almacenadao en la tabla grupo, junto con su nombre y la cantidad de participantes) y haya invitado a otros usuarios a jugar. Habiendo satisfecho cualquiera de las dos condiciones expuestas, se cargará la pantalla con la primera pregunta de 10 (estas serán elegidas aleatoriamente de la tabla question con sus respectivas respuestas de la tabla answers); una vez que el usuario termina de responder las 10 preguntas, se mostrará una pantalla con el puntaje obtenido (para esto se hace un match entre las respuestas del usuario con las que se encuentrar en la tabla respuestas). Finalmente, estos datos (el id de cada usuario del grupo y su puntaje) serán almacenados en la tabla UsuarioxGrupoxTrivia. 

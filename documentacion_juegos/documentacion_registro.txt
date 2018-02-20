@@ -1,0 +1,9 @@
+Documentacion De Registro de Usarios:
+
+Se trabajara con una base de datos postgresql y una tabla llamada usuario, que tendrá los atributos: id de tipo entero y serial, y el cual será primary key de esta tabla; username, que será de tipo varchar no nulo; password, que tambien será de tipo varchar no nulo; y dinero, que será de tipo float.
+
+Dentro de la tabla usuario serán almacenadas todas aquellas personas que deseen jugar dentro de la aplicacion. Esta tabla es la mas importante, porque de aqui se gestionaran los datos necesarios para que el usuario pueda jugar en los diversos juegos que ofrece la aplicacion.
+
+Proceso:
+En la pantalla de registros, se muestran 3 campos obligatorios a llenar (usuario, contraseña y repetir contraseña).
+Una vez que el usuario que desee registrarse haya completado los campos y haya presionado el boton entrar, estos datos pasaran atraves de una logica, la cual, en primera instancia validará que las contraseñas sean iguales, una vez confinado esto, la aplicacion pasará a comunicarse con la tabla usuario, la cual se encuentra dentro de la base de datos postgresql. Aqui tambien pasará por otra validación, que se encargara de que no se ingresen 2 nombres de usuario iguales. Si los nombres de usuario no son iguales, los datos ingresados seran almacenados en la base de datos postgresql, dentro de la tabla usuario; llenando solo los campos usermane con el usuario y password con la contraseña. Realizado el registro en la base de datos, se le redireccionará al usuario, a la pagina de Login, para que pueda proceder a su ingreso a la aplicacion. Sin embargo, si en la tabla usuarios, ya existe un username con el usuario que se desea ingresar; se rechazará y en la misma pagina de registro se mostrará un mensaje de error, el cual dice que "el nombre de usuario ya existe".
