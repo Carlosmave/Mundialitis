@@ -24,7 +24,8 @@ urlpatterns = [
 
     #invitaciones
     url(r'^perfil/', views.perfil, name='perfil'),
-
+    url(r'^logout_user/$', views.logout_user, name='logout_user'),
+    url(r'^loguot', views.index, name='index'),
     url(r'^perfil1/', views.perfil1, name='perfil1'),
     url(r'^invitarusuario/', views.invitarusuario, name='invitarusuario'),
     url(r'^agregargrupo/', views.agregargrupo, name='agregargrupo'),

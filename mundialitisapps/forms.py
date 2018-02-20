@@ -1,5 +1,5 @@
 from django import forms
-#from .models import Post
+from .models import users
 #class CostForm(forms.ModelForm):
 class RegisterForm(forms.Form):
     #post = forms.CharField()
@@ -20,8 +20,13 @@ class LobbyForm(forms.Form):
     #    model=Post
     #    fields = ('post',)
 
-    
+
     #invitacion
 class invit(forms.Form):
 	grupo = forms.CharField(widget=forms.TextInput(), required=True);
 	usuario = forms.CharField(widget=forms.TextInput(),required=True)
+
+class UserForm(forms.ModelForm):
+    class Meta:
+            model = users
+            fields = ['username', 'password']

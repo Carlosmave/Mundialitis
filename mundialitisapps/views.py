@@ -4,6 +4,8 @@ from .models import users, questions, answers, lobbies,Invitacion
 from .forms import RegisterForm, LoginForm, LobbyForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth import logout
+from .forms import UserForm
 
 #from .models import questions, answers
 # Create your views here.
@@ -412,3 +414,11 @@ def perfil1(request):
         #'misgrupos': misgrupos(usern)
         }
         return render(request,'mundialitisapps/main.html',context)
+
+def logout_user(request):
+    logout(request)
+    form = UserForm(request.POST or None)
+    context = {
+        "form": form,
+    }
+    return HttpResponseRedirect('/loguot/')
