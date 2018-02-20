@@ -300,6 +300,10 @@ def trivianextquestion(request):
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
 
+            if (len(objlobby.players_as_list) == (len(objlobby.playerscores_as_list)-1)):
+                objlobby.lstatus = "Terminado"
+                objlobby.save()
+
             return HttpResponseRedirect('/lobbytriviaoutcome/')
 
 def lobbytriviaoutcome(request):
