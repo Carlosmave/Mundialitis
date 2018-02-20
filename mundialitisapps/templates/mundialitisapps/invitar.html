@@ -29,13 +29,7 @@ body {font-size:16px;}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:320px;margin-right:320px">
-<!-- Home -->
-<!--
-  <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>¡Hola </b>{{ user.get_username }}<b>!</b></h1>
-    <p>¿Estás listo para jugar?</p>
-    <hr>
-  </div>
+
   <!-- Header -->
   <div class="w3-container" style="margin-top:80px" id="showcase">
     <h1 class="w3-jumbo">{{ users}} invita a alguien a tu lobby</h1>
@@ -45,10 +39,7 @@ body {font-size:16px;}
   <!-- Photo grid (modal) -->
   <div class="w3-row-padding">
     <div class="w3-half">
-      <!--
-      <img src="/w3images/kitchenconcrete.jpg" style="width:100%" onclick="onClick(this)" alt="Concrete meets bricks">
-      <img src="/w3images/livingroom.jpg" style="width:100%" onclick="onClick(this)" alt="Light, white and tight scandinavian design">
-      <img src="/w3images/diningroom.jpg" style="width:100%" onclick="onClick(this)" alt="White walls with designer chairs">-->
+
 <div id = 'invitarusuarioagrupo' >
   <form method="post" action='/invitarusuario/' >
      {% csrf_token %}
@@ -64,7 +55,9 @@ body {font-size:16px;}
 <br><br>
 <button type="submit" class="button button-block " name='submit' value="signup"/>Enviar invitacion</button>
 </form>
-<button> <a href="/main" >Regresar</a></button>
+<form action="/main">
+    <button type="submit" class="button button-block" name='submit' value="Regresar" />Regresar</button>
+</form>
 <br>
 
 
