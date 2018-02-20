@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
-class Users(models.Model):
+class User(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
     def __str__(self):
@@ -10,9 +10,8 @@ class Users(models.Model):
     class Meta:
         verbose_name_plural = "Users"
 
-class Questions(models.Model):
+class Question(models.Model):
     question = models.CharField(max_length=250)
-    #body = models.TextField()
     option1 = models.CharField(max_length=100)
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
@@ -22,7 +21,7 @@ class Questions(models.Model):
     class Meta:
         verbose_name_plural = "Questions"
 
-class Answers(models.Model):
+class Answer(models.Model):
     answer = models.CharField(max_length=200)
     score = models.CharField(max_length=200)
     def __str__(self):
@@ -50,13 +49,17 @@ class PollaPuntaje(models.Model):
     id_pollaapuesta = models.ForeignKey(PollaApuesta, on_delete=models.CASCADE)
     puntaje = models.IntegerField()
     
-class Lobbies(models.Model):
+class Lobby(models.Model):
     name = models.CharField(max_length=200)
-    players = models.CharField(max_length=200)
+    players = models.TextField()
     lobpass = models.CharField(max_length=200)
-    status = models.CharField(max_length=200)
+    ltype = models.CharField(max_length=200)
     game = models.CharField(max_length=200)
+    administrator = models.CharField(max_length=200)
+    gamemode = models.CharField(max_length=200)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
+    def players_as_list(self):
+        return self.players.split(',')
     def __str__(self):
         return self.name
     class Meta:

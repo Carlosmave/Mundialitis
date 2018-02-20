@@ -7,9 +7,9 @@
   {% load staticfiles %}
   <!-- PAGE settings -->
   <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
-  <title>Restaurant Aquamarine - Pingendo template</title>
-  <meta name="description" content="Free Bootstrap 4 Pingendo Aquamarine template for restaurant and food">
-  <meta name="keywords" content="Pingendo restaurant food aquamarine free template bootstrap 4">
+  <title>Trivia - Lobbies</title>
+  <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+  <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
 
   <!-- CSS dependencies -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
   <!-- Script: Make my navbar transparent when the document is scrolled to top -->
   <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
-  <script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>
+  <!--<script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>-->
   <!-- Script: Animated entrance -->
   <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
 </head>
@@ -35,13 +35,27 @@
         </div>
         <div class="col-lg-5 p-3">
             <h4 class="mb-4 text-center">Escoja lobby</h4>
+
+            {% if messages %}
+            <ul style="color:red; font-weight:bold;" class="messages">
+            {% for message in messages %}
+            <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+              {% endfor %}
+              </ul>
+                {% endif %}
+
+
+
             <div class="card" style="width: auto;">
               <div class="card-header">Lobbies</div>
-
-
               <ul class="list-group list-group-flush">
                 {% for tlobby in tlobbies %}
-                  <li class="list-group-item"><a href="/lobbytriviaindex/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                  {% if tlobby.ltype|stringformat:"s" == "Privado" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                    <!--<li class="list-group-item"><a href="/trivialobbiesdetails/public/{{tlobby.id}}">{{tlobby.name}} - {{tlobby.ltype}}</a></li>-->
+                  {% elif tlobby.ltype|stringformat:"s" == "Público" %}
+                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                  {% endif %}
                 {% endfor %}
                 <!--<li class="list-group-item">Cras justo odio</li>-->
                 <!--<li class="list-group-item">Dapibus ac facilisis in</li>
@@ -59,7 +73,7 @@
 
                 <div class="imgcontainer">
                   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                  <img src="{% static 'mundialitisapps/assets/lobbies/football2.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
+                  <img src="{% static 'mundialitisapps/assets/lobby/football.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
                 </div>
                 <div class="container" style="text-align: center !important;">
 
@@ -68,7 +82,7 @@
                   <input name="lobbyname" id="lobbyname" class="form-control" type="text" placeholder="Ingrese el nombre del lobby" required>
 
                   <label for="lobbypassword"><b>Contraseña</b></label>
-                  <input name="lobbypassword" id="lobbypassword" class="form-control" type="password" placeholder="Ingrese la contraseña del lobby">
+                  <input name="lobbypassword" id="lobbypassword" class="form-control" type="password" placeholder="Ingrese la contraseña del lobby si desea crear uno privado">
 
                   <button name="createlobby" type="submit" class="btn mt-4 btn-block p-2 btn-success">Crear</button>
 
@@ -94,22 +108,22 @@
     <div class="container">
       <div class="row">
         <div class="my-3 col-lg-4 col-md-4">
-          <h3>Mundialitis</h3>
+          <h3>MUNDIALITIS</h3>
           <p class="text-light">Proyecto de Ingeniería de Software II</p>
           <p class="my-3">Ciclo 2018-0</p>
         </div>
         <div class="my-3 col-lg-4 col-md-4"></div>
         <div class="my-3 col-lg-4">
-          <h3>Repositorio</h3>
-          <a href="https://www.facebook.com" target="blank">
+          <h3>REPOSITORIO</h3>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
             <img src="{% static 'mundialitisapps/assets/index/GitHub-Mark-Light-120px-plus.png' %}"> </a>
-          <a href="https://www.instagram.com" target="blank">
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
             <img style="height:50px;width:150px" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <p class="text-muted text-center">© Copyright 2018 Pingendo - All rights reserved. </p>
+          <p class="text-muted text-center">© Copyright 2018 Mundialitis - All rights reserved.</p>
         </div>
       </div>
     </div>
@@ -121,7 +135,7 @@
   <!-- Script: Smooth scrolling between anchors in the same page -->
   <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
   <!--<script>alert('{{ message }}');</script>-->
-  <script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
+  <script>var modal = document.getElementById('id01');var modal2 = document.getElementById('id02'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}else if (event.target == modal2){modal2.style.display = "none";}}</script>
 </body>
 
 </html>
