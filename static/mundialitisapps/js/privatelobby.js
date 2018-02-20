@@ -57,3 +57,7 @@ function begingame(val){
 
 
 }
+
+function endgame(){
+
+}
