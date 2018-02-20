@@ -36,6 +36,24 @@ function goback(){
   location.href="/triviagamemode/"
 }*/
 
-function begingame(){
-  location.href="/triviastart/"
+function setupgame(val){
+  location.href= "/triviasetup/" + document.getElementById('setup').value + "/" + val;
+/*  if (val===1){
+  location.href="/triviasetup/" + document.getElementById('setup').value;
+  location.href="/triviasetup/" + document.getElementById('setup').value + "/" + val;
+}else if(val === 2){
+  location.href="/triviasetup/" + document.getElementById('setup').value + "/" + val;
+}*/
+}
+
+function begingame(val){
+  if(val===1){
+    location.href="/triviabegin/" + document.getElementById('begin1').value;
+  }else if (val === 2){
+    location.href="/triviabegin/" + document.getElementById('begin2').value;
+  }else if (val === 3){
+    location.href="/triviabegin/" + document.getElementById('begin3').value;
+  }
+
+
 }

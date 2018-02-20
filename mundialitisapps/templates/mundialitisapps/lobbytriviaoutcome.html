@@ -7,7 +7,7 @@
   {% load staticfiles %}
   <!-- PAGE settings -->
   <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
-  <title>Trivia - Elija su modo de juego</title>
+  <title>Trivia - Lobbies</title>
   <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
   <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
 
@@ -17,62 +17,84 @@
   <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
   <!-- Script: Make my navbar transparent when the document is scrolled to top -->
   <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
-  <script src="{% static 'mundialitisapps/js/privatelobby.js' %}"></script>
+  <script src="{% static 'mundialitisapps/js/trivia.js' %}"></script>
   <!--<script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>-->
   <!-- Script: Animated entrance -->
   <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
+
+  <style>
+
+  #optn0{
+    pointer-events: none;
+  }
+
+
+  #optn1:hover, #optn2:hover, #optn3:hover, #optn4:hover {
+      background-color: red;
+      color:white;
+  }
+
+  #btnopt:hover{
+    background-color: red;
+    color:white;
+  }
+
+  </style>
+
 </head>
 
 <body style="overflow-x: hidden;" class="text-center">
 
 
+<!-- Cover -->
+<div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
+  <div class="container">
+
+
+    <div class="row">
+
+      <div class="col-lg-12 text-white mt-5">
+        <h1 style="margin-top:-5%" class="display-4 d-none d-md-block">Resultados</h1>
+        <h1 style="margin-top:-5%" class="display-4 d-block d-md-none">Resultados</h1>
+        <!--<p style="margin-bottom:5%" class="">Puntaje Total: {{request.session.ttlscore}} puntos</p>-->
+
+
+        <ul class="list-group">
+          <li class="list-group-item active" style="background-color: blue; border-style:none;">El jugador ganador es</li>
+          {% for playerscores in objlobby.playerscores_as_list %}
+            {% if playerscores != '' %}
+            <li class="list-group-item">{{playerscores}} puntos</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <!--<div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active">El jugador ganador es</a>
+          {% for playerscores in objlobby.playerscores_as_list %}
+          <a href="#" class="list-group-item list-group-item-action">{{playerscores}}</a>
+          {% endfor %}
+        </div>-->
+
+        <!--<h1  class="display-7 d-none d-md-block">{{request.session.username}} - {{request.session.ttlscore}} puntos</h1>
+        <h1  class="display-7 d-block d-md-none">{{request.session.username}} - {{request.session.ttlscore}} puntos</h1>-->
 
 
 
-
-  <!-- Cover -->
-  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-white mt-5">
-          <h1 class="display-2 d-none d-md-block">Elija su modo de juego</h1>
-          <h1 class="display-4 d-block d-md-none">Elija su modo de juego</h1>
-          <p class="">December 12-14, NYC </p>
-          <a href="#register" class="btn btn-lg mt-4 btn-outline-light">Elegir</a><i class="d-block fa fa-angle-down pt-5 fa-3x"></i>
-        </div>
+        <div>
+          <a id="btnopt" class="btn btn-lg mt-4 btn-outline-light" style="width:45%;" onclick="backtolobby()">Atrás</a>
       </div>
+
+
+
+
+
     </div>
   </div>
+</div>
+</div>
 
 
-  <div class="py-5 russianflagstyle" id="register">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 text-md-left text-center">
-          <h1 class="text-white">Registrations are open</h1>
-          <p>Pre-register to get a priority access to the event. Fares will be published later on.&nbsp;
-            <br>Get the maximum from the lectures together with the possibility of joining exclusive side-events.</p>
-        </div>
 
-        <div class="col-md-4 align-self-center animate-in-right">
-        <div class="col-md-4 align-self-center animate-in-right">
-          <!--<a href="#" class="btn btn-lg btn-light my-3">Fácil</a>-->
-          <button type="button" class="btn btn-lg btn-success my-3" style="width:auto;" id="begin1" onclick="begingame(1);" value="Fácil">Fácil</button>
-        </div>
-        <div class="col-md-4 align-self-center animate-in-right">
-          <!--<a href="#" class="btn btn-lg btn-light my-3">Intermedio</a>-->
-          <button type="button" class="btn btn-lg btn-warning my-3" style="width:auto;" id="begin2" onclick="begingame(2);" value="Intermedio">Intermedio</button>
-        </div>
-        <div class="col-md-4 align-self-center animate-in-right">
-          <button type="button" class="btn btn-lg btn-danger my-3" style="width:auto;" id="begin3" onclick="begingame(3);" value="Difícil">Difícil</button>
-          <!--<a href="#" class="btn btn-lg btn-light my-3">Difícil</a>-->
-        </div>
-
-      </div>
-
-      </div>
-    </div>
-  </div>
 
 
 

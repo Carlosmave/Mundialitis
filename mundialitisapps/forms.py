@@ -14,6 +14,7 @@ class LoginForm(forms.Form):
 class LobbyForm(forms.Form):
     lobbyname = forms.CharField()
     lobbypassword = forms.CharField()
+    lobbymoney = forms.IntegerField()
 
 
     #class Meta:

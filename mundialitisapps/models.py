@@ -37,9 +37,14 @@ class Lobby(models.Model):
     game = models.CharField(max_length=200)
     administrator = models.CharField(max_length=200)
     gamemode = models.CharField(max_length=200)
+    lstatus = models.CharField(max_length=200)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
+    moneybet =  models.IntegerField()
+    playerscores =  models.TextField()
     def players_as_list(self):
         return self.players.split(',')
+    def playerscores_as_list(self):
+        return self.playerscores.split(',')
     def __str__(self):
         return self.name
     class Meta:

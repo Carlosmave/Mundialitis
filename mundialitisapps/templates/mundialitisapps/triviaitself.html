@@ -184,25 +184,26 @@
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">C) {{triv.option3}}</button>
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">D) {{triv.option4}}</button>-->
 
-          {% if request.session.playeranswer in triv.option1|cut:" "|cut:"," %}
+
+          {% if request.session.playeranswer == triv.option1|cut:" "|cut:"," %}
           <button type="button" disabled style="margin-top:0%; background-color:red;color:white" class="list-group-item list-group-item-action" id="optn0">A) {{triv.option1}}</button>
           {% else %}
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">A) {{triv.option1}}</button>
           {% endif %}
 
-          {% if request.session.playeranswer in triv.option2|cut:" "|cut:"," %}
+          {% if request.session.playeranswer == triv.option2|cut:" "|cut:"," %}
           <button type="button" disabled style="margin-top:0%; background-color:red;color:white" class="list-group-item list-group-item-action" id="optn0">B) {{triv.option2}}</button>
           {% else %}
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">B) {{triv.option2}}</button>
           {% endif %}
 
-          {% if request.session.playeranswer in triv.option3|cut:" "|cut:"," %}
+          {% if request.session.playeranswer == triv.option3|cut:" "|cut:"," %}
           <button type="button" disabled style="margin-top:0%; background-color:red;color:white" class="list-group-item list-group-item-action" id="optn0">C) {{triv.option3}}</button>
           {% else %}
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">C) {{triv.option3}}</button>
           {% endif %}
 
-          {% if request.session.playeranswer in triv.option4|cut:" "|cut:"," %}
+          {% if request.session.playeranswer == triv.option4|cut:" "|cut:"," %}
           <button type="button" disabled style="margin-top:0%; background-color:red;color:white" class="list-group-item list-group-item-action" id="optn0">D) {{triv.option4}}</button>
           {% else %}
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">D) {{triv.option4}}</button>
