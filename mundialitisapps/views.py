@@ -60,22 +60,12 @@ def index(request):
     'form':form, 'form2':form2,
     })
 
-
 def main(request):
     is_logged=request.session.get('is_logged') ##esto se tendra que hacer a varias paginas para evitar el acceso por url sin login
     if is_logged == 'true': ##setear a false para cerrar sesion, de modo que no se pueda volver a entrar
         return render(request, 'mundialitisapps/main.html')
     else:
         return HttpResponseRedirect('/')
-
-def trivia(request):
-    return render(request, 'mundialitisapps/indextrivia.html')
-
-def index2(request):
-    return render(request, 'mundialitisapps/app.html')
-
-def index3(request):
-    return render(request, 'mundialitisapps/conference.html')
 
 def lobbytriviaindex(request):
     if (request.method == 'POST' and 'createlobby' in request.POST):
@@ -187,10 +177,11 @@ def polla(request, id_p):
     return render(request, 'mundialitisapps/polla.html', context)
 
 def polla_resultado(request):
-    usuarios = PollaApuesta.objects.all()
+    participantes = PollaApuesta.objects.all().order_by('-puntos')
+    
 
     context = {
-        'ganadores' : ganadores,
+        'participantes': participantes,
     }
     return render(request, 'mundialitisapps/polla_resultado.html', context)
 
@@ -215,14 +206,6 @@ def triviabegin(request, option):
     objlob.save()
     return HttpResponseRedirect('/trivia/')
     #return HttpResponseRedirect('/triviastart/')
-
-#def triviastart(request):
-#    request.session['question'] = None
-#    request.session['ttlscore'] = None
-#    request.session['processed'] = 'false'
-#    return HttpResponseRedirect('/trivia/')
-
-
 
 def trivia(request):
     actualid=request.session.get('question')
@@ -319,8 +302,6 @@ def trivianextquestion(request):
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
 
-
-
 def lobbytriviaoutcome(request):
     lobbyid=request.session.get('idtlobbybegin')
     objlobby=Lobby.objects.get(id=lobbyid)
@@ -328,14 +309,6 @@ def lobbytriviaoutcome(request):
     'objlobby': objlobby
     }
     return render(request, 'mundialitisapps/lobbytriviaoutcome.html', context)
-
-
-
-
-        #context={
-        #'actualttlscore':request.session.get('ttlscore')
-        #}
-        #return render(request, 'mundialitisapps/scorescreen.html', context)
 
 def begin(request):
     return render(request, 'mundialitisapps/triviaitself.html')

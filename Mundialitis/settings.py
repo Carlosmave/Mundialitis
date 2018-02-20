@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'Mundialitis.wsgi.application'
 
 
 DATABASES = {
-        'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mundialitis',
         'USER': 'kupo',

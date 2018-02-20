@@ -79,20 +79,7 @@
         <p style="margin-bottom:5%" class="">Puntaje Total: {{request.session.ttlscore}} puntos</p>
         <div class="list-group">
           <button type="button" disabled style="background-color: blue; border-style:none; cursor: auto;" class="list-group-item list-group-item-action active" id="optn0">{{request.session.triviamessage}}: {{request.session.questionscore}} puntos</button>
-<<<<<<< HEAD
           {% if request.session.playeranswer in triv.option1|cut:" "|cut:"," %}
-=======
-
-
-
-          <!--<button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">A) {{triv.option1}}</button>
-          <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">B) {{triv.option2}}</button>
-          <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">C) {{triv.option3}}</button>
-          <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">D) {{triv.option4}}</button>-->
-
-
-          {% if request.session.playeranswer == triv.option1|cut:" "|cut:"," %}
->>>>>>> e97684c7771a97cfa4167d2e66f55fb24ae7ec43
           <button type="button" disabled style="margin-top:0%; background-color:red;color:white" class="list-group-item list-group-item-action" id="optn0">A) {{triv.option1}}</button>
           {% else %}
           <button type="button" disabled style="margin-top:0%;" class="list-group-item list-group-item-action" id="optn0">A) {{triv.option1}}</button>
@@ -142,13 +129,6 @@
   </div>
 </div>
 </div>
-
-
-
-
-
-
-
 {% endif %}
 
   <!-- Footer -->

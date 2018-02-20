@@ -1,0 +1,15 @@
+{% extends 'mundialitisapps/template_base.html' %}
+{% block content %}
+<div>
+    <table>
+        <tr>
+            <th>Usuario</th>
+            <th>Puntaje</th>
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{usuario.nombre}}</td>
+            <td>{{usuario.puntaje}}</td>
+        </tr>
+        {% endfor %}
+{% endblock %}
