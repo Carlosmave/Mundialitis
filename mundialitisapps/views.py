@@ -250,9 +250,6 @@ def processing(request, option, id, ttlscore):
         return render(request, 'mundialitisapps/outcome.html', context2)
 
 # Mannejo de invitaciones:
-
-def invitar(request):
-    return render(request, 'mundialitisapps/invitar.html')
 #listo
 def invitarusuario(request):
     info = request.POST
@@ -394,7 +391,7 @@ def perfil1(request):
 
     usern = request.session.get('username')
     p=Invitacion.objects.filter(invitado=usern,estado='pendiente').count
-    
+
     if request.method=='POST':
 
         print (request)

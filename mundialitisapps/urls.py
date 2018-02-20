@@ -23,9 +23,8 @@ urlpatterns = [
     url(r'^processing/(?P<option>[-\w]+)-(?P<id>\d+)-(?P<ttlscore>\d+)/$', views.processing, name='processing'),
 
     #invitaciones
-    url(r'^invitar/', views.invitar, name='invitar'),
     url(r'^perfil/', views.perfil, name='perfil'),
-    
+
     url(r'^perfil1/', views.perfil1, name='perfil1'),
     url(r'^invitarusuario/', views.invitarusuario, name='invitarusuario'),
     url(r'^agregargrupo/', views.agregargrupo, name='agregargrupo'),

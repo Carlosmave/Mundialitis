@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Multiverse by HTML5 UP</title>
+		<title>Pagina Principal</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		{% load staticfiles %}
@@ -32,7 +32,6 @@
 		 <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
 		  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
 		  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Bienvenido {{ users }}</a>
-			<!--<a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>{{ request.session.username }}</a>-->
 		  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
 		  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
 		  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
@@ -66,7 +65,7 @@
 			 <a href="/perfil" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Invitar"><i class="fa fa-star"></i></a>
 
 		  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-		    <img src="/w3images/avatar2.png" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
+		    <img src="{% static 'mundialitisapps/assets/main/avatar2.png' %}" class="w3-circle" style="height:31px;width:31px" alt="Avatar">
 		  </a>
 		 </div>
 
@@ -129,7 +128,7 @@
 			      </div>
 			      <div class="row">
 			        <div class="col-md-12">
-			          <p class="text-muted text-center">© Copyright 2018 Pingendo - All rights reserved. </p>
+			          <p class="text-muted text-center">© Copyright 2018 Grupo3 - All rights reserved. </p>
 			        </div>
 			      </div>
 			    </div>
@@ -162,7 +161,6 @@
 		    }
 		}
 		</script>
-
 
 	</body>
 </html>

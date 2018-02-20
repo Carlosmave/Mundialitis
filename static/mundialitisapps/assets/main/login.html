@@ -1,0 +1,113 @@
+!--{% block title %}Log In{% endblock %} -->
+
+
+<html>
+  <head>
+    <title>..::Pagina de Logueo::..</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous"> -->
+    {% load static %}
+
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'login/nuevo.css' %}" />
+-->
+    <link rel="stylesheet" type="text/css" href="{% static '/login/estilo01.css' %}" />
+<!--    <link rel="stylesheet" type="text/css" href="{% static 'login/estiloBuscar.css' %}" /> -->
+ <link rel="stylesheet" href="{% static '/login/Bootstrap.min.css' %}" />
+
+  </head>
+ <!-- <h2>{{user.is_active}}</h2> -->
+  {% block body %}
+  <body>
+    <div class="container">
+    <header>
+    </header>
+    <header>
+
+      <div class="container" style="text-align:center;">
+        <h1 id="site-name"> Login App </h1>
+      </div>
+  </header>
+
+    <div class="container" style="text-align:center;">
+      {% if error_message %}
+          <p><strong>{{ error_message }}</strong></p>
+      {% endif %}
+
+      <form class="form-horizontal" role="form" action="/login_user/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div style="display: block;">
+
+      <div id="centre" class="pr">
+        <div id="wrap">
+          <div id="main">
+            <div id="wrapper">
+              <div id="logo_wrapper" class="standard_logo_wrapper mb24">
+                <p>
+                  <img id="logo" class="standard_logo" src="{% static '/login/logo.jpeg' %}" alt="logo" width="70%" height="30%" align="middle" border="0" name="logo"></h1>
+</p>
+              </div>
+
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <label for="username"> Nombre de usuario: </label>
+          <input class="form-control" type="text" name="username" autofocus="" required="" id="username">
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <label for="username"> Contraseña: </label>
+          <input class="form-control" type="password" name="password" required="" id="password">
+
+        </div>
+      </div>
+
+    </div>
+    <div class="w0 pr ln3 p16 remember" style="text-align:centre;">
+      <input type="checkbox" class="r4 fl mr8" style="" id="rememberUn" name="rememberUn">
+      <label for="rememberUn" class="fl pr db tn3">Recordarme</label><br>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+        <!--  <input class="btn btn-secundary" type="reset" value="Registrarse"> -->
+
+          <!--  <a class="btn btn-default"  href="/registro/">Registrarse<span> </span></a>-->
+
+
+          <a class="btn btn-default"  href="/register/">Registrarse<span> </span></a>
+
+
+            <input class="btn btn-primary" type="submit" value="Ingresar" name="ingresar">
+<!--
+<h1 id="site-name"><a href="/main/">Django administration</a></h1>
+          <input class="btn btn-primary" type="submit" value="Olvide mi contraseña" name="ingresar"> -->
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+  </form>
+
+
+
+          <fieldset>
+               <footer class="alert-info">
+
+<!--       <p id="copyright">&copy; 2018 By Ulima</p></br> -->
+
+   </footer> <!-- /pie de página -->
+   </fieldset>
+
+<div>
+  </body>
+  {% endblock %}
+</html>
