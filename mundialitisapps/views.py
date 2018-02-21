@@ -172,6 +172,8 @@ def polla_apuesta(request, id_p):
     min_part = 1
     next_ele = int(id_p) + 1
     prev_ele = int(id_p) - 1
+    apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+        user=user)
     # validation and goal assignation
     if request.method == 'POST':
         form = PollaForm(request.POST)
@@ -183,11 +185,12 @@ def polla_apuesta(request, id_p):
             apuesta.apuesta = ap
             apuesta.save()
             messages.success(request, 'Ha apostado satisfactoriamente.')
-
+            apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+                user=user)
             context = {
                 'id_p' : id_p,
                 'partido' : partido,
-                'partidos': partidos,
+                'apuesta_actual' : apuesta_actual,
                 'form': form,
                 'prev_ele': prev_ele,
                 'next_ele': next_ele,
@@ -201,7 +204,7 @@ def polla_apuesta(request, id_p):
     context = {
         'id_p': id_p,
         'partido' : partido,
-        'partidos': partidos,
+        'apuesta_actual' : apuesta_actual,
         'form' : form,
         'prev_ele': prev_ele,
         'next_ele': next_ele,

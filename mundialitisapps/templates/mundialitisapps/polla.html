@@ -44,6 +44,17 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                    <th>Apuesta actual:</th>
+                    {% if apuesta_actual.apuesta %}
+                    <th>{{apuesta_actual.apuesta}}</th>
+                    {% else %}
+                    <th>Todavia no apuesta</th>
+                    {% endif %}
+                    <th></th>
+                    <th></th>
+                    
+                </tr>
         </table>
         
         <div class="col-sm-auto">
