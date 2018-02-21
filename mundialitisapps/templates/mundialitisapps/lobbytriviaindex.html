@@ -51,7 +51,7 @@
               <ul class="list-group list-group-flush">
                 {% for tlobby in tlobbies %}
                   {% if tlobby.ltype|stringformat:"s" == "Privado" %}
-                    {% if tlobby.lstatus|stringformat:"s" == "Terminado" or tlobby.players_as_list|length > 10 %}
+                    {% if tlobby.lstatus|stringformat:"s" == "Terminado" or tlobby.players_as_list|length > 11 %}
                     <li class="list-group-item"><a>{{tlobby.name}} - Cerrado<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                     {% else %}
                     <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
