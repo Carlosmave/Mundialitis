@@ -7,8 +7,6 @@ class User(models.Model):
     password = models.CharField(max_length=500)
     def __str__(self):
         return self.username
-    class Meta:
-        verbose_name_plural = "Users"
 
 class Question(models.Model):
     question = models.CharField(max_length=250)
@@ -18,16 +16,12 @@ class Question(models.Model):
     option4 = models.CharField(max_length=100)
     def __str__(self):
         return self.question
-    class Meta:
-        verbose_name_plural = "Questions"
 
 class Answer(models.Model):
     answer = models.CharField(max_length=200)
     score = models.CharField(max_length=200)
     def __str__(self):
         return self.answer
-    class Meta:
-        verbose_name_plural = "Answers"
 
 class Partido(models.Model):
     equipo_a = models.TextField()
@@ -41,8 +35,8 @@ class PollaPartido(models.Model):
     ganador = models.TextField()
     
 class PollaApuesta(models.Model):
-    id_polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
-    id_user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     apuesta = models.TextField()
 
 class PollaPuntaje(models.Model):

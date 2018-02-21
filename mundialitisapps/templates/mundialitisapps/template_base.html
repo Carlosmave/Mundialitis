@@ -42,8 +42,16 @@
   </style>
 
 </head>
-<body>
-{% block content %}
-{% endblock %}
+<body style="overflow-x: hidden;" class="text-center">
+    <div class="d-flex cover py-5 russianflagstyle" style="background-image: url('{% static      'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-white">
+                    {% block content %}
+                    {% endblock %}
+                </div> 
+            </div>
+        </div>
+    </div>
 </body>
 </html>

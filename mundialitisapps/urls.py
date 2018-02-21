@@ -21,9 +21,14 @@ urlpatterns = [
     #url(r'^triviaprocessing/(?P<option>[-\w]+)-(?P<id>\d+)-(?P<ttlscore>\d+)/$', views.triviaprocessing, name='triviaprocessing'),
     url(r'^triviaprocessing/(?P<option>[-\w]+)/$', views.triviaprocessing, name='triviaprocessing'),
     url(r'^trivianextquestion/', views.trivianextquestion, name='trivianextquestion'),
+    
+    url(r'^polla/$', views.polla, name='pollahome'),
+    url(r'^polla/(?P<id_p>\d+)/$', views.polla_apuesta, name='polla'),
+    url(r'^polla/resultados', views.polla_resultado, name='polla_resultado'),
 
-    url(r'^polla/(?P<id_p>\d+)/$', views.polla, name='polla'),
     #url(r'^pollaindex/', views.pollaindex, name='pollaindex'),
+
+    
     url(r'^trivialobbiesdetails/(?P<id>\d+)/$', views.lobbytriviadetails, name='lobbytriviadetails'),
     url(r'^deletelobby/(?P<id>\d+)/$', views.deletelobby, name='deletelobby'),
     url(r'^joinlobby/(?P<id>\d+)/(?P<player>[-\w]+)/$', views.joinlobby, name='joinlobby'),
