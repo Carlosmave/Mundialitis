@@ -61,7 +61,11 @@
 
 
         <ul class="list-group">
-          <li class="list-group-item active" style="background-color: blue; border-style:none;">El jugador ganador es</li>
+          {% if objlobby.lstatus|stringformat:"s" == "Terminado"  %}
+          <li class="list-group-item active" style="background-color: blue; border-style:none;">El jugador ganador es: {{objlobby.winner}}</li>
+          {% else %}
+          <li class="list-group-item active" style="background-color: blue; border-style:none;">Juego en progreso</li>
+          {% endif %}
           {% for playerscores in objlobby.playerscores_as_list %}
             {% if playerscores != '' %}
             <li class="list-group-item">{{playerscores}} puntos</li>
@@ -88,10 +92,15 @@
         <h1  class="display-7 d-block d-md-none">{{request.session.username}} - {{request.session.ttlscore}} puntos</h1>-->
 
 
-
+        {% if objlobby.lstatus|stringformat:"s" == "Terminado"  %}
         <div>
           <a id="btnopt" class="btn btn-lg mt-4 btn-outline-light" style="width:45%;" onclick="backtolobby()">Atrás</a>
-      </div>
+        </div>
+        {% else %}
+        <div>
+          <a id="btnopt" class="btn btn-lg mt-4 btn-outline-light" style="width:45%;">Atrás</a>
+        </div>
+        {% endif %}
 
 
 

@@ -139,12 +139,23 @@ def lobbytriviaindex(request):
 
 
 
+#def lobbytriviadetails(request, id):
+#    tlobby = Lobby.objects.get(id=id)
+#    context = {
+#    'tlobby':tlobby,
+#    }
+#    return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
+
 def lobbytriviadetails(request, id):
     tlobby = Lobby.objects.get(id=id)
-    context = {
-    'tlobby':tlobby,
-    }
-    return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
+    if(tlobby.lstatus != "Terminado"):
+        context = {
+        'tlobby':tlobby,
+        }
+        return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
+    else:
+        return HttpResponseRedirect('/trivialobbies/')
+
 
 
 def deletelobby(request, id):
@@ -355,6 +366,11 @@ def trivianextquestion(request):
             actualplayerscores=objlobby.playerscores
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                objlobby.lstatus = "Terminado"
+                objlobby.save()
+
+
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Intermedio":
@@ -370,6 +386,11 @@ def trivianextquestion(request):
             actualplayerscores=objlobby.playerscores
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                objlobby.lstatus = "Terminado"
+                objlobby.save()
+
+
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Difícil":
@@ -387,8 +408,37 @@ def trivianextquestion(request):
             objlobby.save()
 
             if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                lps=objlobby.playerscores.split(',')
+                #print(lps)
+                #print("////////////")
+                highestscore=-1
+                winner=''
+                #for (i=0, i<(len(lps)-1), i++):
+                #print("//////INICIA FOR//////")
+                for x in (0, (len(lps)-2)):
+                    #print(len(lps))
+                    #print(len(lps)-1)
+                    #print(len(lps)-2)
+                    splayerscore = lps[x]
+                    #print(splayerscore)
+                    #print("/////////////")
+                    datascore = splayerscore.split(':')
+                    #print(datascore)
+                    #print("-------------datascores------")
+                    #print(datascore[0])
+                    #print(datascore[1])
+                    score=(datascore[1])[:1]
+                    #print("//////TERMINA UN FOR//////")
+                    if (int(datascore[1])>highestscore):
+                        highestscore = int(datascore[1])
+                        winner=datascore[0]
+
+
                 objlobby.lstatus = "Terminado"
+                objlobby.winner = winner
                 objlobby.save()
+
+
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
 

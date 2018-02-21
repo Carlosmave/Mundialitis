@@ -41,6 +41,7 @@ class Lobby(models.Model):
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     moneybet =  models.IntegerField()
     playerscores =  models.TextField()
+    winner = models.CharField(max_length=200)
     def players_as_list(self):
         return self.players.split(',')
     def playerscores_as_list(self):
