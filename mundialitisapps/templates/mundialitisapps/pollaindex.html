@@ -28,13 +28,17 @@
             </td>
             <!---->
             <td class="col-sm-3 align-middle">
-                <a class="btn btn-primary text-dark" href="/polla/{{apuesta.polla_partido.id_partido.id}}">
+                
                 {% if not apuesta.apuesta %}
+                <a class="btn btn-info text-danger btn-block" href="/polla/{{apuesta.polla_partido.id_partido.id}}">
                     No ha apostado
-                {% else %}
-                    {{ apuesta.apuesta }}
-                {% endif %}
                 </a>
+                {% else %}
+                <a class="btn btn-primary text-dark btn-block" href="/polla/{{apuesta.polla_partido.id_partido.id}}">
+                    {{ apuesta.apuesta }}
+                </a>
+                {% endif %}
+                
             </td>
         </tr>
         {% endfor %}

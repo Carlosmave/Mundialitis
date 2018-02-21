@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido
+from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido, PollaPuntaje
 from django.forms import formset_factory
 from .forms import RegisterForm, LoginForm, PollaForm, LobbyForm
 from django.contrib.auth.forms import UserCreationForm
@@ -148,19 +148,13 @@ def polla(request):
             # creates rows for displays
             PollaApuesta.objects.create(user=user, polla_partido=polla_partido)
     
-    apuestas = PollaApuesta.objects.filter(user=user)
+    apuestas = PollaApuesta.objects.filter(user=user).order_by('id')
 
     # apuestas = PollaApuesta.objects.filter(id_user = user)
 
     # maybe move to results button?
     '''
-    rng = random.random()
-    if rng < 0.33:
-        e_ganador = partido.equipo_a
-    elif rng < 0.67:
-        e_ganador = partido.equipo_b
-    else:
-        e_ganador = 'Empate'
+    
     '''
     context = {
         'apuestas' : apuestas,
@@ -170,10 +164,14 @@ def polla(request):
 # configurar apuesta
 def polla_apuesta(request, id_p):
     partido = Partido.objects.get(id=id_p)
+    partidos = Partido.objects.all()
     user_id = request.session['userid']
     user=User.objects.get(id=user_id)
-    partido = Partido.objects.get(id=id_p)
     polla_partido = PollaPartido.objects.get(id_partido=partido)
+    max_part = len(partidos)
+    min_part = 1
+    next_ele = int(id_p) + 1
+    prev_ele = int(id_p) - 1
     # validation and goal assignation
     if request.method == 'POST':
         form = PollaForm(request.POST)
@@ -189,7 +187,12 @@ def polla_apuesta(request, id_p):
             context = {
                 'id_p' : id_p,
                 'partido' : partido,
+                'partidos': partidos,
                 'form': form,
+                'prev_ele': prev_ele,
+                'next_ele': next_ele,
+                'max_part': max_part,
+                'min_part': min_part,
             }
             return render(request, 'mundialitisapps/polla.html', context)
     else:
@@ -198,14 +201,50 @@ def polla_apuesta(request, id_p):
     context = {
         'id_p': id_p,
         'partido' : partido,
+        'partidos': partidos,
         'form' : form,
+        'prev_ele': prev_ele,
+        'next_ele': next_ele,
+        'max_part': max_part,
+        'min_part': min_part,
     }
 
     return render(request, 'mundialitisapps/polla.html', context)
 
 def polla_resultado(request):
-    participantes = PollaApuesta.objects.all().order_by('-puntos')
+    participantes = PollaApuesta.objects.all().distinct('user')
+    
+    polla_resultado = PollaPartido.objects.all()
+    polla_puntos = PollaPuntaje.objects.all()
+    if not polla_puntos:
+        for participante in participantes:
+            PollaPuntaje.objects.create(user=participante.user)
+    polla_puntos = PollaPuntaje.objects.all()
+    # calcular goles
+    rng = random.random()
+    for partido in polla_resultado:
+        if rng < 0.33:
+            e_ganador = partido.id_partido.equipo_a
+        elif rng < 0.67:
+            e_ganador = partido.id_partido.equipo_b
+        else:
+            e_ganador = 'Empate'
+        partido.ganador = e_ganador
+        partido.save()
 
+    #listar personas con puntaje
+    for participante in participantes:
+        apuestas = PollaApuesta.objects.filter(user=participante.user)
+        puntos = 0
+        for apuesta in apuestas:
+            p = PollaPartido.objects.get(id_partido=apuesta.polla_partido.id_partido)
+            if apuesta.apuesta == p.ganador:
+                puntos+=1
+        puntaje = PollaPuntaje.objects.get(user_id=participante.user)
+        puntaje.puntaje = puntos
+        puntaje.save()
+
+    participantes = PollaPuntaje.objects.all().order_by('-puntaje')
     context = {
         'participantes': participantes,
     }

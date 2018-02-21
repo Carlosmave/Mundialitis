@@ -40,8 +40,8 @@ class PollaApuesta(models.Model):
     apuesta = models.TextField()
 
 class PollaPuntaje(models.Model):
-    id_pollaapuesta = models.ForeignKey(PollaApuesta, on_delete=models.CASCADE)
-    puntaje = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    puntaje = models.IntegerField(default=0)
     
 class Lobby(models.Model):
     name = models.CharField(max_length=200)
