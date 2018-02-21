@@ -52,13 +52,13 @@
                 {% for tlobby in tlobbies %}
                   {% if tlobby.ltype|stringformat:"s" == "Privado" %}
                     {% if tlobby.lstatus|stringformat:"s" == "Terminado" %}
-                    <li disabled class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                    <li class="list-group-item"><a>{{tlobby.name}} - Cerrado<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                     {% else %}
                     <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                     {% endif %}
                   {% elif tlobby.ltype|stringformat:"s" == "Público" %}
                     {% if tlobby.lstatus|stringformat:"s" == "Terminado" %}
-                    <li disabled class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                    <li class="list-group-item"><a>{{tlobby.name}} - Cerrado</a></li>
                     {% else %}
                     <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
                     {% endif %}

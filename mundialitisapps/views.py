@@ -343,7 +343,7 @@ def trivianextquestion(request):
     mode=request.session.get('gamemode')
 
     if mode == "Fácil":
-        if actualid < 10:
+        if actualid < 10:  #if actualid < 10:
             request.session['processed'] = 'false'
             newid=int(actualid)+1
             request.session['question'] = newid
@@ -373,7 +373,7 @@ def trivianextquestion(request):
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Difícil":
-        if actualid < 30:
+        if actualid < 3:
             request.session['processed'] = 'false'
             newid=int(actualid)+1
             request.session['question'] = newid
@@ -386,7 +386,7 @@ def trivianextquestion(request):
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
 
-            if (len(objlobby.players_as_list) == (len(objlobby.playerscores_as_list)-1)):
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
                 objlobby.lstatus = "Terminado"
                 objlobby.save()
 
@@ -397,10 +397,29 @@ def trivianextquestion(request):
 def lobbytriviaoutcome(request):
     lobbyid=request.session.get('idtlobbybegin')
     objlobby=Lobby.objects.get(id=lobbyid)
+
+    #lsize1 = len(objlobby.players_as_list)
+    #lsize2 = objlobby.playerscores_as_list
+
     context={
-    'objlobby': objlobby
+    'objlobby': objlobby,
+    #'lsize1':lsize1, 'lsize2':lsize2
     }
     return render(request, 'mundialitisapps/lobbytriviaoutcome.html', context)
+
+#§ solo aqui hacer las comparaciones de longitudes de listas, en el lobbytriviaoutcome solo revisar si el estado es terminado
+    #len no funciona :v
+    #poner todo esto dentro de trivia, ya no es necesaria esta funcion, pero para que no se ejecute siempre poner un condicional para que solo pase si ya termino
+    #pensar si hacer esto o simplemente bloquear todos los botones de unir
+    #si jugador sale bloquear botones, si creador sale si permitirle acceso para cerrarlo
+    # ver si metod el lstatus=Iniciado dentro de la funcion trivia
+    #decidir si al salir de la pagina el usuario puede volver a ver sus resultados o ya no, si tiene acceso a los botones o ya no
+
+    #actualmente si ya cerro en trivialobbies, ni usuario ni administrador pueden entrar. Pero si retroceden en el navegador al usuario dejarlo entrar a ver sus resultados y a administradortambien (opcional)
+    #es opcional porque se supone que si el usuario presiona continuar se irá a trivialobbies y ya no podrá acceder al lobby, solo le llegara o se le quitara el dinero
+    #y el administrador no debe cerrar hasta que se le muestre el mensaje de ya termino y lo cierre mostrarlo como instruccion
+    #preferentemente dejar el lobbytriviaoutcome independiente y no meterlo en el trivia
+
 
 
 

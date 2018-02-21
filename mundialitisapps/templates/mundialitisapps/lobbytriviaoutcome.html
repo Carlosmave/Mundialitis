@@ -70,11 +70,11 @@
         </ul>
 
         {% if request.session.username == objlobby.administrator %}
-          {% if (objlobby.players_as_list|length) == ((objlobby.playerscores_as_list|length) -1) %}
-            <button class="btn mt-4 btn-block p-2 btn-danger" id="endlobby" value="{{objlobby.id}}" onclick="endlobby();">TERMINAR LOBBY</a></button>
-          {% else %}
-            <button disabled class="btn mt-4 btn-block p-2 btn-danger" id="endlobby" value="{{objlobby.id}}" onclick="endlobby();">TERMINAR LOBBY</a></button>
-            {% endif %}
+        {% if objlobby.lstatus|stringformat:"s" == "Terminado"  %}
+          <button class="btn mt-4 btn-block p-2 btn-danger" id="endlobby" value="{{objlobby.id}}" onclick="endlobby();">TERMINAR LOBBY</a></button>
+        {% else %}
+          <button disabled class="btn mt-4 btn-block p-2 btn-danger" id="endlobby" value="{{objlobby.id}}" onclick="endlobby();">TERMINAR LOBBY</a></button>
+          {% endif %}
         {% endif %}
 
         <!--<div class="list-group">
