@@ -76,3 +76,31 @@ class PollaApuesta(models.Model):
 class PollaPuntaje(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     puntaje = models.IntegerField(default=0)
+
+class Team(models.Model):
+    pais = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.pais
+
+    class Meta:
+        db_table = 'mundialitisapps_teams'
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
+
+
+class Player(models.Model):
+    nombre = models.CharField(max_length=200)
+    pais = models.ForeignKey('Team', on_delete=models.CASCADE)
+    puntaje = models.IntegerField()
+
+    def __str__(self):
+        return self.nombre
+
+    def puntaje_as_text(self):
+        return '{:,}'.format(self.puntaje)
+
+    class Meta:
+        db_table = 'mundialitisapps_players'
+        verbose_name = "Player"
+        verbose_name_plural = "Players"

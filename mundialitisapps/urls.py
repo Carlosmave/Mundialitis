@@ -1,10 +1,15 @@
 from django.conf.urls import url
 from . import views
+from . import ajax
 
 urlpatterns = [
+
+    url(r'^ajax/get_players', ajax.get_players, name='ajax_get_players'),
+
     url(r'^$', views.index, name='index'),
     url(r'^register/', views.register, name='register'),
     url(r'^main/', views.main, name='main'),
+    url(r'^teams/', views.TeamsView.as_view(), name='teams'),
 
     url(r'^trivialobbies/', views.lobbytriviaindex, name='lobbytriviaindex'),
 
@@ -34,5 +39,8 @@ urlpatterns = [
     url(r'^polla/$', views.polla, name='pollahome'),
     url(r'^polla/(?P<id_p>\d+)/$', views.polla_apuesta, name='polla'),
     url(r'^polla/resultados', views.polla_resultado, name='polla_resultado'),
+
+
+
 
 ];

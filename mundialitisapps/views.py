@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido, PollaPuntaje
-from .forms import RegisterForm, LoginForm, LobbyForm, CompleteRegForm, PollaForm
+from django.views.generic.base import TemplateView
+from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido, PollaPuntaje, Player
+from .forms import RegisterForm, LoginForm, LobbyForm, CompleteRegForm, PollaForm, TeamForm
+
 from django.contrib import messages
 import random
 # Create your views here.
@@ -199,6 +201,33 @@ def joinlobby(request, id, player):
         obj.players = newplayers
         obj.save()
         return HttpResponseRedirect('/trivialobbiesdetails/'+id)
+
+
+##########
+# Equipo #
+##########
+
+class TeamsView(TemplateView):
+    template_name = 'mundialitisapps/teams.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TeamsView, self).get_context_data(*args, **kwargs)
+        context['form'] = TeamForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        form = TeamForm(request.POST)
+        resultado = 0
+        if form.is_valid():
+            ids = [v for k, v in form.cleaned_data.items() if k not in ['jugadores', 'selecciones', 'posiciones']]
+            jugadores = Player.objects.filter(id__in=ids)
+            for jugador in jugadores:
+                resultado += jugador.puntaje
+        context['resultado'] = resultado
+        return self.render_to_response(context=context)
+
+
 
 
 
@@ -429,8 +458,8 @@ def triviaend(request):
     #preferentemente dejar el lobbytriviaoutcome independiente y no meterlo en el trivia
 
 def polla(request):
-    user_id = request.session['userid']
-    user=User.objects.get(id=user_id)
+    username = request.session.get('username')
+    user=User.objects.get(username=username)
     partidos = Partido.objects.all()
     # configurar resultados
     for partido in partidos:
@@ -464,8 +493,8 @@ def polla(request):
 def polla_apuesta(request, id_p):
     partido = Partido.objects.get(id=id_p)
     partidos = Partido.objects.all()
-    user_id = request.session['userid']
-    user=User.objects.get(id=user_id)
+    username = request.session.get('username')
+    user=User.objects.get(username=username)
     polla_partido = PollaPartido.objects.get(id_partido=partido)
     max_part = len(partidos)
     min_part = 1
@@ -551,6 +580,9 @@ def polla_resultado(request):
         'participantes': participantes,
     }
     return render(request, 'mundialitisapps/polla_resultado.html', context)
+
+
+
 
 
 def begin(request):
