@@ -6348,8 +6348,8 @@ body > * {
 
 
 
-
+url('');
 
 .field-img {
-      background: url('../img/3.png') no-repeat center;
+      background: url('{% static 'mundialitisapps/assets/teams/3.png' %}') no-repeat center;
     }
