@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <!-- PAGE settings -->
+  <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
+  <title>¡Bienvenido a Mundialitis!</title>
+  <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+  <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
+
+  <!-- CSS dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
+  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
+  <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
+  <script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>
+  <!-- Script: Animated entrance -->
+  <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
+</head>
+
+<body style="overflow-x: hidden;">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-secondary fixed-top">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar3SupportedContent" aria-controls="navbar3SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <div class="collapse navbar-collapse text-center justify-content-center" id="navbar3SupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item mx-3">
+            <a class="nav-link text-light" href="#"><b>INICIO</b></a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#informacion"><b>INFORMACIÓN</b></a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#schedule"><b>GRUPOS</b></a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#menu"><b>PARTIDOS</b></a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#speakers"><b>INTEGRANTES</b></a>
+          </li>
+        </ul>
+        <!--<input class="form-control" type="text" placeholder="Nombre de usuario" required>
+        <input type="password" class="form-control" placeholder="Contraseña" required>-->
+        <!--<a class="btn navbar-btn mx-2 btn-danger" type="submit"><b>LOGIN</b></a>-->
+
+        <!--<a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a>-->
+
+
+
+        <a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">LOGIN</a>
+        <div id="id01" class="modal">
+          <form class="modal-content animate" method="post"> {% csrf_token %}
+
+            <div class="imgcontainer">
+              <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+              <img src="{% static 'mundialitisapps/assets/index/user-male-circle-filled.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
+            </div>
+            <div class="container">
+              <label for="logusername"><b>Nombre de usuario</b></label>
+              <input name="logusername" id="logusername" class="form-control" type="text" placeholder="Ingrese su nombre de usuario" required>
+              <label for="logpassword"><b>Contraseña</b></label>
+              <input name="logpassword" id="logpassword" class="form-control" type="password" placeholder="Ingrese su contraseña" required>
+              <button name="login" type="submit" class="btn mt-4 btn-block p-2 btn-success">Login</button>
+            </div>
+            <div style="margin-top:-25px" class="container">
+              <button style="margin-bottom:5%" type="button" onclick="document.getElementById('id01').style.display='none'" class="btn mt-4 btn-block p-2 btn-danger">Cancelar</button>
+              <!--<button type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>-->
+            </div>
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+  </nav>
+  <!-- Cover -->
+  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/index/russia.jpg' %}');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 align-self-center text-lg-left text-center">
+          <!--<h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
+          <!--<h1 style="font-size: 3.5vw;"class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
+          <h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>
+          <p class="mb-5">Tu página sobre el Mundial de la FIFA Rusia 2018</p>
+        </div>
+        <div class="col-lg-5 p-3">
+          <!--<form class="p-4 bg-light" onsubmit="return validateForm()" method="post"> {% csrf_token %}-->
+          <form class="p-4 bg-light" method="post"> {% csrf_token %}
+            <h4 class="mb-4 text-center">Registrese en Mundialitis</h4>
+
+            {% if messages %}
+            <ul style="color:red; font-weight:bold;" class="messages">
+            {% for message in messages %}
+            <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+              {% endfor %}
+              </ul>
+                {% endif %}
+
+
+            <div class="form-group"> <label>Nombre de usuario</label>
+              <input name="regusername" id="rusername" class="form-control" type="text" required> </div>
+            <br>
+            <div class="form-group"> <label>Contraseña</label>
+              <input name="regpassword" id="rpassword" type="password" class="form-control" required> </div>
+            <br>
+            <div class="form-group"> <label>Vuelva a ingresar su contraseña</label>
+              <input name="regpassword2" id="rpassword2" type="password" class="form-control" required> </div>
+            <button name="register" type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Intro -->
+  <div class="py-5" id="informacion" style="background-image: url('{% static 'mundialitisapps/assets/index/World-Cup-2018-background.png' %}');">
+    <div class="container">
+      <div class="row my-5 bg-primary">
+        <div class="p-4 col-md-6">
+          <p class="m-0">Mundial de la FIFA</p>
+          <h2 class="mb-3">Rusia 2018</h2> <i class="fa d-inline-block fa-star text-white"></i><i class="fa d-inline-block fa-star mx-2 text-white"></i><i class="fa d-inline-block fa-star text-white"></i>
+          <p class="my-4">La Copa Mundial de la FIFA Rusia 2018 será la vigésima primera edición de la Copa Mundial de Fútbol. Esta edición del evento se realizará en Rusia entre el 14 de junio y el 15 de julio de 2018, siendo la primera vez que un país de Europa Oriental organiza el campeonato.</p>
+        </div>
+        <div class="p-0 col-md-6 d-none d-md-block">
+          <img class="img-fluid d-block p-2" src="{% static 'mundialitisapps/assets/index/Logo.png' %}"> </div>
+      </div>
+    </div>
+  </div>
+  <!-- Gallery -->
+  <div class="">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Ekaterinburg, Ekaterinburg Arena.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Kaliningrad, Kaliningrad Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Kazan, Kazan Arena.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Moscow, Luzhniki Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Moscow, Spartak Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Nizhny Novgorod, Nizhny Novgorod Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Rostov-on-Don, Rostov Arena.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Saint Petersburg, Saint Petersburg Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Samara, Samara Arena.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Saransk, Mordovia Arena.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Sochi, Fisht Stadium.jpg' %}" class="img-fluid"> </div>
+        <div class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Volgograd, Volgograd Stadium.jpg' %}" class="img-fluid"> </div>
+      </div>
+    </div>
+  </div>
+  <!-- Carousel reviews -->
+  <!-- Carousel venue -->
+  <div class="py-5">
+    <div class="container">
+      <div class="row py-5">
+        <div class="col-md-5 order-2 order-md-1">
+          <img class="img-fluid d-block my-3 mx-auto animate-in-left" src="{% static 'mundialitisapps/assets/index/telstar18.jpg' %}" width="300"> </div>
+        <div class="col-md-7 align-self-center order-1 order-md-2 my-3 text-md-left text-center">
+          <h2>Telstar 18</h2>
+          <p class="my-4 text-muted">Telstar fue la pelota de fútbol creada para la primera Copa del Mundo televisada, la de México 1970. Regresará para el Mundial de Rusia como Telstar 18, "una reinvención del modelo clásico".
+            La compañía alemana Adidas fabrica la pelota de este campeonato FIFA desde hace 47 años.</p>
+          <a class="btn btn-outline-primary" href="#features">Learn more</a>
+        </div>
+      </div>
+      <div class="row pt-5">
+        <div class="align-self-center col-lg-7 text-md-left text-center">
+          <h2>Zabivaca</h2>
+          <p class="my-4 text-muted">Zabivaka es la mascota oficial de la Copa Mundial de la FIFA Rusia 2018. Su nombre significa “el que anota”, un nombre más que apropiado para este lobo que irradia diversión, simpatía y seguridad en sí mismo.</p>
+        </div>
+        <div class="align-self-center mt-5 col-lg-5">
+          <img class="img-fluid d-block animate-in-right" src="{% static 'mundialitisapps/assets/index/zabivaca.jpg' %}"> </div>
+      </div>
+      <hr class="mt-0"> </div>
+  </div>
+  <!-- Schedule -->
+  <div class="py-5 section-parallax" style="background-image: url('{% static 'mundialitisapps/assets/index/Russia-2018-World-Cup-trophy.jpg' %}');" id="schedule">
+    <div class="container section-aquamarine">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="text-white mt-4 text-center">Grupos</h1>
+        </div>
+      </div>
+      <div class="row text-left text-dark">
+        <div class="p-4 col-lg-4 col-md-6">
+          <div class="card">
+            <div class="card-block text-center card-primary p-2">
+              <h2>Grupo A</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Russia-Flag.ico' %}" style="float:left"><b style="float:right">Rusia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Saudi-Arabia-Flag.ico' %}" style="float:left"><b style="float:right">Arabia Saudita</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Egypt-Flag.ico' %}" style="float:left"><b style="float:right">Egipto</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Uruguay-Flag.ico' %}" style="float:left"><b style="float:right">Uruguay</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4 col-md-6">
+          <div class="card">
+            <div class="card-block text-center card-primary p-2">
+              <h2>Grupo B</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Portugal-Flag.ico' %}" style="float:left"><b style="float:right">Portugal</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Spain-Flag.ico' %}" style="float:left"><b style="float:right">España</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Morocco-Flag.ico' %}" style="float:left"><b style="float:right">Marruecos</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Iran-Flag.ico' %}" style="float:left"><b style="float:right">Irán</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo C</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/France-Flag.ico' %}" style="float:left"><b style="float:right">Francia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Australia-Flag.ico' %}" style="float:left"><b style="float:right">Australia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Peru-Flag.ico' %}" style="float:left"><b style="float:right">Perú</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Denmark-Flag.ico' %}" style="float:left"><b style="float:right">Dinamarca</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo D</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Argentina-Flag.ico' %}" style="float:left"><b style="float:right">Argentina</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Iceland-Flag.ico' %}" style="float:left"><b style="float:right">Islandia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Croatian-Flag.ico' %}" style="float:left"><b style="float:right">Croacia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Nigeria-Flag.ico' %}" style="float:left"><b style="float:right">Nigeria</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo E</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Brazil-Flag.ico' %}" style="float:left"><b style="float:right">Brasil</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Switzerland-Flag.ico' %}" style="float:left"><b style="float:right">Suiza</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Costa-Rica-Flag.ico' %}" style="float:left"><b style="float:right">Costa Rica</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Serbia-Flag.ico' %}" style="float:left"><b style="float:right">Serbia</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo F</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Germany-Flag.ico' %}" style="float:left"><b style="float:right">Alemania</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Mexico-Flag.ico' %}" style="float:left"><b style="float:right">México</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Sweden-Flag.ico' %}" style="float:left"><b style="float:right">Suecia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Korea-Flag.ico' %}" style="float:left"><b style="float:right">Corea del Sur</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4 p-4" style="margin-left: auto;">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo G</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Belgium-Flag.ico' %}" style="float:left"><b style="float:right">Bélgica</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Panama-Flag.ico' %}" style="float:left"><b style="float:right">Panamá</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Tunisia-Flag.ico' %}" style="float:left"><b style="float:right">Túnez</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/England-Flag.ico' %}" style="float:left"><b style="float:right">Inglaterra</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-4 col-lg-4" style="margin-right: auto;">
+          <div class="card text-dark">
+            <div class="card-block text-center p-2">
+              <h2>Grupo F</h2>
+            </div>
+            <ul class="list-group list-group-flush" style="text-align: center !important;">
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Poland-Flag.ico' %}" style="float:left"><b style="float:right">Polonia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Senegal-Flag.ico' %}" style="float:left"><b style="float:right">Senegal</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Colombia-Flag.ico' %}" style="float:left"><b style="float:right">Colombia</b></li>
+              <li class="list-group-item">
+                <img height="30" width="40" src="{% static 'mundialitisapps/assets/index/Japan-Flag.ico' %}" style="float:left"><b style="float:right">Japón</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Menu -->
+  <div class="py-5 text-center" id="menu" style="background-image: url('{% static 'mundialitisapps/assets/index/stadiumbackground.jpg' %}');">
+    <div class="container">
+      <div class="row p-4 animate-in-down russianflagstyle">
+        <div class="col-md-12">
+          <h2>Partidos</h2>
+          <p class="mb-5">Fase de Grupos</p>
+          <div class="row">
+            <div class="col-md-4">
+              <h5>14 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Rusia vs. Arabia Saudita - 10:00 AM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>15 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Egipto vs. Uruguay - 7:00 AM
+                  <br> Marruecos vs. Irán - 10:00 AM
+                  <br> Portugal vs. España - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>16 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Francia vs. Australia - 5:00 AM
+                  <br> Argentina vs. Islandia - 8:00 AM
+                  <br> Perú vs. Dinamarca - 11:00 AM
+                  <br> Croacia vs. Nigeria - 2:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>17 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Costa Rica vs. Serbia - 7:00 AM
+                  <br> Alemania vs. México - 10:00 AM
+                  <br> Brasil vs. Suiza - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>18 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Suiza vs. Corea del Sur - 7:00 AM
+                  <br> Bélgica vs. Panamá - 10:00 AM
+                  <br> Túnez vs. Inglaterra - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>19 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Colombia vs. Japón - 7:00 AM
+                  <br> Polonia vs. Senegal - 10:00 AM
+                  <br> Rusia vs. Egipto - 1:00 AM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>20 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Portugal vs. Marruecos - 7:00 AM
+                  <br> Uruguay vs. Arabia Saud. - 10:00 AM
+                  <br> Irán vs. España - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>21 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Dinamarca vs. Australia - 7:00 AM
+                  <br> Francia vs. Perú - 10:00 AM
+                  <br> Argentina vs. Croacia - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>22 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Brasil vs. Costa Rica - 7:00 AM
+                  <br> Nigeria vs. Islandia - 1:00 AM
+                  <br> Serbia vs. Suiza - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>23 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Bélgica vs. Túnez - 7:00 AM
+                  <br> Corea del Sur vs. México - 10:00 AM
+                  <br> Alemania vs. Suecia - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>24 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Inglaterra vs. Panamá - 7:00 AM
+                  <br> Japón vs. Senegal - 10:00 AM
+                  <br> Polonia vs. Colombia - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <h5>25 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Uruguay vs. Rusia - 9:00 AM
+                  <br> Arabia Saudita vs. Egipto - 9:00 AM
+                  <br> España vs. Marruecos - 1:00 PM
+                  <br> Irán vs. Portugal - 1:00 PM</li>
+              </ul>
+            </div>
+            <div class="col-md-4" style="margin: auto;">
+              <h5>26 de junio de 2018</h5>
+              <ul class="list-unstyled">
+                <li class="my-4">Dinamarca vs. Francia - 9:00 AM
+                  <br> Australia vs. Perú - 9:00 AM
+                  <br> Islandia vs. Croacia - 1:00 PM
+                  <br> Nigeria vs. Argentina - 1:00 PM</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Speakers -->
+  <div class="py-5 bg-light" style="text-align: center !important;" id="speakers">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Integrantes del Grupo</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-lg-4 animate-in-left">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/2.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Jaime Koga</b></h3>
+            <p class="text-muted">Programador</p>
+          </a>
+        </div>
+        <div class="col-6 col-lg-4">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/1.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Carlos Martinez</b></h3>
+            <p class="text-muted">Programador</p>
+          </a>
+        </div>
+        <div class="col-6 col-lg-4 animate-in-right">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/3.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Alfonso Carranza</b></h3>
+            <p class="text-muted">Programador</p>
+          </a>
+        </div>
+        <div class="col-6 col-lg-4 animate-in-left">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/4.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Giancarlo Rojas</b></h3>
+            <p class="text-muted">Documentación</p>
+          </a>
+        </div>
+        <div class="col-6 col-lg-4">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/5.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Jesús Zevallos</b></h3>
+            <p class="text-muted">Documentación</p>
+          </a>
+        </div>
+        <div class="col-6 mask col-lg-4 animate-in-right">
+          <a href="#">
+            <img src="{% static 'mundialitisapps/assets/index/6.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
+            <h3 class="mb-0"><b>Cynthia Ospina</b></h3>
+            <p class="text-muted">Documentación</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-md-left text-center p-4 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="my-3 col-lg-4 col-md-4">
+          <h3>MUNDIALITIS</h3>
+          <p class="text-light">Proyecto de Ingeniería de Software II</p>
+          <p class="my-3">Ciclo 2018-0</p>
+        </div>
+        <div class="my-3 col-lg-4 col-md-4"></div>
+        <div class="my-3 col-lg-4">
+          <h3>REPOSITORIO</h3>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img src="{% static 'mundialitisapps/assets/index/GitHub-Mark-Light-120px-plus.png' %}"> </a>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img style="height:50px;width:150px" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted text-center">© Copyright 2018 Mundialitis - All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- JavaScript dependencies -->
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- Script: Smooth scrolling between anchors in the same page -->
+  <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
+  <!--<script>alert('{{ message }}');</script>-->
+  <script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
+</body>
+
+</html>

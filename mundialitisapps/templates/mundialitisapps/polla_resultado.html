@@ -1,0 +1,22 @@
+{% extends 'mundialitisapps/template_base.html' %}
+{% block content %}
+<div class="row">
+    <div class="container">
+        <p class="display-3 text-center">Polla</p>
+        <table class="table table-dark">
+            <tr>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+            </tr>
+            {% for participante in participantes %}
+            <tr>
+                <td>{{participante.user.username}}</td>
+                <td>{{participante.puntaje}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <a class="btn btn-dark btn-lg" type="link" href="/main/"> Terminar </a>
+    </div>
+</div>
+{% endblock %}
