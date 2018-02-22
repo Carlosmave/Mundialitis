@@ -5,6 +5,12 @@ from datetime import datetime
 class User(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
+    firstname = models.CharField(max_length=500)
+    lastname = models.CharField(max_length=500)
+    email = models.CharField(max_length=500)
+    address = models.CharField(max_length=500)
+    country = models.CharField(max_length=500)
+    money = models.IntegerField()
     def __str__(self):
         return self.username
     class Meta:

@@ -51,22 +51,39 @@
               <ul class="list-group list-group-flush">
                 {% for tlobby in tlobbies %}
                   {% if tlobby.ltype|stringformat:"s" == "Privado" %}
-                    {% if tlobby.lstatus|stringformat:"s" == "Terminado" or tlobby.players_as_list|length > 11 %}
+                    {% if tlobby.lstatus|stringformat:"s" == "Terminado" %}
                     <li class="list-group-item"><a>{{tlobby.name}} - Cerrado<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                     {% else %}
-                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+
+                      {% if request.session.username in tlobby.players_as_list %}
+                        <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                      {% else %}
+                        {% if tlobby.players_as_list|length < 10 %}
+                          <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                          {% else %}
+                          <li class="list-group-item"><a>{{tlobby.name}} - Cerrado<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                          {% endif %}
+                      {% endif %}
+
                     {% endif %}
                   {% elif tlobby.ltype|stringformat:"s" == "Público" %}
                     {% if tlobby.lstatus|stringformat:"s" == "Terminado" %}
                     <li class="list-group-item"><a>{{tlobby.name}} - Cerrado</a></li>
                     {% else %}
-                    <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
-                    {% endif %}
+
+                      {% if request.session.username in tlobby.players_as_list %}
+                        <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido</a></li>
+                      {% else %}
+                        {% if tlobby.players_as_list|length < 10 %}
+                          <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                        {% else %}
+                          <li class="list-group-item"><a>{{tlobby.name}} - Cerrado</a></li>
+                        {% endif %}
+                      {% endif %}
+
+                      {% endif %}
                   {% endif %}
                 {% endfor %}
-                <!--<li class="list-group-item">Cras justo odio</li>-->
-                <!--<li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Vestibulum at eros</li>-->
               </ul>
 
 
