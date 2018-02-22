@@ -6340,17 +6340,3 @@ body > * {
     height: 100%;
     content: ' ';
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9) 0%, rgba(21, 0, 255, 0.9) 50%, rgba(255, 0, 0, 0.9) 100%); }
-
-
-
-
-
-
-
-
-
-/*url('');
-
-.field-img {
-      background: url('{% static 'mundialitisapps/assets/teams/3.png' %}') no-repeat center;
-    }*/
