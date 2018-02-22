@@ -1,36 +1,32 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido, PollaPuntaje
-from django.forms import formset_factory
-from .forms import RegisterForm, LoginForm, PollaForm, LobbyForm
+from .forms import RegisterForm, LoginForm, PollaForm, LobbyForm, CompleteRegForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 import random
 
 def index(request):
     if (request.method == 'POST' and 'register' in request.POST):
-        form=RegisterForm(request.POST) ##AQUI TAMBIEN LO DE PROBAR LA TABLA
+        form=RegisterForm(request.POST)
         if form.is_valid():
-
             regusername=request.POST.get('regusername', '')
             regpassword=request.POST.get('regpassword', '')
             regpassword2=request.POST.get('regpassword2', '')
-
             if regpassword==regpassword2:
                 exts = User.objects.filter(username=regusername).exists()
                 if exts == False:
-                    user_obj = User(username=regusername, password=regpassword)  ##AQUI PROBAR USAR LA TABLA DEFAULT DE DJANGO
+                    user_obj = User(username=regusername, password=regpassword, money=0)
                     user_obj.save()
-                    #return HttpResponseRedirect(reverse('jobs:cost'))
-                    return render(request, 'mundialitisapps/index.html')
+                    request.session['username'] = regusername
+                    return HttpResponseRedirect('/register/')
+                    #return render(request, 'mundialitisapps/index.html')
                 else:
                     messages.info(request, 'El usuario ya existe')
                     return render(request, 'mundialitisapps/index.html')
-                    #return render_to_response('mundialitisapps/index.html', {"message": El usuario ya existe});
             else:
                 messages.info(request, 'Las contraseñas no coinciden')
                 return render(request, 'mundialitisapps/index.html')
-
     elif (request.method == 'POST' and 'login' in request.POST):
         form2=LoginForm(request.POST)
         if form2.is_valid():
@@ -55,10 +51,33 @@ def index(request):
     else:
         form=RegisterForm()
         form2=LoginForm()
-    #return render(request, 'mundialitisapps/index.html', {
-    return render(request, 'mundialitisapps/index.html', {
-    'form':form, 'form2':form2,
-    })
+    return render(request, 'mundialitisapps/index.html', {'form':form, 'form2':form2,})
+
+
+def register(request):
+    if (request.method == 'POST' and 'cmpregister' in request.POST):
+        form4 = CompleteRegForm(request.POST)
+        if form4.is_valid():
+            regfirstname=request.POST.get('regfirstname', '')
+            reglastname=request.POST.get('reglastname', '')
+            regemail=request.POST.get('regemail', '')
+            regaddress=request.POST.get('regaddress', '')
+            regcountry=request.POST.get('regcountry', '')
+            regmoney=request.POST.get('regmoney', '')
+            user_obj = User.objects.get(username=request.session.get('username'))
+            user_obj.address = regaddress
+            user_obj.country = regcountry
+            user_obj.email = regemail
+            user_obj.firstname = regfirstname
+            user_obj.lastname = reglastname
+            user_obj.money = regmoney
+            user_obj.save()
+            request.session['is_logged'] = 'true'
+            request.session.set_expiry(0)
+            return HttpResponseRedirect('/main/')
+    else:
+        form4=CompleteRegForm()
+    return render(request, 'mundialitisapps/register.html', {'form4':form4})
 
 def main(request):
     is_logged=request.session.get('is_logged') ##esto se tendra que hacer a varias paginas para evitar el acceso por url sin login
@@ -108,10 +127,14 @@ def lobbytriviaindex(request):
 
 def lobbytriviadetails(request, id):
     tlobby = Lobby.objects.get(id=id)
-    context = {
-    'tlobby':tlobby,
-    }
-    return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
+    if(tlobby.lstatus != "Terminado"):
+        context = {
+        'tlobby':tlobby,
+        }
+        return render(request, 'mundialitisapps/lobbytriviadetailsnew.html', context)
+    else:
+        return HttpResponseRedirect('/trivialobbies/')
+
 
 
 def deletelobby(request, id):
@@ -130,7 +153,7 @@ def joinlobby(request, id, player):
         return HttpResponseRedirect('/trivialobbiesdetails/'+id)
 
 def polla(request):
-    user_id = request.session['userid']
+    user_id = request.session.get('userid')
     user=User.objects.get(id=user_id)
     partidos = Partido.objects.all()
     # configurar resultados
@@ -150,12 +173,6 @@ def polla(request):
     
     apuestas = PollaApuesta.objects.filter(user=user).order_by('id')
 
-    # apuestas = PollaApuesta.objects.filter(id_user = user)
-
-    # maybe move to results button?
-    '''
-    
-    '''
     context = {
         'apuestas' : apuestas,
     }
@@ -253,13 +270,6 @@ def polla_resultado(request):
     }
     return render(request, 'mundialitisapps/polla_resultado.html', context)
 
-def polla_terminar(request):
-    resultados = PollaPartido.objects.all()
-    for resultado in resultados:
-        resultado.ganador = None
-        resultado.save()
-
-    return render(request, 'mundialitisapps/polla_resultado.html', context)
 
 def triviasetup(request, id, mode):
     request.session['question'] = None
@@ -281,14 +291,11 @@ def triviabegin(request, option):
     objlob.gamemode = option
     objlob.save()
     return HttpResponseRedirect('/trivia/')
-    #return HttpResponseRedirect('/triviastart/')
 
 def trivia(request):
     actualid=request.session.get('question')
     actualttlscore=request.session.get('ttlscore')
     if actualid == None and actualttlscore == None: #borrarelttlscore  #podria omitir el if si arriba en vez de inicializarlo en none lo inicializo en 1 y 0
-        #id=1
-        #ttlscore=0
         objlob = Lobby.objects.get(id=request.session.get('idtlobbybegin'))
         request.session['gamemode'] = objlob.gamemode
         request.session['question'] = 1
@@ -302,7 +309,6 @@ def trivia(request):
         return render(request, 'mundialitisapps/triviaitself.html', context)
 
 def triviaprocessing(request, option):
-        #request.session['norld'] = "activated"
         request.session['processed'] = 'true'
         playeranswer=option
         objanswer = Answer.objects.get(id=request.session.get('question'))
@@ -325,13 +331,11 @@ def triviaprocessing(request, option):
         return HttpResponseRedirect('/trivia/')
 
 def trivianextquestion(request):
-    #request.session['norld'] = "dectivated"
     actualid=request.session.get('question')
-
     mode=request.session.get('gamemode')
 
     if mode == "Fácil":
-        if actualid < 10:
+        if actualid < 10:  #if actualid < 10:
             request.session['processed'] = 'false'
             newid=int(actualid)+1
             request.session['question'] = newid
@@ -343,6 +347,25 @@ def trivianextquestion(request):
             actualplayerscores=objlobby.playerscores
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
+
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                lps=objlobby.playerscores.split(',')
+                highestscore=-1
+                winner=''
+                for x in (0, (len(lps)-2)):
+                    splayerscore = lps[x]
+                    datascore = splayerscore.split(':')
+                    score=(datascore[1])[:1]
+                    if (int(datascore[1])>highestscore):
+                        highestscore = int(datascore[1])
+                        winner=datascore[0]
+
+
+                objlobby.lstatus = "Terminado"
+                objlobby.winner = winner
+                objlobby.save()
+
+
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Intermedio":
@@ -359,9 +382,28 @@ def trivianextquestion(request):
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
 
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                lps=objlobby.playerscores.split(',')
+                highestscore=-1
+                winner=''
+                for x in (0, (len(lps)-2)):
+                    splayerscore = lps[x]
+                    datascore = splayerscore.split(':')
+                    score=(datascore[1])[:1]
+                    if (int(datascore[1])>highestscore):
+                        highestscore = int(datascore[1])
+                        winner=datascore[0]
+
+
+                objlobby.lstatus = "Terminado"
+                objlobby.winner = winner
+                objlobby.save()
+
+
+
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Difícil":
-        if actualid < 30:
+        if actualid < 3:
             request.session['processed'] = 'false'
             newid=int(actualid)+1
             request.session['question'] = newid
@@ -374,19 +416,197 @@ def trivianextquestion(request):
             objlobby.playerscores = actualplayerscores + request.session.get('username') + ": " + str(request.session.get('ttlscore')) + ","
             objlobby.save()
 
-            if (len(objlobby.players_as_list) == (len(objlobby.playerscores_as_list)-1)):
+            if (((objlobby.players.count(","))+1) == (objlobby.playerscores.count(","))):
+                lps=objlobby.playerscores.split(',')
+                highestscore=-1
+                winner=''
+                for x in (0, (len(lps)-2)):
+                    splayerscore = lps[x]
+                    datascore = splayerscore.split(':')
+                    score=(datascore[1])[:1]
+                    if (int(datascore[1])>highestscore):
+                        highestscore = int(datascore[1])
+                        winner=datascore[0]
+
+
                 objlobby.lstatus = "Terminado"
+                objlobby.winner = winner
                 objlobby.save()
+
+
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
 
 def lobbytriviaoutcome(request):
     lobbyid=request.session.get('idtlobbybegin')
     objlobby=Lobby.objects.get(id=lobbyid)
-    context={
-    'objlobby': objlobby
-    }
+    context={'objlobby': objlobby}
     return render(request, 'mundialitisapps/lobbytriviaoutcome.html', context)
+
+
+def triviaend(request):
+    lobbyid=request.session.get('idtlobbybegin')
+    objlobby=Lobby.objects.get(id=lobbyid)
+    winner=objlobby.winner
+    money=objlobby.moneybet
+    numplayers = objlobby.players.count(",")
+    players = objlobby.players.split(",")
+    for x in (0, numplayers):
+        player = User.objects.get(username=players[x])
+        actualmoney = player.money
+        if players[x] == winner:
+            player.money = actualmoney + numplayers*money
+            player.save()
+        else:
+            player.money = actualmoney - money
+            player.save()
+    #player = User.objects.get(username=players[x])
+    #actualmoney = player.money
+    return deletelobby(request, lobbyid)
+    #return HttpResponseRedirect('/trivialobbies/')
+    #return render(request, 'mundialitisapps/lobbytriviaoutcome.html', context)
+
+
+
+    #return render(request, 'mundialitisapps/lobbytriviaoutcome.html')
+
+#§ solo aqui hacer las comparaciones de longitudes de listas, en el lobbytriviaoutcome solo revisar si el estado es terminado
+    #len no funciona :v
+    #poner todo esto dentro de trivia, ya no es necesaria esta funcion, pero para que no se ejecute siempre poner un condicional para que solo pase si ya termino
+    #pensar si hacer esto o simplemente bloquear todos los botones de unir
+    #si jugador sale bloquear botones, si creador sale si permitirle acceso para cerrarlo
+    # ver si metod el lstatus=Iniciado dentro de la funcion trivia
+    #decidir si al salir de la pagina el usuario puede volver a ver sus resultados o ya no, si tiene acceso a los botones o ya no
+
+    #actualmente si ya cerro en trivialobbies, ni usuario ni administrador pueden entrar. Pero si retroceden en el navegador al usuario dejarlo entrar a ver sus resultados y a administradortambien (opcional)
+    #es opcional porque se supone que si el usuario presiona continuar se irá a trivialobbies y ya no podrá acceder al lobby, solo le llegara o se le quitara el dinero
+    #y el administrador no debe cerrar hasta que se le muestre el mensaje de ya termino y lo cierre mostrarlo como instruccion
+    #preferentemente dejar el lobbytriviaoutcome independiente y no meterlo en el trivia
+
+def polla(request):
+    user_id = request.session['userid']
+    user=User.objects.get(id=user_id)
+    partidos = Partido.objects.all()
+    # configurar resultados
+    for partido in partidos:
+        resultado = PollaPartido.objects.filter(id_partido = partido)[:1]
+        if not resultado:
+            # crea row partido para grabar resultados
+            PollaPartido.objects.create(id_partido = partido)
+
+    # init setup apuestas
+    for partido in partidos:
+        polla_partido = PollaPartido.objects.get(id_partido=partido)
+        ap = PollaApuesta.objects.filter(user=user, polla_partido=polla_partido)[:1]
+        if not ap:
+            # creates rows for displays
+            PollaApuesta.objects.create(user=user, polla_partido=polla_partido)
+
+    apuestas = PollaApuesta.objects.filter(user=user).order_by('id')
+
+    # apuestas = PollaApuesta.objects.filter(id_user = user)
+
+    # maybe move to results button?
+    '''
+
+    '''
+    context = {
+        'apuestas' : apuestas,
+    }
+    return render(request, 'mundialitisapps/pollaindex.html', context)
+
+# configurar apuesta
+def polla_apuesta(request, id_p):
+    partido = Partido.objects.get(id=id_p)
+    partidos = Partido.objects.all()
+    user_id = request.session['userid']
+    user=User.objects.get(id=user_id)
+    polla_partido = PollaPartido.objects.get(id_partido=partido)
+    max_part = len(partidos)
+    min_part = 1
+    next_ele = int(id_p) + 1
+    prev_ele = int(id_p) - 1
+    apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+        user=user)
+    # validation and goal assignation
+    if request.method == 'POST':
+        form = PollaForm(request.POST)
+        if form.is_valid():
+            ap = form.cleaned_data['apuesta']
+            # definir apuesta
+            apuesta = PollaApuesta.objects.get(polla_partido=polla_partido,\
+                user=user)
+            apuesta.apuesta = ap
+            apuesta.save()
+            messages.success(request, 'Ha apostado satisfactoriamente.')
+            apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+                user=user)
+            context = {
+                'id_p' : id_p,
+                'partido' : partido,
+                'apuesta_actual' : apuesta_actual,
+                'form': form,
+                'prev_ele': prev_ele,
+                'next_ele': next_ele,
+                'max_part': max_part,
+                'min_part': min_part,
+            }
+            return render(request, 'mundialitisapps/polla.html', context)
+    else:
+        form = PollaForm()
+
+    context = {
+        'id_p': id_p,
+        'partido' : partido,
+        'apuesta_actual' : apuesta_actual,
+        'form' : form,
+        'prev_ele': prev_ele,
+        'next_ele': next_ele,
+        'max_part': max_part,
+        'min_part': min_part,
+    }
+
+    return render(request, 'mundialitisapps/polla.html', context)
+
+def polla_resultado(request):
+    participantes = PollaApuesta.objects.all().distinct('user')
+
+    polla_resultado = PollaPartido.objects.all()
+    polla_puntos = PollaPuntaje.objects.all()
+    if not polla_puntos:
+        for participante in participantes:
+            PollaPuntaje.objects.create(user=participante.user)
+    polla_puntos = PollaPuntaje.objects.all()
+    # calcular goles
+    rng = random.random()
+    for partido in polla_resultado:
+        if rng < 0.33:
+            e_ganador = partido.id_partido.equipo_a
+        elif rng < 0.67:
+            e_ganador = partido.id_partido.equipo_b
+        else:
+            e_ganador = 'Empate'
+        partido.ganador = e_ganador
+        partido.save()
+
+    #listar personas con puntaje
+    for participante in participantes:
+        apuestas = PollaApuesta.objects.filter(user=participante.user)
+        puntos = 0
+        for apuesta in apuestas:
+            p = PollaPartido.objects.get(id_partido=apuesta.polla_partido.id_partido)
+            if apuesta.apuesta == p.ganador:
+                puntos+=1
+        puntaje = PollaPuntaje.objects.get(user_id=participante.user)
+        puntaje.puntaje = puntos
+        puntaje.save()
+
+    participantes = PollaPuntaje.objects.all().order_by('-puntaje')
+    context = {
+        'participantes': participantes,
+    }
+    return render(request, 'mundialitisapps/polla_resultado.html', context)
+
 
 def begin(request):
     return render(request, 'mundialitisapps/triviaitself.html')

@@ -59,5 +59,5 @@ function begingame(val){
 }
 
 function endgame(){
-
+  location.href= document.getElementById('endlobby').value;
 }

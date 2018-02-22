@@ -5,6 +5,12 @@ from datetime import datetime
 class User(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
+    firstname = models.CharField(max_length=500)
+    lastname = models.CharField(max_length=500)
+    email = models.CharField(max_length=500)
+    address = models.CharField(max_length=500)
+    country = models.CharField(max_length=500)
+    money = models.IntegerField()
     def __str__(self):
         return self.username
 
@@ -55,6 +61,7 @@ class Lobby(models.Model):
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     moneybet =  models.IntegerField()
     playerscores =  models.TextField()
+    winner = models.CharField(max_length=200)
     def players_as_list(self):
         return self.players.split(',')
     def playerscores_as_list(self):
@@ -63,3 +70,23 @@ class Lobby(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
+
+class Partido(models.Model):
+    equipo_a = models.TextField()
+    equipo_b = models.TextField()
+
+class Polla(models.Model):
+    estado = models.BooleanField(default=False)
+
+class PollaPartido(models.Model):
+    id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
+    ganador = models.TextField()
+
+class PollaApuesta(models.Model):
+    polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    apuesta = models.TextField()
+
+class PollaPuntaje(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    puntaje = models.IntegerField(default=0)
