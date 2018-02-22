@@ -253,6 +253,14 @@ def polla_resultado(request):
     }
     return render(request, 'mundialitisapps/polla_resultado.html', context)
 
+def polla_terminar(request):
+    resultados = PollaPartido.objects.all()
+    for resultado in resultados:
+        resultado.ganador = None
+        resultado.save()
+
+    return render(request, 'mundialitisapps/polla_resultado.html', context)
+
 def triviasetup(request, id, mode):
     request.session['question'] = None
     request.session['ttlscore'] = None
