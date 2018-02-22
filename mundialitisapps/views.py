@@ -375,7 +375,7 @@ def trivianextquestion(request):
 
             return HttpResponseRedirect('/lobbytriviaoutcome/')
     elif mode == "Difícil":
-        if actualid < 3:
+        if actualid < 30:
             request.session['processed'] = 'false'
             newid=int(actualid)+1
             request.session['question'] = newid
