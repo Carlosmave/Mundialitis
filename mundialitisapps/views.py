@@ -544,11 +544,10 @@ def polla_apuesta(request, id_p):
 
 def polla_resultado(request):
     participantes = PollaApuesta.objects.all().distinct('user')
-
     polla_resultado = PollaPartido.objects.all()
-    polla_puntos = PollaPuntaje.objects.all()
-    if not polla_puntos:
-        for participante in participantes:
+    for participante in participantes:
+        polla_puntos = PollaPuntaje.objects.filter(user=participante.user)[:1]
+        if not polla_puntos:
             PollaPuntaje.objects.create(user=participante.user)
     polla_puntos = PollaPuntaje.objects.all()
     # calcular goles
