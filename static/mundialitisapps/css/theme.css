@@ -4,6 +4,7 @@
 * Copyright 2014-2018 Pingendo (https://pingendo.com)
 */
 @import url("https://fonts.googleapis.com/css?family=Roboto:200,300,400");
+{% load staticfiles %}
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
