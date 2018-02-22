@@ -30,7 +30,7 @@ DEBUG = True
 #ALLOWED_HOSTS = []
 #Heroku
 
-ALLOWED_HOSTS = ['localhost', 'mundialitis.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'mundialitis.herokuapp.com', 'mundialitis2.herokuapp.com']
 
 
 # Application definition
