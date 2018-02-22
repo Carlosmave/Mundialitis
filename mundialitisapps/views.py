@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import User, Question, Answer, Lobby
-from .forms import RegisterForm, LoginForm, LobbyForm, CompleteRegForm
+from .models import User, Question, Answer, Lobby, Partido, Polla, PollaApuesta, PollaPartido, PollaPuntaje
+from .forms import RegisterForm, LoginForm, LobbyForm, CompleteRegForm, PollaForm
 from django.contrib import messages
+import random
 # Create your views here.
 
 
@@ -427,7 +428,129 @@ def triviaend(request):
     #y el administrador no debe cerrar hasta que se le muestre el mensaje de ya termino y lo cierre mostrarlo como instruccion
     #preferentemente dejar el lobbytriviaoutcome independiente y no meterlo en el trivia
 
+def polla(request):
+    user_id = request.session['userid']
+    user=User.objects.get(id=user_id)
+    partidos = Partido.objects.all()
+    # configurar resultados
+    for partido in partidos:
+        resultado = PollaPartido.objects.filter(id_partido = partido)[:1]
+        if not resultado:
+            # crea row partido para grabar resultados
+            PollaPartido.objects.create(id_partido = partido)
 
+    # init setup apuestas
+    for partido in partidos:
+        polla_partido = PollaPartido.objects.get(id_partido=partido)
+        ap = PollaApuesta.objects.filter(user=user, polla_partido=polla_partido)[:1]
+        if not ap:
+            # creates rows for displays
+            PollaApuesta.objects.create(user=user, polla_partido=polla_partido)
+
+    apuestas = PollaApuesta.objects.filter(user=user).order_by('id')
+
+    # apuestas = PollaApuesta.objects.filter(id_user = user)
+
+    # maybe move to results button?
+    '''
+
+    '''
+    context = {
+        'apuestas' : apuestas,
+    }
+    return render(request, 'mundialitisapps/pollaindex.html', context)
+
+# configurar apuesta
+def polla_apuesta(request, id_p):
+    partido = Partido.objects.get(id=id_p)
+    partidos = Partido.objects.all()
+    user_id = request.session['userid']
+    user=User.objects.get(id=user_id)
+    polla_partido = PollaPartido.objects.get(id_partido=partido)
+    max_part = len(partidos)
+    min_part = 1
+    next_ele = int(id_p) + 1
+    prev_ele = int(id_p) - 1
+    apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+        user=user)
+    # validation and goal assignation
+    if request.method == 'POST':
+        form = PollaForm(request.POST)
+        if form.is_valid():
+            ap = form.cleaned_data['apuesta']
+            # definir apuesta
+            apuesta = PollaApuesta.objects.get(polla_partido=polla_partido,\
+                user=user)
+            apuesta.apuesta = ap
+            apuesta.save()
+            messages.success(request, 'Ha apostado satisfactoriamente.')
+            apuesta_actual = PollaApuesta.objects.get(polla_partido=polla_partido,\
+                user=user)
+            context = {
+                'id_p' : id_p,
+                'partido' : partido,
+                'apuesta_actual' : apuesta_actual,
+                'form': form,
+                'prev_ele': prev_ele,
+                'next_ele': next_ele,
+                'max_part': max_part,
+                'min_part': min_part,
+            }
+            return render(request, 'mundialitisapps/polla.html', context)
+    else:
+        form = PollaForm()
+
+    context = {
+        'id_p': id_p,
+        'partido' : partido,
+        'apuesta_actual' : apuesta_actual,
+        'form' : form,
+        'prev_ele': prev_ele,
+        'next_ele': next_ele,
+        'max_part': max_part,
+        'min_part': min_part,
+    }
+
+    return render(request, 'mundialitisapps/polla.html', context)
+
+def polla_resultado(request):
+    participantes = PollaApuesta.objects.all().distinct('user')
+
+    polla_resultado = PollaPartido.objects.all()
+    polla_puntos = PollaPuntaje.objects.all()
+    if not polla_puntos:
+        for participante in participantes:
+            PollaPuntaje.objects.create(user=participante.user)
+    polla_puntos = PollaPuntaje.objects.all()
+    # calcular goles
+    rng = random.random()
+    for partido in polla_resultado:
+        if rng < 0.33:
+            e_ganador = partido.id_partido.equipo_a
+        elif rng < 0.67:
+            e_ganador = partido.id_partido.equipo_b
+        else:
+            e_ganador = 'Empate'
+        partido.ganador = e_ganador
+        partido.save()
+
+    #listar personas con puntaje
+    for participante in participantes:
+        apuestas = PollaApuesta.objects.filter(user=participante.user)
+        puntos = 0
+        for apuesta in apuestas:
+            p = PollaPartido.objects.get(id_partido=apuesta.polla_partido.id_partido)
+            if apuesta.apuesta == p.ganador:
+                puntos+=1
+        puntaje = PollaPuntaje.objects.get(user_id=participante.user)
+        puntaje.puntaje = puntos
+        puntaje.save()
+
+    participantes = PollaPuntaje.objects.all().order_by('-puntaje')
+    context = {
+        'participantes': participantes,
+    }
+    return render(request, 'mundialitisapps/polla_resultado.html', context)
 
 
 def begin(request):

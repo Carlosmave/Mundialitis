@@ -22,3 +22,6 @@ class LobbyForm(forms.Form):
     lobbyname = forms.CharField()
     lobbypassword = forms.CharField()
     lobbymoney = forms.IntegerField()
+
+class PollaForm(forms.Form):
+    apuesta = forms.CharField()

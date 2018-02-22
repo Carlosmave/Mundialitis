@@ -1,0 +1,49 @@
+{% extends 'mundialitisapps/template_base.html' %}
+{% block content %}
+<!--Listar todos los juegos polla-->
+<div class="row">
+    <div class="container">
+        <p class="display-3 text-center">Polla Partidos</p>
+    <table class="table table-dark">    
+        <tr>
+            <th></th>
+            <th>
+                Partido
+            </th>
+            <th></th>
+            <th>
+                Apuesta
+            </th>
+        </tr>
+        {% for apuesta in apuestas %}
+        <tr class = "h3">
+            <td class = "col-sm-4 align-middle">
+                {{apuesta.polla_partido.id_partido.equipo_a}}
+            </td>
+            <td class="col-sm-1 align-middle">
+                 vs 
+            </td>
+            <td class = "col-sm-4 align-middle">
+                {{apuesta.polla_partido.id_partido.equipo_b}}
+            </td>
+            <!---->
+            <td class="col-sm-3 align-middle">
+                
+                {% if not apuesta.apuesta %}
+                <a class="btn btn-info text-danger btn-block" href="/polla/{{apuesta.polla_partido.id_partido.id}}">
+                    No ha apostado
+                </a>
+                {% else %}
+                <a class="btn btn-primary text-dark btn-block" href="/polla/{{apuesta.polla_partido.id_partido.id}}">
+                    {{ apuesta.apuesta }}
+                </a>
+                {% endif %}
+                
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a class="btn btn-primary text-dark btn-lg" href="/polla/resultados">
+        Ver resultados
+    </a>
+{% endblock %}

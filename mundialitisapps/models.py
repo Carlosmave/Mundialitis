@@ -56,3 +56,23 @@ class Lobby(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
+
+class Partido(models.Model):
+    equipo_a = models.TextField()
+    equipo_b = models.TextField()
+
+class Polla(models.Model):
+    estado = models.BooleanField(default=False)
+
+class PollaPartido(models.Model):
+    id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
+    ganador = models.TextField()
+
+class PollaApuesta(models.Model):
+    polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    apuesta = models.TextField()
+
+class PollaPuntaje(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    puntaje = models.IntegerField(default=0)

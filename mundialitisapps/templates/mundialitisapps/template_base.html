@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <title>Mundialitis</title>
+  <!-- PAGE settings -->
+  <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
+  <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+  <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
+
+  <!-- CSS dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
+  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
+  <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
+  <script src="{% static 'mundialitisapps/js/trivia.js' %}"></script>
+  <!--<script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>-->
+  <!-- Script: Animated entrance -->
+  <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
+
+  <style>
+
+  #optn0{
+    pointer-events: none;
+  }
+
+
+  #optn1:hover, #optn2:hover, #optn3:hover, #optn4:hover {
+      background-color: red;
+      color:white;
+  }
+
+  #btnopt:hover{
+    background-color: red;
+    color:white;
+  }
+
+  </style>
+
+</head>
+<body style="overflow-x: hidden;" class="text-center">
+    <div class="d-flex cover py-5 russianflagstyle" style="background-image: url('{% static      'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-white">
+                    {% block content %}
+                    {% endblock %}
+                </div> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>

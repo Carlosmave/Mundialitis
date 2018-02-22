@@ -31,4 +31,8 @@ urlpatterns = [
     url(r'^deletelobby/(?P<id>\d+)/$', views.deletelobby, name='deletelobby'),
     url(r'^joinlobby/(?P<id>\d+)/(?P<player>[-\w]+)/$', views.joinlobby, name='joinlobby'),
 
+    url(r'^polla/$', views.polla, name='pollahome'),
+    url(r'^polla/(?P<id_p>\d+)/$', views.polla_apuesta, name='polla'),
+    url(r'^polla/resultados', views.polla_resultado, name='polla_resultado'),
+
 ];
