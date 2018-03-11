@@ -26,7 +26,7 @@
 
 
   <!-- Cover -->
-  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/trivia/world-cup-beat.jpg' %}');">
+  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/polla/messi-neymar-worldcup.jpg' %}');">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 align-self-center text-lg-left text-center">
@@ -56,10 +56,10 @@
                     {% else %}
 
                       {% if request.session.username in tlobby.players_as_list %}
-                        <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                        <li class="list-group-item"><a href="/pollalobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                       {% else %}
                         {% if tlobby.players_as_list|length < 10 %}
-                          <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                          <li class="list-group-item"><a href="/pollalobbiesdetails/{{tlobby.id}}">{{tlobby.name}}<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                           {% else %}
                           <li class="list-group-item"><a>{{tlobby.name}} - Cerrado<img src="{% static 'mundialitisapps/assets/lobby/private.png' %}" style="float:right;width:20px;height:20px;"></a></li>
                           {% endif %}
@@ -72,10 +72,10 @@
                     {% else %}
 
                       {% if request.session.username in tlobby.players_as_list %}
-                        <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido</a></li>
+                        <li class="list-group-item"><a href="/pollalobbiesdetails/{{tlobby.id}}">{{tlobby.name}} - Unido</a></li>
                       {% else %}
                         {% if tlobby.players_as_list|length < 10 %}
-                          <li class="list-group-item"><a href="/trivialobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
+                          <li class="list-group-item"><a href="/pollalobbiesdetails/{{tlobby.id}}">{{tlobby.name}}</a></li>
                         {% else %}
                           <li class="list-group-item"><a>{{tlobby.name}} - Cerrado</a></li>
                         {% endif %}
@@ -111,7 +111,7 @@
                   <label for="lobbymoney"><b>Apuesta (S/.)</b></label>
                   <input name="lobbymoney" id="lobbymoney" class="form-control" type="number" placeholder="Ingrese la cantidad de dinero a apostar" required>
 
-                  <button name="createlobby" type="submit" class="btn mt-4 btn-block p-2 btn-success">Crear</button>
+                  <button name="createlobbypolla" type="submit" class="btn mt-4 btn-block p-2 btn-success">Crear</button>
 
 
                 </div>

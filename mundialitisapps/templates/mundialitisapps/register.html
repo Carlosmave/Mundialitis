@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% load staticfiles %}
-  <!-- PAGE settings -->
+  <!-- Page settings -->
   <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
   <title>Complete su registro en Mundialitis</title>
   <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
@@ -16,6 +16,8 @@
 </head>
 
 <body class="bg-light">
+
+  <!-- Register form -->
   <div class="russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/index/kremlin.jpg' %}');">
   <div class="py-5">
     <div class="container">
@@ -32,27 +34,21 @@
       <div class="row">
         <div class="col-md-12 order-md-1">
           <h4 class="mb-3"><b>Datos</b></h4>
-
           <form method="post"> {% csrf_token %}
             <div class="row">
-
               <div class="col-md-6 mb-3"> <label>Nombres</label>
                 <input name="regfirstname" id="rfirstname" class="form-control" type="text" required>
               </div>
-
               <div class="col-md-6 mb-3"> <label>Apellidos</label>
                 <input name="reglastname" id="rlastname" class="form-control" type="text" required>
               </div>
             </div>
-
             <div class="mb-3"> <label>Email</label>
               <input name="regemail" id="remail" class="form-control" type="email" placeholder="zabivaca@mundialitis.com" required>
             </div>
-
             <div class="mb-3"> <label>Dirección</label>
               <input name="regaddress" id="raddress" class="form-control" type="text" placeholder="1234 Rusia" required>
             </div>
-
             <div class="row">
               <div class="col-md-12 mb-3"> <label>Pais</label>
                 <select class="custom-select d-block w-100" name="regcountry" id="rcountry" required>
@@ -92,7 +88,6 @@
                 </select>
               </div>
             </div>
-
             <hr class="mb-4">
             <h4 class="mb-3"><b>Pagos (S/.)</b></h4>
             <div class="row">
@@ -107,11 +102,9 @@
       </div>
     </div>
   </div>
-
 </div>
 
-
-
+  <!-- Footer -->
   <footer class="text-md-left text-center p-4 bg-dark text-light">
     <div class="container">
       <div class="row">
@@ -137,6 +130,7 @@
     </div>
   </footer>
 
+  <!-- JavaScript dependencies -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

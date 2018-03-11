@@ -24,9 +24,6 @@ class LobbyForm(forms.Form):
     lobbypassword = forms.CharField()
     lobbymoney = forms.IntegerField()
 
-class PollaForm(forms.Form):
-    apuesta = forms.CharField()
-
 class TeamForm(forms.Form):
     POSICIONES_CHOICES = (
         ('arquero', 'ARQUERO'),

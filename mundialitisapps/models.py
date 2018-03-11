@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
+
+#General Models
 class User(models.Model):
     username = models.CharField(max_length=500)
     password = models.CharField(max_length=500)
@@ -15,25 +17,6 @@ class User(models.Model):
         return self.username
     class Meta:
         verbose_name_plural = "Users"
-
-class Question(models.Model):
-    question = models.CharField(max_length=250)
-    option1 = models.CharField(max_length=100)
-    option2 = models.CharField(max_length=100)
-    option3 = models.CharField(max_length=100)
-    option4 = models.CharField(max_length=100)
-    def __str__(self):
-        return self.question
-    class Meta:
-        verbose_name_plural = "Questions"
-
-class Answer(models.Model):
-    answer = models.CharField(max_length=200)
-    score = models.CharField(max_length=200)
-    def __str__(self):
-        return self.answer
-    class Meta:
-        verbose_name_plural = "Answers"
 
 class Lobby(models.Model):
     name = models.CharField(max_length=200)
@@ -56,50 +39,58 @@ class Lobby(models.Model):
         return self.name
     class Meta:
         verbose_name_plural = "Trivia Lobbies"
+        ordering = ['id']
 
+#Trivia Models
+class Question(models.Model):
+    question = models.CharField(max_length=250)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    def __str__(self):
+        return self.question
+    class Meta:
+        verbose_name_plural = "Questions"
+
+class Answer(models.Model):
+    answer = models.CharField(max_length=200)
+    score = models.CharField(max_length=200)
+    def __str__(self):
+        return self.answer
+    class Meta:
+        verbose_name_plural = "Answers"
+
+#Polla Models
 class Partido(models.Model):
     equipo_a = models.TextField()
     equipo_b = models.TextField()
+    resultado = models.TextField()
+    identifier = models.CharField(max_length=200)
+    def __str__(self):
+        return equipo_a + " vs " + equipo_b
+    class Meta:
+        verbose_name_plural = "Partidos"
+        ordering = ['id']
 
-class Polla(models.Model):
-    estado = models.BooleanField(default=False)
-
-class PollaPartido(models.Model):
-    id_partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
-    ganador = models.TextField()
-
-class PollaApuesta(models.Model):
-    polla_partido = models.ForeignKey(PollaPartido, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    apuesta = models.TextField()
-
-class PollaPuntaje(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    puntaje = models.IntegerField(default=0)
-
+#Arma tu Equipo Models
 class Team(models.Model):
     pais = models.CharField(max_length=50)
-
     def __str__(self):
         return self.pais
-
     class Meta:
         db_table = 'mundialitisapps_teams'
         verbose_name = "Team"
         verbose_name_plural = "Teams"
 
-
 class Player(models.Model):
     nombre = models.CharField(max_length=200)
     pais = models.ForeignKey('Team', on_delete=models.CASCADE)
     puntaje = models.IntegerField()
-
     def __str__(self):
         return self.nombre
-
     def puntaje_as_text(self):
         return '{:,}'.format(self.puntaje)
-
     class Meta:
         db_table = 'mundialitisapps_players'
         verbose_name = "Player"

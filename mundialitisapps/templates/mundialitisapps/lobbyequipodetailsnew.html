@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <!-- PAGE settings -->
+  <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
+  <title>Lobby - {{tlobby.name}}</title>
+  <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
+  <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
+
+  <!-- CSS dependencies -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
+  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
+  <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
+  <script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>
+  <!-- Script: Animated entrance -->
+  <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
+</head>
+
+<body style="overflow-x: hidden;">
+
+{% if tlobby.ltype|stringformat:"s" == "Privado" %}
+
+
+
+
+  <!-- Cover -->
+  <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/equipo/germany-team.jpg' %}');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 align-self-center text-lg-left text-center">
+          <h1 class="mb-0 mt-5 display-4"><b>{{tlobby.name}}</b></h1>
+          <p class="mb-5">Apuesta: S/.{{tlobby.moneybet}}<br>{{tlobby.created_at}}</p>
+        </div>
+        <div class="col-lg-5 p-3">
+            <h4 class="mb-4 text-center">Administrador: {{tlobby.administrator}}</h4>
+            <div class="card" style="width: auto;">
+              <div class="card-header">Jugadores</div>
+
+
+              <ul class="list-group list-group-flush">
+                <!--{#% for tlobby in tlobbies %#}-->
+                {% for player in tlobby.players_as_list %}
+                  <li class="list-group-item">{{player}}<img src="{% static 'mundialitisapps/assets/lobby/user.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+                {% endfor %}
+                  <!--<li class="list-group-item">{{players}}<img src="{% static 'mundialitisapps/assets/lobby/user.png' %}" style="float:right;width:20px;height:20px;"></a></li>-->
+                <!--{#% endfor %#}-->
+              </ul>
+
+
+            </div>
+
+            {% if tlobby.administrator != request.session.username %}
+              {% if request.session.username in tlobby.players_as_list %} <!--Al hacer la prueba si usuario tiene por ejemplo nombre o y ya ahi otro con nombre carlos no le deja entrar-->
+                  {% if tlobby.lstatus|stringformat:"s" == "Iniciado" %}
+                    <button class="btn mt-4 btn-block p-2 btn-danger" id="setup" value="{{tlobby.id}}" onclick="setupgame3(2);">CONTINUAR</button>
+                  {% else %}
+                    <button disabled class="btn mt-4 btn-block p-2 btn-danger">CONTINUAR</button>
+                  {% endif %}
+              {% else %}
+                {% if tlobby.players_as_list|length < 10 %}
+                  <button class="btn mt-4 btn-block p-2 btn-danger" id="joinlobby" value="{{tlobby.id}}/{{request.session.username}}" onclick="joinlobby();">UNIRSE AL LOBBY</button>
+                {% else %}
+                  <button disabled class="btn mt-4 btn-block p-2 btn-danger">LOBBY LLENO</button>
+                {% endif %}
+              {% endif %}
+            {% elif tlobby.administrator == request.session.username %}
+              {% if tlobby.players_as_list|length > 1 %}
+              <button class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame3(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
+              {% else %}
+              <button disabled class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame3(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
+              {% endif %}
+              <button class="btn mt-4 btn-block p-2 btn-danger" id="deletelobby" value="{{tlobby.id}}" onclick="deletelobby();">ELIMINAR LOBBY</a></button>
+            {% endif %}
+
+
+
+
+              <div id="id01" class="modal" style="display:block">
+                <div class="modal-content animate">
+
+                  <div class="imgcontainer">
+                    <!--<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>-->
+                    <img src="{% static 'mundialitisapps/assets/lobby/football.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
+                  </div>
+
+                  <div class="container" style="text-align: center !important;">
+
+
+                    <label for="lobbypassword"><b>Contraseña</b></label>
+                    <input name="lobbypassword" id="lobbypassword" class="form-control" type="password" placeholder="Ingrese la contraseña del lobby">
+
+                    <button name="accesslobby" class="btn mt-4 btn-block p-2 btn-success" id="accesslobby" value="{{tlobby.lobpass}}" onclick="entry();">Ingresar</button>
+
+
+                  </div>
+                  <div style="margin-top:-25px" class="container">
+                    <button style="margin-bottom:5%" type="button" onclick="goback()" class="btn mt-4 btn-block p-2 btn-danger">Regresar</button>
+                  </div>
+                </div>
+              </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+{% elif tlobby.ltype|stringformat:"s" == "Público" %}
+
+<!-- Cover -->
+<div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/equipo/germany-team.jpg' %}');">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 align-self-center text-lg-left text-center">
+        <h1 class="mb-0 mt-5 display-4"><b>{{tlobby.name}}</b></h1>
+        <p class="mb-5">Apuesta: S/.{{tlobby.moneybet}}<br>{{tlobby.created_at}}</p>
+      </div>
+      <div class="col-lg-5 p-3">
+          <h4 class="mb-4 text-center">Administrador: {{tlobby.administrator}}</h4>
+          <div class="card" style="width: auto;">
+            <div class="card-header">Jugadores</div>
+
+
+            <ul class="list-group list-group-flush">
+              <!--{#% for tlobby in tlobbies %#}-->
+              {% for player in tlobby.players_as_list %}
+                <li class="list-group-item">{{player}}<img src="{% static 'mundialitisapps/assets/lobby/user.png' %}" style="float:right;width:20px;height:20px;"></a></li>
+              {% endfor %}
+              <!--{#% endfor %#}-->
+            </ul>
+
+
+          </div>
+          {% if tlobby.administrator != request.session.username %}
+            {% if request.session.username in tlobby.players_as_list %}
+                {% if tlobby.lstatus|stringformat:"s" == "Iniciado" %}
+                  <button class="btn mt-4 btn-block p-2 btn-danger" id="setup" value="{{tlobby.id}}" onclick="setupgame3(2);">CONTINUAR</button>
+                  {% else %}
+                  <button disabled class="btn mt-4 btn-block p-2 btn-danger">CONTINUAR</button>
+                  {% endif %}
+            {% else %}
+              {% if tlobby.players_as_list|length < 10 %}
+                <button class="btn mt-4 btn-block p-2 btn-danger" id="joinlobby" value="{{tlobby.id}}/{{request.session.username}}" onclick="joinlobby3();">UNIRSE AL LOBBY</button>
+              {% else %}
+                <button disabled class="btn mt-4 btn-block p-2 btn-danger">LOBBY LLENO</button>
+              {% endif %}
+            {% endif %}
+            {% elif tlobby.administrator == request.session.username %}
+              {% if tlobby.players_as_list|length > 1 %}
+              <button class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame3(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
+              {% else %}
+              <button disabled class="btn mt-4 btn-block p-2 btn-danger" onclick="setupgame3(1);" id="setup" value="{{tlobby.id}}">INICIAR JUEGO</button>
+              {% endif %}
+              <button class="btn mt-4 btn-block p-2 btn-danger" id="deletelobby" value="{{tlobby.id}}" onclick="deletelobby3();">ELIMINAR LOBBY</a></button>
+            {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endif %}
+
+
+  <!-- Footer -->
+  <footer class="text-md-left text-center p-4 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="my-3 col-lg-4 col-md-4">
+          <h3>MUNDIALITIS</h3>
+          <p class="text-light">Proyecto de Ingeniería de Software II</p>
+          <p class="my-3">Ciclo 2018-0</p>
+        </div>
+        <div class="my-3 col-lg-4 col-md-4"></div>
+        <div class="my-3 col-lg-4">
+          <h3>REPOSITORIO</h3>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img src="{% static 'mundialitisapps/assets/index/GitHub-Mark-Light-120px-plus.png' %}"> </a>
+          <a href="https://github.com/Carlosmave/Mundialitis" target="blank">
+            <img style="height:50px;width:150px" src="{% static 'mundialitisapps/assets/index/GitHub_Logo_White.png' %}"> </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted text-center">© Copyright 2018 Mundialitis - All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- JavaScript dependencies -->
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- Script: Smooth scrolling between anchors in the same page -->
+  <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
+  <!--<script>alert('{{ message }}');</script>-->
+  <script src="{% static 'mundialitisapps/js/privatelobby.js' %}"></script>
+  <script></script>
+</body>
+
+</html>

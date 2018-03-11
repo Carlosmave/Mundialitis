@@ -5,20 +5,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% load staticfiles %}
-  <!-- PAGE settings -->
+  <!-- Page settings -->
   <link rel="icon" href="{% static 'mundialitisapps/assets/index/favicon-logo-32x32.png' %}">
   <title>¡Bienvenido a Mundialitis!</title>
   <meta name="description" content="Tu página sobre el Mundial de la FIFA Rusia 2018">
   <meta name="keywords" content="Mundialitis mundial rusia 2018 fifa proyecto software juegos">
-
   <!-- CSS dependencies -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="{% static 'mundialitisapps/css/theme.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'mundialitisapps/css/stylelogin.css' %}" type="text/css">
-  <!-- Script: Make my navbar transparent when the document is scrolled to top -->
+  <!-- Scripts -->
   <script src="{% static 'mundialitisapps/js/navbar-ontop.js' %}"></script>
-  <script src="{% static 'mundialitisapps/js/login-register.js' %}"></script>
-  <!-- Script: Animated entrance -->
   <script src="{% static 'mundialitisapps/js/animate-in.js' %}"></script>
 </head>
 
@@ -33,30 +30,23 @@
             <a class="nav-link text-light" href="#"><b>INICIO</b></a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#informacion"><b>INFORMACIÓN</b></a>
+            <a class="nav-link" href="#information"><b>INFORMACIÓN</b></a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#schedule"><b>GRUPOS</b></a>
+            <a class="nav-link" href="#groups"><b>GRUPOS</b></a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#menu"><b>PARTIDOS</b></a>
+            <a class="nav-link" href="#matches"><b>PARTIDOS</b></a>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#speakers"><b>INTEGRANTES</b></a>
+            <a class="nav-link" href="#members"><b>INTEGRANTES</b></a>
           </li>
         </ul>
-        <!--<input class="form-control" type="text" placeholder="Nombre de usuario" required>
-        <input type="password" class="form-control" placeholder="Contraseña" required>-->
-        <!--<a class="btn navbar-btn mx-2 btn-danger" type="submit"><b>LOGIN</b></a>-->
-
-        <!--<a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a>-->
-
-
-
         <a class="btn navbar-btn mx-2 btn-danger" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">LOGIN</a>
+
+        <!-- Modal -->
         <div id="id01" class="modal">
           <form class="modal-content animate" method="post"> {% csrf_token %}
-
             <div class="imgcontainer">
               <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
               <img src="{% static 'mundialitisapps/assets/index/user-male-circle-filled.png' %}" style="width:30%;height:100%;" alt="Avatar" class="avatar">
@@ -70,39 +60,32 @@
             </div>
             <div style="margin-top:-25px" class="container">
               <button style="margin-bottom:5%" type="button" onclick="document.getElementById('id01').style.display='none'" class="btn mt-4 btn-block p-2 btn-danger">Cancelar</button>
-              <!--<button type="submit" class="btn mt-4 btn-block p-2 btn-danger"><b>Registrarse</b></button>-->
             </div>
           </form>
         </div>
-
-
       </div>
     </div>
   </nav>
-  <!-- Cover -->
+
+  <!-- Home - Register -->
   <div class="align-items-center d-flex cover py-5 russianflagstyle" style="background-image: url('{% static 'mundialitisapps/assets/index/russia.jpg' %}');">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 align-self-center text-lg-left text-center">
-          <!--<h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
-          <!--<h1 style="font-size: 3.5vw;"class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>-->
           <h1 class="mb-0 mt-5 display-4"><b>MUNDIALITIS</b></h1>
           <p class="mb-5">Tu página sobre el Mundial de la FIFA Rusia 2018</p>
         </div>
         <div class="col-lg-5 p-3">
-          <!--<form class="p-4 bg-light" onsubmit="return validateForm()" method="post"> {% csrf_token %}-->
+          <!-- Register form -->
           <form class="p-4 bg-light" method="post"> {% csrf_token %}
             <h4 class="mb-4 text-center">Registrese en Mundialitis</h4>
-
             {% if messages %}
-            <ul style="color:red; font-weight:bold;" class="messages">
-            {% for message in messages %}
-            <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+              <ul style="color:red; font-weight:bold;" class="messages">
+              {% for message in messages %}
+                <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
               {% endfor %}
               </ul>
-                {% endif %}
-
-
+            {% endif %}
             <div class="form-group"> <label>Nombre de usuario</label>
               <input name="regusername" id="rusername" class="form-control" type="text" required> </div>
             <br>
@@ -117,53 +100,103 @@
       </div>
     </div>
   </div>
-  <!-- Intro -->
-  <div class="py-5" id="informacion" style="background-image: url('{% static 'mundialitisapps/assets/index/World-Cup-2018-background.png' %}');">
+
+  <!-- Information -->
+  <div class="py-5" id="information" style="background-image: url('{% static 'mundialitisapps/assets/index/World-Cup-2018-background.png' %}');">
     <div class="container">
       <div class="row my-5 bg-primary">
         <div class="p-4 col-md-6">
           <p class="m-0">Mundial de la FIFA</p>
           <h2 class="mb-3">Rusia 2018</h2> <i class="fa d-inline-block fa-star text-white"></i><i class="fa d-inline-block fa-star mx-2 text-white"></i><i class="fa d-inline-block fa-star text-white"></i>
-          <p class="my-4">La Copa Mundial de la FIFA Rusia 2018 será la vigésima primera edición de la Copa Mundial de Fútbol. Esta edición del evento se realizará en Rusia entre el 14 de junio y el 15 de julio de 2018, siendo la primera vez que un país de Europa Oriental organiza el campeonato.</p>
+          <p class="my-4" style="text-align: justify;">La Copa Mundial de la FIFA Rusia 2018 será la vigésima primera edición de la Copa Mundial de Fútbol. Esta edición del evento se realizará en Rusia entre el 14 de junio y el 15 de julio de 2018, siendo la primera vez que un país de Europa Oriental organiza el campeonato.</p>
         </div>
         <div class="p-0 col-md-6 d-none d-md-block">
           <img class="img-fluid d-block p-2" src="{% static 'mundialitisapps/assets/index/Logo.png' %}"> </div>
       </div>
     </div>
   </div>
-  <!-- Gallery -->
+
+  <!-- Stadium gallery -->
   <div class="">
     <div class="container-fluid">
       <div class="row">
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Ekaterinburg, Ekaterinburg Arena.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Kaliningrad, Kaliningrad Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Kazan, Kazan Arena.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Moscow, Luzhniki Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Moscow, Spartak Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Nizhny Novgorod, Nizhny Novgorod Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Rostov-on-Don, Rostov Arena.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Saint Petersburg, Saint Petersburg Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Samara, Samara Arena.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Saransk, Mordovia Arena.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Sochi, Fisht Stadium.jpg' %}" class="img-fluid"> </div>
-        <div class="p-0 col-md-2 col-4">
-          <img src="{% static 'mundialitisapps/assets/index/Volgograd, Volgograd Stadium.jpg' %}" class="img-fluid"> </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Ekaterinburg, Ekaterinburg Arena.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Ekaterinburg, Ekaterinburg Arena</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Kaliningrad, Kaliningrad Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Kaliningrad, Kaliningrad Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Kazan, Kazan Arena.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Kazan, Kazan Arena</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Moscow, Luzhniki Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Moscow, Luzhniki Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Moscow, Spartak Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Moscow, Spartak Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Nizhny Novgorod, Nizhny Novgorod Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Nizhny Novgorod, Nizhny Novgorod Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Rostov-on-Don, Rostov Arena.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Rostov-on-Don, Rostov Arena</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Saint Petersburg, Saint Petersburg Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Saint Petersburg, Saint Petersburg Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Samara, Samara Arena.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Samara, Samara Arena</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Saransk, Mordovia Arena.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Saransk, Mordovia Arena</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Sochi, Fisht Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Sochi, Fisht Stadium</div>
+          </div>
+        </div>
+        <div id="stdcnt" class="p-0 col-md-2 col-4">
+          <img src="{% static 'mundialitisapps/assets/index/Volgograd, Volgograd Stadium.jpg' %}" id="stdimag" class="img-fluid">
+          <div id="stdovl" class="overlay">
+            <div style="color:red; font-weight:bold;" class="stdtxt">Volgograd, Volgograd Stadium</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <!-- Carousel reviews -->
-  <!-- Carousel venue -->
+
+  <!-- Information continuation -->
   <div class="py-5">
     <div class="container">
       <div class="row py-5">
@@ -171,23 +204,24 @@
           <img class="img-fluid d-block my-3 mx-auto animate-in-left" src="{% static 'mundialitisapps/assets/index/telstar18.jpg' %}" width="300"> </div>
         <div class="col-md-7 align-self-center order-1 order-md-2 my-3 text-md-left text-center">
           <h2>Telstar 18</h2>
-          <p class="my-4 text-muted">Telstar fue la pelota de fútbol creada para la primera Copa del Mundo televisada, la de México 1970. Regresará para el Mundial de Rusia como Telstar 18, "una reinvención del modelo clásico".
+          <p class="my-4 text-muted" style="text-align: justify;">Telstar fue la pelota de fútbol creada para la primera Copa del Mundo televisada, la de México 1970. Regresará para el Mundial de Rusia como Telstar 18, "una reinvención del modelo clásico".
             La compañía alemana Adidas fabrica la pelota de este campeonato FIFA desde hace 47 años.</p>
-          <a class="btn btn-outline-primary" href="#features">Learn more</a>
         </div>
       </div>
       <div class="row pt-5">
         <div class="align-self-center col-lg-7 text-md-left text-center">
           <h2>Zabivaca</h2>
-          <p class="my-4 text-muted">Zabivaka es la mascota oficial de la Copa Mundial de la FIFA Rusia 2018. Su nombre significa “el que anota”, un nombre más que apropiado para este lobo que irradia diversión, simpatía y seguridad en sí mismo.</p>
+          <p class="my-4 text-muted" style="text-align: justify;">Zabivaka es la mascota oficial de la Copa Mundial de la FIFA Rusia 2018. Su nombre significa “el que anota”, un nombre más que apropiado para este lobo que irradia diversión, simpatía y seguridad en sí mismo.</p>
         </div>
         <div class="align-self-center mt-5 col-lg-5">
           <img class="img-fluid d-block animate-in-right" src="{% static 'mundialitisapps/assets/index/zabivaca.jpg' %}"> </div>
       </div>
-      <hr class="mt-0"> </div>
+      <hr class="mt-0">
+    </div>
   </div>
-  <!-- Schedule -->
-  <div class="py-5 section-parallax" style="background-image: url('{% static 'mundialitisapps/assets/index/Russia-2018-World-Cup-trophy.jpg' %}');" id="schedule">
+
+  <!-- Groups -->
+  <div class="py-5 section-parallax" style="background-image: url('{% static 'mundialitisapps/assets/index/Russia-2018-World-Cup-trophy.jpg' %}');" id="groups">
     <div class="container section-aquamarine">
       <div class="row">
         <div class="col-md-12">
@@ -334,8 +368,9 @@
       </div>
     </div>
   </div>
-  <!-- Menu -->
-  <div class="py-5 text-center" id="menu" style="background-image: url('{% static 'mundialitisapps/assets/index/stadiumbackground.jpg' %}');">
+
+  <!-- Matches -->
+  <div class="py-5 text-center" id="matches" style="background-image: url('{% static 'mundialitisapps/assets/index/stadiumbackground.jpg' %}');">
     <div class="container">
       <div class="row p-4 animate-in-down russianflagstyle">
         <div class="col-md-12">
@@ -452,8 +487,9 @@
       </div>
     </div>
   </div>
-  <!-- Speakers -->
-  <div class="py-5 bg-light" style="text-align: center !important;" id="speakers">
+
+  <!-- Members -->
+  <div class="py-5 bg-light" style="text-align: center !important;" id="members">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -462,44 +498,44 @@
       </div>
       <div class="row">
         <div class="col-6 col-lg-4 animate-in-left">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/2.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Jaime Koga</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Jaime Koga</b></h3>
             <p class="text-muted">Programador</p>
           </a>
         </div>
         <div class="col-6 col-lg-4">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/1.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Carlos Martinez</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Carlos Martinez</b></h3>
             <p class="text-muted">Programador</p>
           </a>
         </div>
         <div class="col-6 col-lg-4 animate-in-right">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/3.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Alfonso Carranza</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Alfonso Carranza</b></h3>
             <p class="text-muted">Programador</p>
           </a>
         </div>
         <div class="col-6 col-lg-4 animate-in-left">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/4.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Giancarlo Rojas</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Giancarlo Rojas</b></h3>
             <p class="text-muted">Documentación</p>
           </a>
         </div>
         <div class="col-6 col-lg-4">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/5.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Jesús Zevallos</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Jesús Zevallos</b></h3>
             <p class="text-muted">Documentación</p>
           </a>
         </div>
         <div class="col-6 mask col-lg-4 animate-in-right">
-          <a href="#">
+          <a>
             <img src="{% static 'mundialitisapps/assets/index/6.jpg' %}" class="center-block img-fluid my-3 rounded-circle" width="300">
-            <h3 class="mb-0"><b>Cynthia Ospina</b></h3>
+            <h3 class="mb-0" style="color:#12bbad"><b>Cynthia Ospina</b></h3>
             <p class="text-muted">Documentación</p>
           </a>
         </div>
@@ -532,13 +568,12 @@
       </div>
     </div>
   </footer>
+
   <!-- JavaScript dependencies -->
   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <!-- Script: Smooth scrolling between anchors in the same page -->
   <script src="{% static 'mundialitisapps/js/smooth-scroll.js' %}"></script>
-  <!--<script>alert('{{ message }}');</script>-->
   <script>var modal = document.getElementById('id01'); window.onclick = function(event) {if (event.target == modal) {modal.style.display = "none";}}</script>
 </body>
 
